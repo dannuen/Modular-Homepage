@@ -1,0 +1,40 @@
+{
+  "name": "All modules 10",
+  "items": [
+    {
+      "module": "next-sermon",
+      "w": 6,
+      "variant": "event"
+    },
+    {
+      "module": "active-sermons",
+      "w": 6,
+      "variant": "photo"
+    },
+    {
+      "module": "preaching-dial",
+      "w": 4,
+      "variant": ""
+    },
+    {
+      "module": "recently-preached",
+      "w": 4,
+      "variant": ""
+    },
+    {
+      "module": "coming-up",
+      "w": 4,
+      "variant": ""
+    },
+    {
+      "module": "vault-glance",
+      "w": 12,
+      "variant": ""
+    },
+    {
+      "module": "project-stats",
+      "w": 6,
+      "variant": ""
+    }
+  ]
+}

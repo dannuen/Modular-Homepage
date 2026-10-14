@@ -1,0 +1,35 @@
+{
+  "name": "All modules 01",
+  "items": [
+    {
+      "module": "greeting",
+      "w": 12,
+      "variant": "sentence"
+    },
+    {
+      "module": "countdown",
+      "w": 8,
+      "variant": "flip"
+    },
+    {
+      "module": "calendar",
+      "w": 4,
+      "variant": "month"
+    },
+    {
+      "module": "active-sermons",
+      "w": 12,
+      "variant": "cards"
+    },
+    {
+      "module": "active-projects",
+      "w": 6,
+      "variant": "strip"
+    },
+    {
+      "module": "recently-preached",
+      "w": 6,
+      "variant": ""
+    }
+  ]
+}

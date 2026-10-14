@@ -1,0 +1,356 @@
+/* HOMEPAGE 2 — the frame every theme shares (Dataview loads this with view.js, before the theme's CSS).
+   1. Page frame   2. Tokens (the Plain defaults)   3. Guards   4. Materials   5. Shared pieces
+   6. Grid and slots   7. Arrange mode   8. Theme menu   9. Task panel colours
+   A theme (themes/<id>.css) overrides the tokens and, if it wants, the materials — scoped to .hp-home[data-theme="<id>"].
+   Sizes are in em (the page follows Obsidian's font size); layout follows the note's width (container queries).
+   Shadows fall only below (blur = −spread): Obsidian clips what a Dataview block draws past its edges. */
+
+/* ---------- 1. Page frame: wider column, no note title or properties box ---------- */
+.markdown-preview-view:has(.hp-home), .markdown-source-view:has(.hp-home) { --file-line-width: 1140px; }
+.markdown-preview-view:has(.hp-home) .inline-title,
+.markdown-source-view:has(.hp-home) .inline-title,
+.markdown-preview-view:has(.hp-home) .metadata-container { display: none; }
+.markdown-preview-view:has(.hp-home) .markdown-preview-sizer { padding-top: 12px !important; padding-bottom: 90px !important; }
+
+/* ---------- 2. Tokens: Obsidian's own colours (the Plain theme); every theme overrides these ---------- */
+.hp-home {
+	--hm-text: var(--text-normal);
+	--hm-muted: var(--text-muted);
+	--hm-faint: var(--text-faint);
+	--hm-accent: var(--interactive-accent);          /* fills: buttons, bars, chosen states */
+	--hm-accent-ink: var(--text-accent);             /* accent text */
+	--hm-on-accent: var(--text-on-accent);
+	--hm-soft: color-mix(in srgb, var(--interactive-accent) 14%, transparent);
+	--hm-fill: var(--hm-accent);                     /* bar and slider fills (a theme may use a gradient) */
+	--hm-late: var(--text-error);
+	--hm-live: #2fbf71;
+	--hm-soon: #d9822b;                              /* a date coming close (rings and bars) */
+	--hm-line: var(--background-modifier-border);
+	--hm-track: color-mix(in srgb, var(--text-normal) 11%, transparent);
+	--hm-hover: var(--background-modifier-hover);
+	--hm-bg: var(--background-primary);               /* a solid page colour (for SVG fills and knockouts) */
+	--hm-surface: var(--background-primary);          /* cards (may be a gradient) */
+	--hm-surface-2: var(--background-primary-alt);    /* panels inside cards */
+	--hm-pop: var(--background-primary);              /* pickers, menus, tooltips */
+	--hm-shadow-color: rgba(0, 0, 0, 0.22);
+	--hm-shadow: 0 18px 24px -24px var(--hm-shadow-color);
+	--hm-radius: 20px;
+	--hm-radius-sm: 14px;
+	--hm-gap: 22px;
+	--hm-knob: 34px;                                 /* round buttons (‹ ›, +) */
+	--hm-sec-h: var(--hm-knob);                      /* every section title row: one knob tall, so rows with and without buttons line up */
+	--hm-pad: 20px;                                  /* inside a module's card: from its edge to its content */
+	--hm-pad-in: calc(var(--hm-pad) * 0.8);          /* inside a tile within a card */
+	--hm-gap-in: clamp(10px, calc(var(--hm-pad) * 0.6), 14px); /* between tiles within a card */
+	--hm-tool: var(--hm-knob);                       /* every button in a card's tool row: knobs, pills and links */
+	--hm-bar-inset: clamp(10px, calc(var(--hm-pad) * 0.6), 16px); /* the tool row's buttons from the card's top and right edges */
+	--hm-font: var(--font-interface);
+	--hm-font-display: var(--font-interface);        /* titles and big numbers */
+	--hm-title-weight: 700;                          /* an item's title inside a card (a sermon, a project, a tile) */
+	--hm-row-weight: 600;                            /* a row's text in a list */
+	--hm-display-weight: 720;
+	--hm-display-spacing: -0.03em;
+	container: hm / inline-size;
+	position: relative; isolation: isolate;
+	display: flex; flex-direction: column; gap: var(--hm-gap); padding-bottom: 30px; /* room for the last shadow */
+	font-family: var(--hm-font); color: var(--hm-text); line-height: 1.45;
+}
+.theme-dark .hp-home { --hm-shadow-color: rgba(0, 0, 0, 0.6); --hm-live: #5ee39a; --hm-soon: #f0a458; }
+
+/* ---------- 3. Guards (the justify snippet, image-forcing themes, Iconize, the Primary-dannuen button rules) ---------- */
+.hp-home * { box-sizing: border-box; text-align: inherit !important; }
+.hp-home { text-align: left; }
+.hp-home p { margin: 0; }
+.hp-home img { display: block !important; max-width: none !important; max-height: none !important; margin: 0 !important; padding: 0 !important; background: none !important; object-fit: cover !important; justify-self: auto !important; cursor: inherit; }
+.hp-home a { text-decoration: none !important; }
+/* Plain Dataview links sit inline with no box; links drawn as pills keep their own padding. */
+.hp-home .hp-link:where(:not(.hp-pill)), .hp-home .hp-link p, .hp-home .hp-value, .hp-home .hp-value p { display: inline; margin: 0 !important; padding: 0 !important; }
+.hp-home a > .iconize-icon-in-link ~ .iconize-icon-in-link { display: none; }
+.hp-home a > .iconize-icon-in-link { display: inline-flex; align-items: center; vertical-align: middle; transform: none !important; margin-right: 6px; line-height: 1; }
+.hp-home a > .iconize-icon-in-link svg { display: block; }
+.hp-home :is(a, button, [tabindex]):not(.hp-tk-wrap *):focus-visible { outline: 2px solid var(--hm-accent); outline-offset: 3px; border-radius: 10px; }
+.hp-home .hp-ico { display: inline-flex; flex: none; }
+.hp-home .hp-ico svg { width: 1.05em; height: 1.05em; }
+.hp-home button { all: unset; box-sizing: border-box; cursor: pointer; }
+.hp-home button:disabled { cursor: default; opacity: 0.5; }
+/* Pressed and focused buttons look like themselves. Primary-dannuen styles every "button:not(button.clickable-icon)"
+   (padding at rest; a grey fill, other padding and an inset shadow when pressed or keyboard-focused), and those rules
+   outrank a reset — but they read these variables, so each button hands them its own look: --btn-pad, --btn-bg and
+   --btn-shadow (the materials set the last two). */
+.hp-home button, .hp-hs-layer button, .hp-hs-top button {
+	--btn-pad: 0; --btn-bg: transparent; --btn-shadow: none;
+	--button-padding: var(--btn-pad); --button-padding-active: var(--btn-pad);
+	--interactive-normal: var(--btn-bg); --interactive-normal-hover: var(--btn-bg);
+	--button-shadow-active: var(--btn-shadow); --button-shadow-focus: var(--btn-shadow); --input-shadow: var(--btn-shadow);
+}
+/* Obsidian on iPad pads every button with ".is-tablet button:not(.clickable-icon)", which outranks the per-button
+   padding rules and stretches round buttons into ellipses. Same specificity, loaded later: --btn-pad wins. */
+.hp-home button:not(.clickable-icon) { padding: var(--btn-pad); }
+
+/* ---------- 4. Materials (what modules are made of; the task panel gets them as its skin) ---------- */
+.hp-home .hp-card { background: var(--hm-surface); border: 1px solid var(--hm-line); border-radius: var(--hm-radius); box-shadow: var(--hm-shadow); }
+.hp-home .hp-panel { background: var(--hm-surface-2); border: 1px solid var(--hm-line); border-radius: var(--hm-radius-sm); }
+.hp-home .hp-pill { --btn-bg: var(--hm-surface); --btn-shadow: inset 0 0 0 1px var(--hm-line); border-radius: 999px; background: var(--btn-bg); box-shadow: var(--btn-shadow); }
+.hp-home .hp-knob { --btn-bg: var(--hm-surface); --btn-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--hm-text) 24%, transparent); border-radius: 50%; background: var(--btn-bg); box-shadow: var(--btn-shadow); }
+.hp-home .hp-accent { --btn-bg: var(--hm-accent); --btn-shadow: none; border-radius: 999px; background: var(--btn-bg); box-shadow: var(--btn-shadow); color: var(--hm-on-accent) !important; }
+.hp-home .hp-track { border-radius: 999px; background: var(--hm-track); }
+.hp-home .hp-kicker { font-size: 0.74em; font-weight: 750; letter-spacing: 0.1em; text-transform: uppercase; color: var(--hm-accent-ink); }
+
+/* ---------- 5. Shared pieces ---------- */
+/* A module's title row: always one line and --hm-sec-h tall, whatever its aside holds, so the cards of modules side by
+   side start at the same height. A title or note too long for it ends in "…" (the padding/margin pair keeps accents
+   and descenders from being cut); the aside never wraps or shrinks. */
+.hp-home .hp-sec { display: flex; align-items: baseline; gap: 4px 12px; min-height: var(--hm-sec-h); margin: 4px 6px 0; }
+.hp-home .hp-sec-title { font-family: var(--hm-font-display); font-size: 1.3em; font-weight: var(--hm-display-weight); letter-spacing: var(--hm-display-spacing); line-height: max(1.2em, var(--hm-sec-h)); }
+.hp-home .hp-sec-note { flex: 0 100 auto; font-size: 0.84em; color: var(--hm-muted); }
+.hp-home :is(.hp-sec-title, .hp-sec-note) { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-block: 0.2em; margin-block: -0.2em; }
+.hp-home .hp-sec-aside { flex: none; align-self: center; margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 0.84em; }
+.hp-home .hp-sec-aside a { color: var(--hm-muted) !important; }
+.hp-home .hp-sec-aside a:hover { color: var(--hm-accent-ink) !important; }
+.hp-home .hp-sec-aside .hp-btn { min-height: 30px; --btn-pad: 0 12px; font-size: 0.82em; }
+/* Module titles are off by default (Settings → Module titles): then the title row is hidden and a module is just its
+   card. What the card needs (a count, the month, its buttons) is inside it, in its tool row. */
+.hp-home.hp-titles-off .hp-sec { display: none; }
+.hp-home .hp-sec-aside:empty { display: none; }
+/* A module's tool row (ui.bar): the first row inside its card, a short label on the left and the buttons on the right.
+   The buttons sit --hm-bar-inset from the card's top and right edges, whether the row takes a line or floats over the
+   card's corner (is-float), and every one is --hm-tool tall: round icon buttons, pills and links alike. */
+.hp-home .hp-has-bar { position: relative; }
+.hp-home .hp-bar {
+	display: flex; flex-wrap: wrap-reverse; align-items: center; gap: 6px 12px; min-width: 0; min-height: var(--hm-tool);
+	margin: calc(var(--hm-bar-inset) - var(--hm-pad)) calc(var(--hm-bar-inset) - var(--hm-pad)) 0 0;
+} /* reversed wrap: when the label and the buttons don't both fit, the buttons stay at the top and the label goes under */
+/* A card whose own header shares the tool row (ui.bar, then the header put in the row as .hp-bar-main): the header keeps
+   its place at the card's padding; when the card is too narrow for both, the buttons stay at the top and the header
+   goes under them. */
+.hp-home .hp-bar:has(> .hp-bar-main) { align-items: flex-end; } /* flex-end: the top, in a reversed wrap */
+.hp-home .hp-bar > .hp-bar-main { flex: 1 1 auto; min-width: 0; margin-top: calc(var(--hm-pad) - var(--hm-bar-inset)); }
+.hp-home .hp-bar.is-float { position: absolute; z-index: 3; top: var(--hm-bar-inset); right: var(--hm-bar-inset); margin: 0; pointer-events: none; }
+.hp-home .hp-bar.is-float .hp-bar-tools { pointer-events: auto; }
+.hp-home .hp-bar-label { flex: 1 0 auto; max-width: 100%; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-block: 0.2em; margin-block: -0.2em; font-size: 0.84em; color: var(--hm-muted); }
+.hp-home .hp-bar.is-float .hp-bar-label, .hp-home .hp-bar-label:empty { display: none; }
+.hp-home .hp-bar-tools { flex: none; margin-left: auto; display: flex; align-items: center; gap: 6px; font-size: 0.84em; }
+.hp-home .hp-bar-tools .hp-round { width: var(--hm-tool); height: var(--hm-tool); }
+.hp-home .hp-bar-tools .hp-btn { min-height: var(--hm-tool); --btn-pad: 0 13px; font-size: 0.98em; }
+.hp-home .hp-bar-tools a { display: inline-flex; align-items: center; min-height: var(--hm-tool); padding: 0 6px !important; white-space: nowrap; color: var(--hm-muted) !important; }
+.hp-home .hp-bar-tools a:hover { color: var(--hm-accent-ink) !important; }
+/* "Back to now" beside ‹ › (calendar, roster): while hidden it keeps its place, so the arrows never move; in a narrow
+   slot it is a round button with an icon, as small as the arrows. */
+.hp-home .hp-back.is-off { visibility: hidden; }
+.hp-home .hp-bar-tools .hp-back.is-off { display: none; } /* the arrows are right-aligned: nothing moves */
+.hp-home .hp-back .hp-ico { display: none; }
+@container slot (max-width: 460px) {
+	.hp-home .hp-sec-aside button.hp-back { width: var(--hm-knob); height: var(--hm-knob); min-height: 0; --btn-pad: 0; font-size: 1em; }
+	.hp-home .hp-bar-tools button.hp-back { width: var(--hm-tool); height: var(--hm-tool); min-height: 0; --btn-pad: 0; font-size: 1em; }
+	.hp-home .hp-back .hp-ico { display: inline-flex; }
+	.hp-home .hp-back > :not(.hp-ico) { display: none; }
+}
+.hp-home .hp-label { font-size: 0.72em; font-weight: 750; letter-spacing: 0.08em; text-transform: uppercase; color: var(--hm-muted); }
+.hp-home .hp-muted { color: var(--hm-muted); }
+.hp-home .hp-empty { color: var(--hm-faint); font-style: italic; }
+.hp-home .hp-error { padding: 14px 18px; color: var(--hm-late); font-size: 0.9em; }
+.hp-home .hp-num { font-family: var(--hm-font-display); font-weight: var(--hm-display-weight); letter-spacing: var(--hm-display-spacing); font-variant-numeric: tabular-nums; line-height: 1.05; }
+.hp-home .hp-btn {
+	display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 38px;
+	--btn-pad: 0 16px; padding: var(--btn-pad); font-size: 0.9em; font-weight: 650; white-space: nowrap; color: var(--hm-text);
+	transition: transform 0.15s ease, filter 0.15s ease;
+}
+.hp-home .hp-btn:hover:not(:disabled) { transform: translateY(-1px); filter: brightness(1.03); }
+.hp-home .hp-round { display: inline-grid; place-items: center; flex: none; width: var(--hm-knob); height: var(--hm-knob); color: var(--hm-muted); }
+.hp-home .hp-round:hover { color: var(--hm-text); }
+.hp-home .hp-chip { display: inline-flex; align-items: center; gap: 7px; min-height: 30px; --btn-pad: 0 12px; padding: var(--btn-pad); font-size: 0.84em; white-space: nowrap; }
+.hp-home .hp-chip .hp-ico { color: var(--hm-accent-ink); }
+.hp-home .hp-avatar { width: 28px !important; height: 28px !important; border-radius: 50% !important; flex: none; }
+.hp-home .hp-meter { position: relative; height: 6px; overflow: hidden; }
+.hp-home .hp-meter-fill { display: block; height: 100%; border-radius: inherit; background: var(--hm-fill); }
+.hp-home .is-inactive { opacity: 0.45; }
+/* Progress rings (ui.ring) and church covers (ui.cover: a photo, else a mesh) */
+.hp-home .hp-ring { position: relative; flex: none; }
+.hp-home .hp-ring svg { display: block; width: 100%; height: 100%; transform: rotate(-90deg); overflow: visible; }
+.hp-home .hp-ring-track { stroke: var(--hm-track); }
+.hp-home .hp-ring-fill { stroke: var(--hm-accent); transition: stroke-dasharray 0.6s ease; }
+.hp-home .hp-ring.is-done .hp-ring-fill { stroke: var(--hm-live); }
+.hp-home .hp-ring.is-soon .hp-ring-fill { stroke: var(--hm-soon); }
+.hp-home .hp-ring.is-urgent .hp-ring-fill { stroke: var(--hm-late); }
+.hp-home .hp-ring.is-past .hp-ring-fill { stroke: var(--hm-faint); }
+.hp-home .hp-ring-label { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center !important; line-height: 1.05; }
+.hp-home .hp-ring-label b { font-size: 0.74em; font-weight: 750; font-variant-numeric: tabular-nums; }
+.hp-home .hp-ring-label span { margin-top: 2px; font-size: 0.64em; color: var(--hm-muted); }
+.hp-home img.hp-cover, .hp-home .hp-cover { width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 0 !important; }
+.hp-home .hp-meter.is-soon .hp-meter-fill { background: var(--hm-soon); }
+.hp-home .hp-meter.is-urgent .hp-meter-fill { background: var(--hm-late); }
+/* The Active switch */
+.hp-home .hp-switch { position: relative; display: inline-flex; align-items: center; gap: 9px; cursor: pointer; font-size: 0.82em; color: var(--hm-muted); user-select: none; }
+.hp-home .hp-switch input { position: absolute !important; opacity: 0 !important; width: 1px !important; height: 1px !important; margin: 0 !important; pointer-events: none; }
+.hp-home .hp-switch-track { position: relative; width: 34px; height: 20px; border-radius: 999px; background: var(--hm-track); transition: background 0.2s ease; }
+.hp-home .hp-switch-track::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); transition: transform 0.2s ease; }
+.hp-home .hp-switch input:checked + .hp-switch-track { background: var(--hm-accent); }
+.hp-home .hp-switch input:checked + .hp-switch-track::after { transform: translateX(14px); }
+.hp-home .hp-switch input:focus-visible + .hp-switch-track { outline: 2px solid var(--hm-accent); outline-offset: 2px; }
+/* ⚙ settings panels (ui.settings): float over their module, scroll inside, Reset and Save pinned at the bottom. */
+.hp-home .hp-set {
+	position: absolute; z-index: 20; top: 56px; right: 14px; width: 320px; max-width: calc(100% - 28px); max-height: min(520px, 70vh);
+	overflow-y: auto; scrollbar-width: thin; display: flex; flex-direction: column; gap: 12px; padding: 16px; border-radius: 18px;
+	font-size: 0.85em; text-align: left !important; color: var(--hm-text); background: var(--hm-bg);
+	box-shadow: inset 0 0 0 1px var(--hm-line), 0 18px 24px -18px rgba(0, 0, 0, 0.5);
+}
+.hp-home .hp-set[hidden] { display: none; }
+.hp-home .hp-set-title { font-weight: 700; font-size: 1.05em; }
+.hp-home .hp-set-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 10px; }
+.hp-home .hp-set-label { color: var(--hm-muted); white-space: nowrap; }
+.hp-home .hp-set-value { color: var(--hm-muted); font-variant-numeric: tabular-nums; max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hp-home .hp-set-ctl { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 6px 8px; margin-left: auto; }
+.hp-home button.hp-set-chip { --btn-pad: 3px 11px; padding: var(--btn-pad); border-radius: 999px; box-shadow: inset 0 0 0 1px var(--hm-line); font-size: 0.95em; }
+.hp-home button.hp-set-chip:hover { box-shadow: inset 0 0 0 1px var(--hm-accent); }
+.hp-home button.hp-set-chip.is-on { --btn-bg: var(--hm-accent); background: var(--btn-bg); color: var(--hm-on-accent); box-shadow: none; }
+.hp-home input.hp-set-color { width: 36px; height: 26px; padding: 0; border: none; border-radius: 8px; background: none; cursor: pointer; }
+.hp-home .hp-set-slider { display: flex; flex-direction: column; gap: 4px; }
+.hp-home input.hp-set-range { width: 100%; margin: 0; accent-color: var(--hm-accent); }
+.hp-home .hp-set-tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; padding: 3px; transition: opacity 0.15s ease; }
+.hp-home .hp-set-tiles.is-off { opacity: 0.45; }
+.hp-home button.hp-set-tile {
+	position: relative; aspect-ratio: 1; overflow: hidden; display: grid; place-items: center; border-radius: 10px;
+	font-size: 0.85em; color: var(--hm-muted); background: var(--hm-surface-2); box-shadow: inset 0 0 0 1px var(--hm-line);
+}
+.hp-home button.hp-set-tile img { width: 100% !important; height: 100% !important; pointer-events: none; }
+.hp-home button.hp-set-tile img + span { position: absolute; left: 0; right: 0; bottom: 0; padding: 2px 0 3px; text-align: center !important; font-size: 0.9em; font-weight: 600; color: #fff; background: linear-gradient(transparent, rgba(0, 0, 0, 0.6)); }
+.hp-home button.hp-set-tile:hover { box-shadow: 0 0 0 2px var(--hm-line); }
+.hp-home button.hp-set-tile.is-on { box-shadow: 0 0 0 2px var(--hm-accent); }
+.hp-home .hp-set-acts { position: sticky; bottom: -16px; z-index: 1; flex: none; display: flex; justify-content: flex-end; gap: 8px; margin: 0 -15px -15px; padding: 10px 15px 15px; background: var(--hm-bg); border-top: 1px solid var(--hm-line); }
+.hp-home .hp-set-acts .hp-btn { min-height: 32px; --btn-pad: 0 14px; }
+/* Page colour "accent" (themes with pageColor): a soft accent tint on this note's tab, light and dark. */
+[data-hp-page="accent"] {
+	--background-primary: hsl(var(--accent-h), calc(var(--accent-s) * 0.45), 95%);
+	--background-primary-alt: hsl(var(--accent-h), calc(var(--accent-s) * 0.45), 92%);
+	--background-secondary: hsl(var(--accent-h), calc(var(--accent-s) * 0.45), 91%);
+	--background-modifier-border: hsl(var(--accent-h), calc(var(--accent-s) * 0.35), 84%);
+}
+.theme-dark [data-hp-page="accent"] {
+	--background-primary: hsl(var(--accent-h), calc(var(--accent-s) * 0.3), 11%);
+	--background-primary-alt: hsl(var(--accent-h), calc(var(--accent-s) * 0.3), 13%);
+	--background-secondary: hsl(var(--accent-h), calc(var(--accent-s) * 0.3), 15%);
+	--background-modifier-border: hsl(var(--accent-h), calc(var(--accent-s) * 0.25), 22%);
+}
+/* One shared tooltip */
+.hp-home .hp-tip { position: absolute; z-index: 30; left: 0; top: 0; max-width: 260px; padding: 8px 11px; border-radius: 12px; font-size: 0.78em; line-height: 1.4; white-space: pre-line; pointer-events: none; opacity: 0; transform: translate(-50%, calc(-100% - 14px)); transition: opacity 0.12s ease; background: var(--hm-pop); }
+.hp-home .hp-tip.is-on { opacity: 1; }
+
+/* ---------- 6. Grid and slots: 12 columns; a module spans 4 (⅓), 6 (½), 8 (⅔) or 12 ---------- */
+.hp-home .hp-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); row-gap: var(--hm-gap); column-gap: var(--hm-gap-x, var(--hm-gap)); align-items: stretch; }
+.hp-tb-box ~ .hp-home.hp-titles-off .hp-grid { margin-top: max(0px, calc(var(--hm-gap) - 8px)); } /* no title rows: the first row sits as far below the top bar as the rows sit from each other */
+.hp-home .hp-slot { container: slot / inline-size; grid-column: span 12; min-width: 0; display: flex; flex-direction: column; gap: 10px; position: relative; }
+/* Each slot is a container: a module adapts to its own width with @container slot (…), whatever column it sits in. */
+.hp-home .hp-slot[data-w="4"] { grid-column: span 4; }
+.hp-home .hp-slot[data-w="6"] { grid-column: span 6; }
+.hp-home .hp-slot[data-w="8"] { grid-column: span 8; }
+.hp-home .hp-body { flex: 1; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.hp-home .hp-grow { flex: 1; } /* a module's main card: fills the row's height beside a taller neighbour */
+@container hm (max-width: 900px) {
+	.hp-home .hp-slot:is([data-w="4"], [data-w="8"]) { grid-column: span 12; }
+}
+@container hm (max-width: 600px) {
+	.hp-home .hp-grid { grid-template-columns: minmax(0, 1fr); }
+	.hp-home .hp-slot[data-w] { grid-column: 1 / -1; }
+}
+@container slot (max-width: 420px) {
+	.hp-home .hp-sec-note { display: none; }
+}
+
+/* ---------- 7. Arrange mode ---------- */
+.hp-home .hp-arrange-bar[hidden] { display: none; }
+.hp-home .hp-arrange-bar {
+	position: sticky; top: 78px; z-index: 35; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px;
+	padding: 10px 12px 10px 18px; background: var(--hm-pop); box-shadow: 0 14px 18px -18px var(--hm-shadow-color);
+}
+.hp-home .hp-arrange-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.hp-home .hp-arrange-text b { font-size: 0.95em; }
+.hp-home .hp-arrange-text span { font-size: 0.8em; color: var(--hm-muted); }
+.hp-home .hp-arrange-acts { display: flex; flex-wrap: wrap; gap: 8px; }
+.hp-home .hp-add-wrap { position: relative; }
+.hp-home .hp-add-pop { position: absolute; z-index: 50; top: calc(100% + 8px); left: 0; width: 280px; max-height: 360px; overflow-y: auto; padding: 6px; background: var(--hm-pop); box-shadow: 0 18px 24px -18px var(--hm-shadow-color); }
+.hp-home .hp-add-pop[hidden] { display: none; }
+.hp-home button.hp-add-item { display: flex; flex-direction: column; gap: 1px; width: 100%; --btn-pad: 8px 10px; padding: var(--btn-pad); border-radius: 10px; }
+.hp-home button.hp-add-item:hover, .hp-home button.hp-add-item:focus-visible { background: var(--hm-hover); }
+.hp-home .hp-add-item b { font-size: 0.9em; }
+.hp-home .hp-add-item small { font-size: 0.78em; color: var(--hm-muted); }
+.hp-home.is-arranging .hp-slot { outline: 1.5px dashed color-mix(in srgb, var(--hm-accent) 55%, transparent); outline-offset: 6px; border-radius: var(--hm-radius); }
+.hp-home.is-arranging .hp-body { opacity: 0.6; pointer-events: none; user-select: none; }
+.hp-home .hp-slot.is-dragging { opacity: 0.45; }
+.hp-home.is-dragging, .hp-home.is-dragging * { cursor: grabbing !important; user-select: none; }
+.hp-home .hp-handle { position: relative; z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 5px 6px 5px 5px; border-radius: 18px; font-size: 0.82em; }
+.hp-home .hp-handle-name { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hp-home .hp-handle-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.hp-home button.hp-grip { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; color: var(--hm-muted); cursor: grab; touch-action: none; }
+.hp-home button.hp-grip:hover { background: var(--hm-hover); color: var(--hm-text); }
+.hp-home .hp-seg { display: inline-flex; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--hm-line); overflow: hidden; }
+.hp-home button.hp-seg-btn { display: inline-flex; align-items: center; gap: 4px; min-height: 28px; --btn-pad: 0 10px; padding: var(--btn-pad); color: var(--hm-muted); white-space: nowrap; }
+.hp-home button.hp-seg-btn:hover { background: var(--hm-hover); color: var(--hm-text); }
+.hp-home button.hp-seg-btn.is-on { --btn-bg: var(--hm-accent); background: var(--btn-bg); color: var(--hm-on-accent); }
+.hp-home button.hp-seg-btn.hp-hide { border-radius: 999px; box-shadow: inset 0 0 0 1px var(--hm-line); }
+.hp-home select.hp-variant {
+	appearance: none; -webkit-appearance: none; height: 28px; max-width: 12em; margin: 0; padding: 0 26px 0 12px; border: none; border-radius: 999px;
+	font: inherit; color: var(--hm-text); cursor: pointer; box-shadow: inset 0 0 0 1px var(--hm-line);
+	background: var(--hm-surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 9px center / 11px;
+}
+.hp-home select.hp-variant:hover { box-shadow: inset 0 0 0 1px var(--hm-accent); }
+/* Floating pieces stay readable whatever a theme does to panels. */
+.hp-home .hp-arrange-bar.hp-arrange-bar.hp-panel, .hp-home .hp-add-pop.hp-add-pop.hp-panel { background: var(--hm-pop); background-color: var(--hm-bg); }
+/* A narrow module: name and Hide on the first line, the tools under them. */
+@container slot (max-width: 560px) {
+	.hp-home .hp-handle-tools { order: 1; flex-basis: 100%; gap: 4px; }
+	.hp-home button.hp-seg-btn { min-height: 26px; --btn-pad: 0 8px; }
+}
+@media (prefers-reduced-motion: reduce) { .hp-home .hp-btn { transition: none; } }
+@media print { .hp-home .hp-arrange-bar, .hp-home .hp-handle { display: none; } }
+.hp-tb-box .hp-tb-icon.is-on { color: var(--interactive-accent); box-shadow: inset 0 0 0 1.5px var(--interactive-accent); }
+
+/* ---------- 8. Theme and layout menus (in a zero-height layer under the top bar, so no theme box can clip them) ---------- */
+.hp-hs-layer { position: relative; z-index: 60; height: 0; }
+.hp-hs-layer, .hp-hs-layer * { box-sizing: border-box; text-align: left; }
+.hp-hs-menu {
+	position: absolute; top: 0; left: 0; width: 290px; max-width: 100%; padding: 6px; border-radius: 14px;
+	background: var(--background-primary); box-shadow: 0 0 0 1px var(--background-modifier-border), 0 18px 24px -24px rgba(0, 0, 0, 0.6);
+	transform-origin: top right; animation: hp-hs-pop 0.16s ease-out;
+}
+@keyframes hp-hs-pop { from { opacity: 0; transform: translateY(-4px) scale(0.98); } }
+.hp-hs-menu[hidden] { display: none; }
+.hp-hs-menu-title { padding: 8px 10px 6px; font-family: var(--font-interface); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+.hp-hs-menu button.hp-hs-item {
+	all: unset; box-sizing: border-box; cursor: pointer; display: grid; grid-template-columns: 18px minmax(0, 1fr); align-items: center; gap: 10px;
+	width: 100%; --btn-pad: 8px 10px; padding: var(--btn-pad); border-radius: 10px; font-family: var(--font-interface); color: var(--text-normal);
+}
+.hp-hs-menu button.hp-hs-item:hover, .hp-hs-menu button.hp-hs-item:focus-visible { background: var(--background-modifier-hover); }
+.hp-hs-menu button.hp-hs-item:focus-visible { outline: 2px solid var(--interactive-accent); outline-offset: 2px; }
+.hp-hs-item b { display: block; font-size: 13px; font-weight: 600; line-height: 1.3; }
+.hp-hs-item small { display: block; font-size: 11.5px; line-height: 1.35; color: var(--text-muted); }
+.hp-hs-mark { display: grid; place-items: center; width: 18px; height: 18px; border-radius: 50%; box-shadow: inset 0 0 0 1.5px var(--background-modifier-border); color: var(--text-on-accent); }
+.hp-hs-item.is-on .hp-hs-mark { background: var(--interactive-accent); box-shadow: none; }
+.hp-hs-mark svg { width: 11px; height: 11px; }
+.hp-hs-menu { max-height: min(75vh, 620px); overflow-y: auto; }
+.hp-hs-sep { height: 1px; margin: 6px 10px; background: var(--background-modifier-border); }
+.hp-hs-item.is-action .hp-hs-mark { box-shadow: none; color: var(--text-muted); }
+.hp-hs-item.is-action .hp-hs-mark svg { width: 15px; height: 15px; }
+.hp-hs-menu button.hp-hs-item.is-danger b { color: var(--text-error); }
+.hp-hs-menu button.hp-hs-item:disabled { cursor: default; opacity: 0.5; }
+.hp-hs-menu button.hp-hs-item:disabled:hover { background: none; }
+/* An empty layout: how to fill it. */
+.hp-home .hp-layout-empty { margin-top: 12px; padding: 18px var(--hm-pad, 20px); text-align: center; color: var(--hm-muted, var(--text-muted)); }
+.hp-hs-top { display: flex; justify-content: flex-end; gap: 6px; margin-bottom: 8px; }
+.hp-hs-top button { all: unset; cursor: pointer; display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; color: var(--text-muted); box-shadow: inset 0 0 0 1px var(--background-modifier-border); }
+.hp-hs-top .hp-tb-ico svg { display: block; width: 16px; height: 16px; }
+@media (prefers-reduced-motion: reduce) { .hp-hs-menu { animation: none; } }
+@media print { .hp-hs-layer, .hp-hs-top { display: none; } }
+
+/* ---------- 9. Task panel (_data_/views/home/shared/tasks): its colours from the tokens. Its stylesheet loads later, so every
+   rule here starts with .hp-home to win. The module draws its own "Tasks" title, so the panel's kicker is hidden. ---------- */
+.hp-home .hp-tk-wrap {
+	--tk-text: var(--hm-text); --tk-muted: var(--hm-muted); --tk-accent: var(--hm-accent-ink); --tk-late: var(--hm-late);
+	--tk-line: var(--hm-line); --tk-hover: var(--hm-hover);
+	--tk-soft: var(--hm-soft); --tk-soft-edge: color-mix(in srgb, var(--hm-accent) 45%, transparent);
+	--tk-on-bg: var(--hm-accent); --tk-on-ink: var(--hm-on-accent); --tk-fill-bg: var(--hm-fill);
+	--tk-group-bg: var(--hm-surface-2);
+	--tk-glow-late: transparent; --tk-glow-today: transparent; --tk-late-edge: var(--hm-line);
+	--tk-pop-bg: var(--hm-pop); --tk-shadow: var(--hm-shadow-color);
+}
+.hp-home .hp-tk-wrap .hp-tk-kicker { display: none; }
+

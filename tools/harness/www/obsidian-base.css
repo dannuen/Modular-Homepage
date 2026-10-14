@@ -1,0 +1,150 @@
+/* A small stand-in for Obsidian's app.css (default theme, 1.8) plus the vault's own CSS that a homepage has to survive:
+   the Primary-dannuen button rules and the "Dannuen Settings" justify snippet. Values are close to Obsidian's defaults,
+   not copied from it. */
+
+/* ---------- Shared variables (Obsidian sets most on body) ---------- */
+body {
+	--accent-h: 254; --accent-s: 80%; --accent-l: 68%;
+	--font-interface: "Inter", "Noto Color Emoji", "DejaVu Sans", sans-serif;
+	--font-text: "Inter", "Noto Color Emoji", "DejaVu Sans", sans-serif;
+	--font-monospace: "DejaVu Sans Mono", "Liberation Mono", monospace;
+	--font-text-size: 16px;
+	--font-ui-smaller: 12px; --font-ui-small: 13px; --font-ui-medium: 15px; --font-ui-large: 20px;
+	--h1-weight: 700; --h1-size: 1.802em;
+	--file-line-width: 700px;
+	--file-margins: 32px;
+	--radius-s: 4px; --radius-m: 8px; --radius-l: 12px; --radius-xl: 16px;
+	--input-height: 30px; --input-radius: 5px; --button-radius: var(--input-radius); --input-font-weight: 400;
+	--checkbox-size: 15px; --checkbox-radius: var(--radius-s);
+	--tag-size: 0.875em; --tag-radius: 2em; --tag-padding-x: 0.65em; --tag-padding-y: 0.25em;
+	--line-height-normal: 1.5;
+	--link-decoration: underline;
+	--size-4-1: 4px; --size-4-2: 8px; --size-4-3: 12px; --size-4-4: 16px; --size-4-8: 32px;
+}
+body.theme-light {
+	color-scheme: light;
+	--color-red: #e93147; --color-orange: #ec7500; --color-yellow: #e0ac00; --color-green: #08b94e; --color-cyan: #00bfbc;
+	--color-blue: #086ddd; --color-purple: #7852ee; --color-pink: #d53984;
+	--color-accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
+	--color-accent-1: hsl(calc(var(--accent-h) - 1), calc(var(--accent-s) * 1.01), calc(var(--accent-l) * 1.075));
+	--background-primary: #ffffff; --background-primary-alt: #fafafa;
+	--background-secondary: #f6f6f6; --background-secondary-alt: #fcfcfc;
+	--background-modifier-border: #e0e0e0; --background-modifier-border-hover: #d4d4d4; --background-modifier-border-focus: #bdbdbd;
+	--background-modifier-hover: rgba(0, 0, 0, 0.067); --background-modifier-active-hover: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.15);
+	--background-modifier-form-field: #ffffff; --background-modifier-error: #e93147; --background-modifier-success: #08b94e;
+	--text-normal: #222222; --text-muted: #5c5c5c; --text-faint: #ababab; --text-on-accent: #ffffff; --text-error: #e93147; --text-success: #08b94e;
+	--text-accent: var(--color-accent); --text-accent-hover: var(--color-accent-1); --text-selection: hsla(var(--accent-h), 50%, 40%, 0.1);
+	--interactive-normal: #ffffff; --interactive-hover: #fafafa; --interactive-accent: var(--color-accent); --interactive-accent-hover: var(--color-accent-1);
+	--link-color: var(--text-accent); --tag-color: var(--text-accent); --tag-background: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.1);
+	--input-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12), 0 2px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 1.5px 0 rgba(0, 0, 0, 0.03), 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+	--input-shadow-hover: inset 0 0 0 1px rgba(0, 0, 0, 0.17), 0 2px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 1.5px 0 rgba(0, 0, 0, 0.03), 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+	--shadow-s: 0 1px 2px rgba(0, 0, 0, 0.03), 0 3.4px 6.7px rgba(0, 0, 0, 0.05), 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+body.theme-dark {
+	color-scheme: dark;
+	--color-red: #fb464c; --color-orange: #e9973f; --color-yellow: #e0de71; --color-green: #44cf6e; --color-cyan: #53dfdd;
+	--color-blue: #027aff; --color-purple: #a882ff; --color-pink: #fa99cd;
+	--color-accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
+	--color-accent-1: hsl(calc(var(--accent-h) - 3), calc(var(--accent-s) * 1.02), calc(var(--accent-l) * 1.15));
+	--background-primary: #1e1e1e; --background-primary-alt: #242424;
+	--background-secondary: #262626; --background-secondary-alt: #2a2a2a;
+	--background-modifier-border: #363636; --background-modifier-border-hover: #3f3f3f; --background-modifier-border-focus: #555555;
+	--background-modifier-hover: rgba(255, 255, 255, 0.075); --background-modifier-active-hover: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.15);
+	--background-modifier-form-field: #262626; --background-modifier-error: #fb464c; --background-modifier-success: #44cf6e;
+	--text-normal: #dadada; --text-muted: #b3b3b3; --text-faint: #666666; --text-on-accent: #ffffff; --text-error: #fb464c; --text-success: #44cf6e;
+	--text-accent: var(--color-accent-1); --text-accent-hover: var(--color-accent); --text-selection: hsla(var(--accent-h), 70%, 40%, 0.25);
+	--interactive-normal: #363636; --interactive-hover: #3f3f3f; --interactive-accent: var(--color-accent); --interactive-accent-hover: var(--color-accent-1);
+	--link-color: var(--text-accent); --tag-color: var(--text-accent); --tag-background: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.1);
+	--input-shadow: inset 0 0.5px 0.5px 0.5px rgba(255, 255, 255, 0.09), 0 2px 4px 0 rgba(0, 0, 0, 0.15), 0 1px 1.5px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+	--input-shadow-hover: inset 0 0.5px 1px 0.5px rgba(255, 255, 255, 0.16), 0 2px 3px 0 rgba(0, 0, 0, 0.3), 0 1px 1.5px 0 rgba(0, 0, 0, 0.2), 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+	--shadow-s: 0 1px 2px rgba(0, 0, 0, 0.121), 0 3.4px 6.7px rgba(0, 0, 0, 0.179), 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* ---------- The window: one leaf showing Homepage.md in Reading view; the document scrolls (so full-page shots work) ---------- */
+html, body { margin: 0; padding: 0; }
+body {
+	background: var(--background-primary); color: var(--text-normal);
+	font-family: var(--font-interface); font-size: 16px; line-height: var(--line-height-normal);
+	-webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+.app-container, .horizontal-main-container, .workspace, .workspace-split, .workspace-tabs, .workspace-tab-container, .workspace-leaf, .workspace-leaf-content, .view-content, .markdown-reading-view { display: block; position: relative; }
+.view-content { background: var(--background-primary); }
+.markdown-preview-view {
+	position: relative; box-sizing: border-box; width: 100%; min-height: 100vh;
+	padding: var(--file-margins); font-family: var(--font-text); font-size: var(--font-text-size); line-height: var(--line-height-normal);
+	overflow-wrap: break-word; color: var(--text-normal); user-select: text;
+}
+.markdown-preview-view.is-readable-line-width .markdown-preview-sizer { max-width: var(--file-line-width); margin-left: auto; margin-right: auto; }
+.markdown-preview-sizer { padding-bottom: 60px; min-height: 0; }
+.markdown-preview-pusher { height: 0.1px; margin-bottom: 0; width: 1px; }
+body.is-phone .markdown-preview-view, body.is-mobile .markdown-preview-view { --file-margins: var(--size-4-4); }
+.inline-title { font-size: var(--h1-size); font-weight: var(--h1-weight); line-height: 1.2; margin-bottom: 0.5em; }
+.metadata-container { margin: 0 0 1.5em; padding: 8px 0; border-bottom: 1px solid var(--background-modifier-border); font-size: var(--font-ui-small); color: var(--text-muted); }
+.metadata-container .metadata-property { display: flex; gap: 12px; padding: 2px 0; }
+.metadata-container .metadata-property-key { width: 140px; }
+.markdown-rendered p { margin-block: 1em; }
+.markdown-rendered a.internal-link, .markdown-rendered a.external-link { color: var(--link-color); text-decoration-line: var(--link-decoration); cursor: pointer; outline: none; }
+.markdown-rendered a.internal-link.is-unresolved { opacity: 0.7; text-decoration-style: solid; }
+.markdown-rendered a.tag { background-color: var(--tag-background); border-radius: var(--tag-radius); color: var(--tag-color); font-size: var(--tag-size); padding: var(--tag-padding-y) var(--tag-padding-x); text-decoration: none; }
+.markdown-rendered code { font-family: var(--font-monospace); font-size: 0.875em; background: var(--background-primary-alt); border-radius: var(--radius-s); padding: 0.1em 0.25em; }
+
+/* ---------- Form controls, as Obsidian draws them ---------- */
+button {
+	-webkit-app-region: no-drag; display: inline-flex; align-items: center; justify-content: center;
+	color: var(--text-normal); font-size: var(--font-ui-small); border-radius: var(--button-radius); border: 0;
+	padding: var(--size-4-1) var(--size-4-3); height: var(--input-height); font-weight: var(--input-font-weight);
+	cursor: pointer; font-family: inherit; outline: none; user-select: none; white-space: nowrap;
+}
+button:not(.clickable-icon) { background-color: var(--interactive-normal); box-shadow: var(--input-shadow); }
+button:not(.clickable-icon):hover { background-color: var(--interactive-hover); box-shadow: var(--input-shadow-hover); }
+button.mod-cta { background-color: var(--interactive-accent); color: var(--text-on-accent); }
+button.mod-warning { background-color: var(--background-modifier-error); color: var(--text-on-accent); }
+input[type="text"], input[type="search"], input[type="email"], input[type="password"], input[type="number"], input[type="date"], textarea, select.dropdown {
+	-webkit-app-region: no-drag; background: var(--background-modifier-form-field); border: 1px solid var(--background-modifier-border);
+	color: var(--text-normal); font-family: inherit; padding: var(--size-4-1) var(--size-4-2); font-size: var(--font-ui-small);
+	border-radius: var(--input-radius); outline: none; height: var(--input-height); box-sizing: border-box;
+}
+textarea { height: auto; }
+input[type="checkbox"] {
+	-webkit-appearance: none; appearance: none; box-sizing: border-box; position: relative; width: var(--checkbox-size); height: var(--checkbox-size);
+	border: 1px solid var(--text-faint); border-radius: var(--checkbox-radius); margin: 0 6px 0 0; cursor: pointer; flex-shrink: 0; vertical-align: middle;
+}
+input[type="checkbox"]:checked { background-color: var(--interactive-accent); border-color: var(--interactive-accent); }
+input[type="range"] { accent-color: var(--interactive-accent); }
+.clickable-icon { display: inline-flex; align-items: center; justify-content: center; padding: 4px 6px; border-radius: var(--radius-s); color: var(--text-muted); cursor: pointer; background: transparent; box-shadow: none; }
+
+/* ---------- Primary-dannuen's button rules: the trap every homepage button has to handle ----------
+   (padding at rest; a grey fill, other padding and an inset shadow when pressed or keyboard-focused — all read from
+   variables, which is how the plugin escapes them.) */
+button:not(button.clickable-icon) {
+	padding: var(--button-padding, 8px 12px 10px 12px);
+	background: var(--interactive-normal);
+	box-shadow: var(--input-shadow);
+	border: 0; border-radius: 6px; font: inherit;
+}
+button:not(button.clickable-icon):active {
+	background-color: var(--interactive-normal);
+	padding: var(--button-padding-active, 9px 12px 9px 12px);
+	box-shadow: var(--button-shadow-active, inset 0 2px 4px rgba(0, 0, 0, 0.25));
+}
+button:not(button.clickable-icon):focus-visible {
+	background-color: var(--interactive-normal-hover, var(--interactive-hover));
+	box-shadow: var(--button-shadow-focus, 0 0 0 3px hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.35));
+}
+
+/* ---------- The "Dannuen Settings" snippet: justified reading text ---------- */
+.markdown-preview-view { text-align: justify; }
+
+/* ---------- Notices and modals ---------- */
+.notice-container { position: fixed; top: 34px; right: 12px; z-index: 1000; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; pointer-events: none; }
+.notice { pointer-events: auto; background: var(--background-secondary-alt, var(--background-secondary)); color: var(--text-normal); border-radius: var(--radius-m); box-shadow: var(--shadow-s); padding: 10px 16px; max-width: 340px; font-size: var(--font-ui-small); }
+.modal-container { position: fixed; inset: 0; z-index: 900; display: flex; align-items: center; justify-content: center; }
+.modal-bg { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.45); }
+.modal { position: relative; background: var(--background-primary); border: 1px solid var(--background-modifier-border); border-radius: var(--radius-l); padding: 16px 20px; min-width: 360px; max-width: 90vw; box-shadow: var(--shadow-s); }
+.modal-title { font-size: var(--font-ui-large); font-weight: 600; margin-bottom: 12px; }
+.modal-close-button { position: absolute; top: 10px; right: 12px; width: 20px; height: 20px; cursor: pointer; }
+.setting-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-top: 1px solid var(--background-modifier-border); }
+.setting-item-info { flex: 1 1 auto; }
+.setting-item-name { font-size: var(--font-ui-medium); }
+.setting-item-description { font-size: var(--font-ui-smaller); color: var(--text-muted); }
+.setting-item-control { display: flex; gap: 8px; align-items: center; }

@@ -1,0 +1,37 @@
+/* Preaching dial — structure only; colours from the theme's tokens. */
+.hp-home .m-dial { display: grid; grid-template-columns: 330px minmax(0, 1fr); align-items: center; gap: 30px; padding: var(--hm-pad); }
+.hp-home .m-dial-face { position: relative; width: 100%; max-width: 330px; aspect-ratio: 1; justify-self: center; }
+.hp-home .m-dial-face svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.hp-home .m-dial-track { stroke: var(--hm-track); }
+.hp-home .m-dial-tick { stroke: var(--hm-faint); stroke-width: 1.5; stroke-linecap: round; }
+.hp-home .m-dial-hour { fill: var(--hm-faint); font-size: 10px; font-weight: 700; }
+.hp-home .m-dial-svc { stroke: var(--hm-accent); stroke-linecap: round; }
+.hp-home .m-dial-svc.is-past { opacity: 0.35; }
+.hp-home .m-dial-at { fill: var(--hm-text); font-size: 11px; font-weight: 750; }
+.hp-home .m-dial-needle { stroke: var(--hm-text); stroke-width: 2; stroke-linecap: round; opacity: 0.7; }
+.hp-home .m-dial-now { fill: var(--hm-bg); stroke: var(--hm-accent); stroke-width: 3; }
+.hp-home .m-dial-center { position: absolute; inset: 25%; display: grid; place-content: center; justify-items: center; gap: 2px; border-radius: 50%; text-align: center !important; }
+.hp-home .m-dial-big { font-size: clamp(1.6em, 7cqi, 2.3em); }
+.hp-home .m-dial-sub { font-size: 0.8em; color: var(--hm-muted); }
+.hp-home .m-dial-title { margin: 8px 0 18px; font-family: var(--hm-font-display); font-size: clamp(1.8em, 4.6cqi, 2.7em); font-weight: var(--hm-display-weight); letter-spacing: var(--hm-display-spacing); line-height: 1.04; }
+.hp-home .m-dial-title em { font-style: normal; color: var(--hm-accent-ink); }
+.hp-home .m-dial-plan { display: flex; flex-direction: column; gap: 10px; }
+.hp-home .m-dial-svc-row { display: grid; grid-template-columns: 64px 28px minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 12px 14px; cursor: pointer; transition: transform 0.15s ease; }
+.hp-home .m-dial-svc-row:hover { transform: translateX(3px); }
+.hp-home .m-dial-svc-row.is-past { opacity: 0.6; }
+.hp-home .m-dial-svc-time { font-size: 1.15em; }
+.hp-home .m-dial-svc-title { font-weight: var(--hm-row-weight); line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hp-home .m-dial-svc-sub { font-size: 0.8em; color: var(--hm-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hp-home .m-dial-chip { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 11px; border-radius: 999px; font-size: 0.74em; font-weight: 700; white-space: nowrap; background: var(--hm-track); color: var(--hm-muted); }
+.hp-home .m-dial-chip.is-next { background: var(--hm-accent); color: var(--hm-on-accent); }
+.hp-home .m-dial-chip.is-now { background: color-mix(in srgb, var(--hm-live) 18%, transparent); color: var(--hm-live); }
+.hp-home .m-dial-chip.is-now::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--hm-live); box-shadow: 0 0 0 3px color-mix(in srgb, var(--hm-live) 30%, transparent); }
+@container slot (max-width: 760px) {
+	.hp-home .m-dial { grid-template-columns: minmax(0, 1fr); }
+	.hp-home .m-dial-face { max-width: 300px; }
+}
+@container slot (max-width: 440px) {
+	.hp-home .m-dial-svc-row { grid-template-columns: 54px minmax(0, 1fr) auto; }
+	.hp-home .m-dial-svc-row .hp-avatar { display: none !important; }
+}
+

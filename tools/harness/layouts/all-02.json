@@ -1,0 +1,35 @@
+{
+  "name": "All modules 02",
+  "items": [
+    {
+      "module": "greeting",
+      "w": 4,
+      "variant": "simple"
+    },
+    {
+      "module": "countdown",
+      "w": 8,
+      "variant": "rings"
+    },
+    {
+      "module": "active-sermons",
+      "w": 8,
+      "variant": "agenda"
+    },
+    {
+      "module": "coming-up",
+      "w": 4,
+      "variant": ""
+    },
+    {
+      "module": "active-projects",
+      "w": 12,
+      "variant": "cards"
+    },
+    {
+      "module": "stats",
+      "w": 12,
+      "variant": "full"
+    }
+  ]
+}

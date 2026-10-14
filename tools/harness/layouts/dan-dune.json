@@ -1,0 +1,33 @@
+{
+  "name": "Dune",
+  "items": [
+    {
+      "module": "greeting",
+      "w": 6,
+      "variant": "glow"
+    },
+    {
+      "module": "countdown",
+      "w": 6,
+      "variant": "flip"
+    },
+    {
+      "module": "next-sermon",
+      "w": 6,
+      "variant": "event",
+      "themed": {
+        "dune": "event"
+      }
+    },
+    {
+      "module": "active-projects",
+      "w": 6,
+      "variant": "rings"
+    },
+    {
+      "module": "tasks",
+      "w": 12,
+      "variant": ""
+    }
+  ]
+}

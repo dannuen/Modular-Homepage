@@ -1,0 +1,105 @@
+/* THEME · Pulpit — a calm, editorial page: a serif for titles and counts, hairlines instead of boxes, the Obsidian
+   accent in light and dark. Lists sit flush with their titles; the task panel's groups sit on a date rail. */
+.markdown-preview-view:has(.hp-home[data-theme="pulpit"]), .markdown-source-view:has(.hp-home[data-theme="pulpit"]) { --file-line-width: 1080px; }
+
+.hp-home[data-theme="pulpit"] {
+	--pu-serif: "Literata", "Source Serif 4", "Source Serif Pro", Cambria, "Iowan Old Style", Georgia, serif;
+	--hm-soft: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.14);
+	--hm-hover: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.07);
+	--hm-surface-2: color-mix(in srgb, var(--text-normal) 4%, var(--background-primary));
+	--hm-late: #e5484d;
+	--hm-shadow: 0 22px 44px -32px rgba(0, 0, 0, 0.55);
+	--hm-radius: 20px; --hm-radius-sm: 16px;
+	--hm-gap: 44px; --hm-gap-x: 32px;
+	--hm-font-display: var(--pu-serif);
+	--hm-display-weight: 500;
+	--hm-title-weight: 550;
+	--hm-display-spacing: -0.02em;
+	line-height: 1.5;
+}
+
+/* Materials: no boxes — a card is a block between hairlines; panels are a faint well. */
+.hp-home[data-theme="pulpit"] .hp-card { background: transparent; border: 0; border-block: 1px solid var(--hm-line); border-radius: 0; box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.hp-home[data-theme="pulpit"] .hp-panel { border-color: var(--hm-line); }
+.hp-home[data-theme="pulpit"] .hp-pill { --btn-bg: var(--background-primary); --btn-shadow: inset 0 0 0 1px var(--hm-line); border: 0; }
+.hp-home[data-theme="pulpit"] .hp-knob { --btn-bg: transparent; --btn-shadow: inset 0 0 0 1.5px var(--hm-track); }
+.hp-home[data-theme="pulpit"] .hp-kicker { color: var(--hm-muted); font-weight: 650; }
+.hp-home[data-theme="pulpit"] .hp-sec { margin: 0 0 6px; }
+.hp-home[data-theme="pulpit"] .hp-sec-title { font-size: 1.65em; }
+.hp-home[data-theme="pulpit"] .hp-sec-note { color: var(--hm-faint); }
+.hp-home[data-theme="pulpit"] .hp-btn { min-height: 34px; font-weight: 550; }
+.hp-home[data-theme="pulpit"] .hp-btn:hover { transform: none; background: var(--hm-hover); }
+.hp-home[data-theme="pulpit"] .m-greet-title em { font-style: italic; }
+.hp-home[data-theme="pulpit"] :is(.m-sermons-title, .m-proj-title, .m-dial-title, .m-next-title) { font-weight: 550; }
+
+/* Every module is a block between hairlines, flush with the column; its buttons sit at the right edge.
+   (The Event card keeps its own look.) */
+.hp-home[data-theme="pulpit"] .hp-body > .hp-card:not(.m-next-ev) { padding-inline: 0; }
+.hp-home[data-theme="pulpit"] .hp-body > .hp-card:not(.m-next-ev) > .hp-bar { margin-right: 0; }
+.hp-home[data-theme="pulpit"] .hp-body > .hp-card:not(.m-next-ev) > .hp-bar.is-float { right: 0; }
+.hp-home[data-theme="pulpit"] .m-cd:not(.is-board) { --m-cd-room: calc(var(--hm-tool) * 2 + 14px); }
+.hp-home[data-theme="pulpit"] .m-up > .hp-set { right: 0; }
+.hp-home[data-theme="pulpit"] .m-next:is(.is-compact, .is-hero) > .m-next-card { padding-inline: 0; }
+.hp-home[data-theme="pulpit"] .m-stats-band .m-stats-num:first-child { padding-left: 0; }
+.hp-home[data-theme="pulpit"] .m-stats-band .m-stats-num:last-child { padding-right: 0; }
+.hp-home[data-theme="pulpit"] :is(.m-cd-board, .m-proj-scroll, .m-sermons-scroll) { margin-inline: 0; }   /* flush cards: the board's bleed would scroll sideways */
+.hp-home[data-theme="pulpit"] .m-cal-wd:not(.is-past) { border-color: transparent; }
+.hp-home[data-theme="pulpit"] .m-cal-wd.is-today { border-color: var(--hm-accent); }
+.hp-home[data-theme="pulpit"] .m-sermons-glyph { font-family: var(--pu-serif); }
+.hp-home[data-theme="pulpit"] .m-next.is-hero .m-next-card { border-block: 1px solid var(--hm-line); }
+
+/* Task panel: groups on a rail like the agenda's days (the count in serif, a small label), hairlines between. */
+.hp-home[data-theme="pulpit"] .hp-tk-wrap { --tk-group-bg: transparent; --tk-pop-bg: var(--background-primary); --tk-shadow: rgba(0, 0, 0, 0.5); --tk-soft-edge: color-mix(in srgb, var(--hm-accent) 45%, var(--hm-line)); }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap button:focus-visible { border-radius: 999px; }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-box { padding: var(--hm-pad) 0; gap: 18px; }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-title { align-items: baseline; gap: 6px 14px; }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-sum { font-size: 0.85em; font-weight: 400; color: var(--hm-faint); }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-sum b { font-weight: 600; color: var(--hm-muted); }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-sum .hp-tk-sum-late, .hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-sum .hp-tk-sum-late b { color: var(--hm-late); }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-filter { padding: 0; gap: 6px; background: none; box-shadow: none; }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-filter button { --btn-pad: 0 12px; min-height: 30px; font-size: 0.8em; font-weight: 550; box-shadow: inset 0 0 0 1px var(--hm-line); }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-filter button:hover { background: var(--hm-hover); }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-filter button.is-on { box-shadow: none; }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-add { min-height: 50px; }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-go { min-height: 38px; font-size: 0.9em; font-weight: 600; }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-cols { grid-template-columns: minmax(0, 1fr); gap: 0; }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-col { gap: 0; }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-group, .hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-group:is(.is-late, .is-today) {
+	display: grid; grid-template-columns: 112px minmax(0, 1fr); column-gap: 24px; align-items: start;
+	padding: 18px 0; border: 0; border-top: 1px solid var(--hm-line); border-radius: 0; background: none; box-shadow: none;
+}
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-col:first-child > .hp-tk-group:first-child { border-top: 0; padding-top: 4px; }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-group:not(.is-late, .is-today, .is-week, .is-later, .is-none) { display: none; }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-group > * { grid-column: 2; }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-group .hp-tk-group-head {
+	grid-column: 1; grid-row: 1 / span 60; display: flex; flex-direction: column-reverse; align-items: flex-start; gap: 10px;
+	padding: 4px 0 0; font-size: 1em; letter-spacing: 0; text-transform: none; color: var(--hm-text);
+}
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-group .hp-tk-group-head > span {
+	padding: 3px 9px; border-radius: 999px; font-size: 0.7em; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase;
+	background: var(--hm-track); color: var(--hm-muted);
+}
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-group.is-today .hp-tk-group-head > span { background: var(--hm-soft); color: var(--hm-accent-ink); }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-group.is-late .hp-tk-group-head > span { background: color-mix(in srgb, var(--hm-late) 15%, transparent); color: var(--hm-late); }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-group .hp-tk-count {
+	min-width: 0; height: auto; padding: 0; border-radius: 0; background: none; box-shadow: none;
+	font-family: var(--pu-serif); font-size: 2.6em; font-weight: 500; line-height: 0.95; letter-spacing: -0.03em; font-variant-numeric: lining-nums;
+}
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-group.is-late .hp-tk-count { color: var(--hm-late); }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-group .hp-tk-empty { padding: 8px 0; color: var(--hm-faint); }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-row { padding: 10px 8px; margin: 0; border-radius: 10px; }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-row:hover, .hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-row:focus-within { background: var(--hm-hover); box-shadow: none; }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-row:hover + .hp-tk-row, .hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-row:focus-within + .hp-tk-row { box-shadow: none; }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-text { font-size: 0.97em; font-weight: 550; }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-meta { font-size: 0.8em; font-weight: 500; }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-tag { padding: 1px 8px; background: var(--hm-hover); }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-pop { border-radius: 16px; border: 1px solid var(--hm-line); background: var(--background-primary); box-shadow: 0 22px 44px -26px rgba(0, 0, 0, 0.55); -webkit-backdrop-filter: none; backdrop-filter: none; }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-edit { margin: 6px 0; }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-toast { box-shadow: inset 0 0 0 1px var(--hm-line), 0 18px 30px -18px rgba(0, 0, 0, 0.5); }
+@container slot (max-width: 600px) {
+	.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-group, .hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-group:is(.is-late, .is-today) { grid-template-columns: minmax(0, 1fr); row-gap: 8px; }
+	.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-group > * { grid-column: 1; }
+	.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-group .hp-tk-group-head { grid-row: auto; flex-direction: row-reverse; justify-content: flex-end; align-items: center; gap: 10px; }
+	.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-group .hp-tk-count { font-size: 2em; }
+}
+

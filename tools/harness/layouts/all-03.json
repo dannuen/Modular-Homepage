@@ -1,0 +1,35 @@
+{
+  "name": "All modules 03",
+  "items": [
+    {
+      "module": "banner",
+      "w": 12,
+      "variant": "photo"
+    },
+    {
+      "module": "greeting",
+      "w": 6,
+      "variant": "desk"
+    },
+    {
+      "module": "countdown",
+      "w": 6,
+      "variant": "hourglass"
+    },
+    {
+      "module": "active-sermons",
+      "w": 4,
+      "variant": "list"
+    },
+    {
+      "module": "active-projects",
+      "w": 8,
+      "variant": "list"
+    },
+    {
+      "module": "tasks",
+      "w": 12,
+      "variant": ""
+    }
+  ]
+}

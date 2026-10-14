@@ -1,0 +1,33 @@
+/* Project numbers — structure only. */
+.hp-home .m-pstats-box { display: flex; flex-direction: column; gap: var(--hm-gap-in); padding: var(--hm-pad); }
+.hp-home .m-pstats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: var(--hm-gap-in); container: pstats / inline-size; }
+.hp-home .m-pstats-card { min-width: 0; padding: var(--hm-pad-in); }
+.hp-home .m-pstats-title { font-family: var(--hm-font-display); font-size: 0.95em; font-weight: var(--hm-title-weight); letter-spacing: -0.01em; }
+.hp-home .m-pstats-note { margin-top: 2px; font-size: 0.76em; color: var(--hm-muted); }
+.hp-home svg.m-pstats-svg { display: block; width: 100%; height: auto; margin: 14px 0 4px; overflow: visible; }
+.hp-home .m-pstats-grid { stroke: var(--hm-line); stroke-width: 1; }
+.hp-home .m-pstats-label { fill: var(--hm-muted); font-family: var(--hm-font); font-size: 11px; }
+.hp-home .m-pstats-label.is-now { fill: var(--hm-text); font-weight: 750; }
+.hp-home .m-pstats-value { fill: var(--hm-text); font-family: var(--hm-font-display); font-size: 34px; font-weight: 760; letter-spacing: -0.04em; }
+.hp-home .m-pstats-track { stroke: var(--hm-track); }
+.hp-home .m-pstats-open { stroke: var(--hm-accent); }
+.hp-home .m-pstats-bar-accent { fill: var(--hm-accent); }
+.hp-home .m-pstats-bar-soft { fill: color-mix(in srgb, var(--hm-accent) 38%, transparent); }
+.hp-home .m-pstats-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 18px; margin-top: 8px; }
+.hp-home .m-pstats-legend-item { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78em; color: var(--hm-muted); }
+.hp-home .m-pstats-legend-item strong { color: var(--hm-text); font-variant-numeric: tabular-nums; }
+.hp-home .m-pstats-dot { width: 8px; height: 8px; border-radius: 50%; }
+.hp-home .m-pstats-dot.is-accent { background: var(--hm-accent); }
+.hp-home .m-pstats-dot.is-track { background: var(--hm-track); }
+.hp-home .m-pstats-hbars { display: grid; gap: 18px; margin-top: 24px; }
+.hp-home .m-pstats-hbar { display: grid; grid-template-columns: minmax(0, 1fr) 3em; align-items: center; gap: 6px 16px; font-size: 0.84em; color: var(--hm-muted); }
+.hp-home .m-pstats-hbar-track { grid-column: 1; height: 12px; overflow: hidden; }
+.hp-home .m-pstats-hbar-track i { display: block; height: 100%; border-radius: inherit; }
+.hp-home .m-pstats-hbar-track i.is-accent { background: var(--hm-accent); }
+.hp-home .m-pstats-hbar-track i.is-soft { background: color-mix(in srgb, var(--hm-accent) 38%, transparent); }
+.hp-home .m-pstats-hbar b { grid-column: 2; grid-row: 1 / span 2; align-self: end; text-align: right !important; font-size: 1.3em; color: var(--hm-text); }
+/* Two columns: the third chart takes the whole row instead of sitting alone on half of it. */
+@container pstats (min-width: 490px) and (max-width: 741px) { /* two columns (the grid's own width, whatever the theme's padding) */
+	.hp-home .m-pstats-card:nth-child(3):last-child { grid-column: 1 / -1; }
+}
+

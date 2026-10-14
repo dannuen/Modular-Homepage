@@ -1,0 +1,350 @@
+/* TASKS — styles for _data_/views/home/shared/tasks/view.js (Dataview loads this file with the script), all under .hp-tk-wrap.
+   Layout plus --tk-* colours taken from the Obsidian theme (light and dark). A homepage theme can pass its own
+   material classes (skin) and set the --tk-* colours; Frosted does both. Layout follows the note's width
+   (container queries), not the window. */
+.hp-tk-wrap {
+	--tk-text: var(--text-normal);
+	--tk-muted: var(--text-muted);
+	--tk-accent: var(--text-accent);
+	--tk-late: var(--text-error);
+	--tk-line: var(--background-modifier-border);
+	--tk-hover: var(--background-modifier-hover);
+	--tk-soft: color-mix(in srgb, var(--interactive-accent) 14%, transparent);     /* tags, options that are set */
+	--tk-soft-edge: color-mix(in srgb, var(--interactive-accent) 45%, transparent);
+	--tk-on-bg: var(--interactive-accent);                                          /* chosen chips, done checks */
+	--tk-on-ink: var(--text-on-accent);
+	--tk-fill-bg: var(--interactive-accent);                                        /* start → due track */
+	--tk-group-bg: var(--background-primary-alt);
+	--tk-glow-late: transparent;
+	--tk-glow-today: transparent;
+	--tk-late-edge: var(--tk-line);
+	--tk-pop-bg: var(--background-primary);
+	--tk-shadow: rgba(0, 0, 0, 0.22);
+	container-type: inline-size;
+	color: var(--tk-text);
+}
+.hp-tk-wrap, .hp-tk-wrap * { box-sizing: border-box; text-align: left; }
+.hp-tk-wrap p { margin: 0; }
+.hp-tk-wrap button { all: unset; box-sizing: border-box; cursor: pointer; }
+/* Pressed and focused buttons look like themselves.
+   The Obsidian theme styles every <button> with "button:not(button.clickable-icon)": padding at rest, and a grey fill,
+   other padding and an inset shadow while pressed or keyboard-focused. Those rules outrank a plain reset, but they read
+   the variables below, so each button hands the theme its own look: --btn-pad (padding), --btn-bg and --btn-shadow
+   (set by the materials). */
+.hp-tk-wrap button {
+	--btn-pad: 0; --btn-bg: transparent; --btn-shadow: none;
+	--button-padding: var(--btn-pad); --button-padding-active: var(--btn-pad);
+	--interactive-normal: var(--btn-bg); --interactive-normal-hover: var(--btn-bg);
+	--button-shadow-active: var(--btn-shadow); --button-shadow-focus: var(--btn-shadow);
+}
+.hp-tk-wrap button:disabled { cursor: default; }
+/* Obsidian on iPad pads every button with ".is-tablet button:not(.clickable-icon)", which outranks the per-button
+   padding rules and stretches round buttons (the check) into ellipses. Same specificity, loaded later: --btn-pad wins. */
+.hp-tk-wrap button:not(.clickable-icon) { padding: var(--btn-pad); }
+.hp-tk-wrap :is(button, input, a, [tabindex]):focus-visible { outline: 2px solid var(--tk-accent); outline-offset: 2px; }
+.hp-tk-wrap .hp-tk-ico { display: inline-flex; flex: none; }
+.hp-tk-wrap .hp-tk-ico svg { width: 1.05em; height: 1.05em; }
+
+/* Plain materials, for a note without a theme skin */
+.hp-tk-wrap .hp-tk-card-base { border: 1px solid var(--tk-line); border-radius: 18px; background: var(--background-primary); }
+.hp-tk-wrap .hp-tk-panel-base { border: 1px solid var(--tk-line); border-radius: 14px; background: var(--tk-group-bg); }
+.hp-tk-wrap .hp-tk-pill-base { --btn-bg: var(--background-primary); border: 1px solid var(--tk-line); border-radius: 999px; background: var(--btn-bg); }
+.hp-tk-wrap .hp-tk-knob-base { border: 1.5px solid var(--tk-soft-edge); border-radius: 50%; }
+.hp-tk-wrap .hp-tk-mint-base { --btn-bg: var(--interactive-accent); border-radius: 999px; background: var(--btn-bg); color: var(--text-on-accent); }
+.hp-tk-wrap .hp-tk-kicker-base { font-size: 0.8em; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--tk-accent); }
+.hp-tk-wrap .hp-tk-track-base { border-radius: 4px; background: var(--tk-line); }
+
+/* The panel. One layer above what follows it on the page, so a picker that hangs past its bottom edge covers the next
+   card (a glass card is a layer of its own, drawn after this one); the top bar (40) and theme menu (60) stay above. */
+.hp-tk-wrap .hp-tk-box { z-index: 1; position: relative; display: flex; flex-direction: column; gap: 14px; padding: var(--hm-pad, 22px); }
+.hp-tk-wrap .hp-tk-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; }
+.hp-tk-wrap .hp-tk-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 14px; }
+.hp-tk-wrap .hp-tk-sum { font-size: 0.93em; font-weight: 600; color: var(--tk-muted); }
+.hp-tk-wrap .hp-tk-sum b { color: var(--tk-text); font-variant-numeric: tabular-nums; }
+.hp-tk-wrap .hp-tk-sum .hp-tk-sum-late, .hp-tk-wrap .hp-tk-sum .hp-tk-sum-late b { color: var(--tk-late); }
+.hp-tk-wrap .hp-tk-filter { display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 3px; }
+.hp-tk-wrap .hp-tk-filter button { display: inline-flex; align-items: center; min-height: 34px; --btn-pad: 0 14px; padding: var(--btn-pad); border-radius: 999px; font-size: 0.9em; font-weight: 650; color: var(--tk-muted); }
+.hp-tk-wrap .hp-tk-filter button:hover { color: var(--tk-text); }
+.hp-tk-wrap .hp-tk-filter button.is-on { color: var(--tk-on-ink); background: var(--tk-on-bg); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3); }
+
+/* Add: one long pill — To do | Event, the text, then the options (Due / Start / Time / Tag, or Date / At / Length /
+   Tag), then Add. */
+.hp-tk-wrap .hp-tk-add { position: relative; display: flex; align-items: center; gap: 8px; min-height: 54px; padding: 5px; }
+.hp-tk-wrap .hp-tk-add:focus { outline: none; }
+/* To do | Event: a small two-way switch (first in the add pill; first among the options when editing). */
+.hp-tk-wrap .hp-tk-kind { display: inline-flex; flex: none; gap: 2px; padding: 3px; border-radius: 999px; background: var(--tk-hover); box-shadow: inset 0 0 0 1px var(--tk-line); }
+.hp-tk-wrap .hp-tk-kind-btn { display: inline-flex; align-items: center; gap: 6px; min-height: 32px; --btn-pad: 0 11px; padding: var(--btn-pad); border-radius: 999px; font-size: 0.86em; font-weight: 650; color: var(--tk-muted); white-space: nowrap; transition: background 0.15s ease, color 0.15s ease; }
+.hp-tk-wrap .hp-tk-kind-btn:hover { color: var(--tk-text); }
+.hp-tk-wrap .hp-tk-kind-btn.is-on { color: var(--tk-accent); --btn-bg: var(--tk-soft); --btn-shadow: inset 0 0 0 1px var(--tk-soft-edge); background: var(--btn-bg); box-shadow: var(--btn-shadow); }
+.hp-tk-wrap .hp-tk-kind-btn:focus-visible { outline-offset: 0; }
+.hp-tk-wrap .hp-tk-edit .hp-tk-kind { margin-right: 6px; }
+.hp-tk-wrap .hp-tk-edit .hp-tk-kind-btn { min-height: 30px; --btn-pad: 0 10px; padding: var(--btn-pad); }
+.hp-tk-wrap input.hp-tk-input {
+	all: unset; box-sizing: border-box; flex: 1 1 auto; min-width: 0; height: 40px; font: inherit; font-weight: 600; color: var(--tk-text);
+}
+.hp-tk-wrap input.hp-tk-input::placeholder { color: var(--tk-muted); opacity: 1; }
+.hp-tk-wrap input.hp-tk-input:focus { box-shadow: none; outline: none; }
+.hp-tk-wrap .hp-tk-opts { display: flex; gap: 4px; flex: none; }
+.hp-tk-wrap .hp-tk-opt { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; --btn-pad: 0 12px; padding: var(--btn-pad); border-radius: 999px; font-size: 0.88em; font-weight: 650; color: var(--tk-muted); white-space: nowrap; transition: background 0.15s ease, color 0.15s ease; }
+.hp-tk-wrap .hp-tk-opt:hover, .hp-tk-wrap .hp-tk-opt.is-active { background: var(--tk-hover); box-shadow: inset 0 0 0 1px var(--tk-line); color: var(--tk-text); }
+.hp-tk-wrap .hp-tk-opt.is-set { color: var(--tk-accent); background: var(--tk-soft); box-shadow: inset 0 0 0 1px var(--tk-soft-edge); }
+.hp-tk-wrap .hp-tk-go { display: inline-flex; align-items: center; justify-content: center; flex: none; min-height: 44px; --btn-pad: 0 22px; padding: var(--btn-pad); font-weight: 700; transition: transform 0.15s ease, filter 0.15s ease; }
+.hp-tk-wrap .hp-tk-go:hover { transform: translateY(-1px); filter: brightness(1.03); }
+
+/* The forms sit above the tasks, so their pickers do too (a task's hidden pencil and × are see-through layers of
+   their own, drawn after an earlier form: without this they would cover its picker and take its clicks). */
+.hp-tk-wrap :is(.hp-tk-add, .hp-tk-edit) { z-index: 10; }
+
+/* The picker under an option */
+.hp-tk-wrap .hp-tk-pop {
+	position: absolute; z-index: 20; top: calc(100% + 8px); display: flex; flex-direction: column; gap: 10px; padding: 14px 16px 16px;
+	background: var(--tk-pop-bg); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+	box-shadow: 0 18px 30px -12px var(--tk-shadow), inset 0 0 0 1px var(--tk-line);
+	animation: hp-tk-pop 0.16s ease-out;
+}
+.hp-tk-wrap .hp-tk-pop:focus { outline: none; }
+@keyframes hp-tk-pop { from { opacity: 0; transform: translateY(-4px); } }
+/* Above its form instead, when there is no room below (see drawPop in view.js). */
+.hp-tk-wrap .hp-tk-pop.is-up { top: auto; bottom: calc(100% + 8px); animation-name: hp-tk-pop-up; }
+@keyframes hp-tk-pop-up { from { opacity: 0; transform: translateY(4px); } }
+.hp-tk-wrap .hp-tk-pop-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.hp-tk-wrap .hp-tk-pop-title { font-size: 0.86em; font-weight: 650; color: var(--tk-muted); }
+.hp-tk-wrap .hp-tk-pop-clear { font-size: 0.84em; font-weight: 650; color: var(--tk-muted); --btn-pad: 2px 8px; padding: var(--btn-pad); border-radius: 999px; }
+.hp-tk-wrap .hp-tk-pop-clear:hover { color: var(--tk-late); background: var(--tk-hover); }
+.hp-tk-wrap .hp-tk-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.hp-tk-wrap .hp-tk-chip { display: inline-flex; align-items: center; min-height: 34px; --btn-pad: 0 13px; padding: var(--btn-pad); font-size: 0.9em; font-weight: 650; }
+.hp-tk-wrap .hp-tk-chip.is-on { color: var(--tk-on-ink); background: var(--tk-on-bg); border-color: var(--tk-soft-edge); }
+.hp-tk-wrap .hp-tk-pop-note { font-size: 0.86em; color: var(--tk-muted); font-style: italic; }
+.hp-tk-wrap .hp-tk-pop-type { display: flex; align-items: center; gap: 10px; font-size: 0.86em; font-weight: 600; color: var(--tk-muted); }
+.hp-tk-wrap input.hp-tk-pop-input {
+	all: unset; box-sizing: border-box; flex: 1 1 auto; min-width: 0; height: 34px; padding: 0 12px; border-radius: 10px;
+	font: inherit; font-weight: 650; color: var(--tk-text); background: var(--tk-hover); box-shadow: inset 0 0 0 1px var(--tk-line);
+}
+.hp-tk-wrap input.hp-tk-pop-input:focus { box-shadow: inset 0 0 0 1.5px var(--tk-accent); }
+.hp-tk-wrap input.hp-tk-pop-input.is-bad { box-shadow: inset 0 0 0 1.5px var(--tk-late); }
+
+/* The month calendar in the Due and Start pickers: today ringed, the chosen day filled. */
+.hp-tk-wrap .hp-tk-cal { display: flex; flex-direction: column; gap: 4px; padding-top: 8px; box-shadow: 0 -1px 0 var(--tk-line); }
+.hp-tk-wrap .hp-tk-cal-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.hp-tk-wrap .hp-tk-cal-month { font-size: 0.93em; font-weight: 700; }
+.hp-tk-wrap .hp-tk-cal-nav { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; color: var(--tk-muted); transition: background 0.15s ease, color 0.15s ease; }
+.hp-tk-wrap .hp-tk-cal-nav:hover { color: var(--tk-text); --btn-bg: var(--tk-hover); background: var(--btn-bg); }
+.hp-tk-wrap .hp-tk-cal-nav:focus-visible { outline-offset: 0; }
+.hp-tk-wrap .hp-tk-cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; }
+.hp-tk-wrap .hp-tk-cal-wd { padding: 2px 0 4px; text-align: center; font-size: 0.72em; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tk-muted); }
+.hp-tk-wrap .hp-tk-cal-day {
+	height: 32px; display: grid; place-items: center; border-radius: 10px; font-size: 0.88em; font-weight: 650;
+	font-variant-numeric: tabular-nums; color: var(--tk-text); background: var(--btn-bg); box-shadow: var(--btn-shadow);
+	transition: background 0.15s ease;
+}
+.hp-tk-wrap .hp-tk-cal-day:hover { --btn-bg: var(--tk-hover); }
+.hp-tk-wrap .hp-tk-cal-day.is-out { color: var(--tk-muted); opacity: 0.55; }
+.hp-tk-wrap .hp-tk-cal-day.is-today { color: var(--tk-accent); --btn-shadow: inset 0 0 0 1.5px var(--tk-soft-edge); }
+.hp-tk-wrap .hp-tk-cal-day.is-on { color: var(--tk-on-ink); opacity: 1; --btn-bg: var(--tk-on-bg); --btn-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3); }
+.hp-tk-wrap .hp-tk-cal-day:focus-visible { outline-offset: 0; }
+
+/* Groups: Overdue and Today on the left, what comes later on the right. */
+.hp-tk-wrap .hp-tk-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-items: start; }
+.hp-tk-wrap .hp-tk-col { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.hp-tk-wrap .hp-tk-group { display: flex; flex-direction: column; padding: 10px 10px 8px; }
+.hp-tk-wrap .hp-tk-group.is-late { border-color: var(--tk-late-edge); background: radial-gradient(ellipse 70% 90% at 100% 0%, var(--tk-glow-late), transparent 70%), var(--tk-group-bg); }
+.hp-tk-wrap .hp-tk-group.is-today { background: radial-gradient(ellipse 70% 90% at 0% 0%, var(--tk-glow-today), transparent 70%), var(--tk-group-bg); }
+.hp-tk-wrap .hp-tk-group-head { display: flex; align-items: center; gap: 8px; padding: 2px 8px 6px; font-size: 0.8em; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--tk-muted); }
+.hp-tk-wrap .hp-tk-group.is-late .hp-tk-group-head { color: var(--tk-late); }
+.hp-tk-wrap .hp-tk-group.is-today .hp-tk-group-head { color: var(--tk-accent); }
+.hp-tk-wrap .hp-tk-count { min-width: 22px; height: 22px; display: inline-grid; place-items: center; padding: 0 6px; border-radius: 999px; font-size: 0.95em; letter-spacing: 0; color: var(--tk-text); background: var(--tk-hover); box-shadow: inset 0 0 0 1px var(--tk-line); }
+.hp-tk-wrap .hp-tk-empty { padding: 6px 8px 8px; font-size: 0.93em; color: var(--tk-muted); font-style: italic; }
+
+/* A task: round check, text, then tags / time / dates; the day it came from and × on the right. */
+.hp-tk-wrap .hp-tk-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 0 12px; padding: 8px; border-radius: 14px; transition: background 0.15s ease; }
+.hp-tk-wrap .hp-tk-row + .hp-tk-row { box-shadow: 0 -1px 0 var(--tk-line); }
+.hp-tk-wrap .hp-tk-row:hover, .hp-tk-wrap .hp-tk-row:focus-within { background: var(--tk-hover); box-shadow: inset 0 0 0 1px var(--tk-line); }
+.hp-tk-wrap .hp-tk-row.is-new { animation: hp-tk-new 0.35s ease-out; opacity: 0.8; }
+/* An event: its start time where a to-do has its check (in a group with events the first column is wide enough for
+   it, so the texts line up); dimmed once it has ended. */
+.hp-tk-wrap .hp-tk-when {
+	width: 46px; min-height: 26px; display: grid; place-items: center; padding: 3px 2px; border-radius: 8px;
+	font-size: 0.8em; font-weight: 750; line-height: 1.1; text-align: center; font-variant-numeric: tabular-nums;
+	color: var(--tk-accent); background: var(--tk-soft); box-shadow: inset 0 0 0 1px var(--tk-soft-edge);
+}
+.hp-tk-wrap .hp-tk-when.is-allday { font-size: 0.66em; letter-spacing: 0.02em; text-transform: uppercase; }
+.hp-tk-wrap .hp-tk-group.has-event .hp-tk-row { grid-template-columns: 46px minmax(0, 1fr) auto auto; }
+.hp-tk-wrap .hp-tk-group.has-event .hp-tk-check { justify-self: center; }
+.hp-tk-wrap .hp-tk-row.is-past :is(.hp-tk-when, .hp-tk-main) { opacity: 0.5; }
+@keyframes hp-tk-new { from { opacity: 0; transform: translateY(-4px); } }
+.hp-tk-wrap .hp-tk-check { width: 26px; height: 26px; display: grid; place-items: center; color: var(--tk-on-ink); transition: background 0.15s ease; }
+.hp-tk-wrap .hp-tk-check .hp-tk-ico { opacity: 0; transition: opacity 0.15s ease; }
+.hp-tk-wrap .hp-tk-check .hp-tk-ico svg { width: 15px; height: 15px; }
+.hp-tk-wrap .hp-tk-check:hover .hp-tk-ico { opacity: 0.35; color: var(--tk-accent); }
+.hp-tk-wrap .hp-tk-row.is-done .hp-tk-check { border-color: var(--tk-soft-edge); background: var(--tk-on-bg); }
+.hp-tk-wrap .hp-tk-row.is-done .hp-tk-check .hp-tk-ico { opacity: 1; color: var(--tk-on-ink); }
+.hp-tk-wrap .hp-tk-main { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.hp-tk-wrap .hp-tk-text { display: block; font-weight: 650; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hp-tk-wrap .hp-tk-text p { display: inline; margin: 0; }
+.hp-tk-wrap .hp-tk-row.is-done .hp-tk-text { color: var(--tk-muted); text-decoration: line-through; text-decoration-color: color-mix(in srgb, var(--tk-muted) 60%, transparent); }
+.hp-tk-wrap .hp-tk-row.is-done .hp-tk-meta { opacity: 0.6; }
+.hp-tk-wrap .hp-tk-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; font-size: 0.82em; font-weight: 600; color: var(--tk-muted); font-variant-numeric: tabular-nums; }
+.hp-tk-wrap .hp-tk-bit { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+.hp-tk-wrap .hp-tk-tag { padding: 1px 8px; border-radius: 999px; background: var(--tk-soft); color: var(--tk-accent); }
+.hp-tk-wrap .hp-tk-due.is-today { color: var(--tk-accent); }
+.hp-tk-wrap :is(.hp-tk-due, .hp-tk-span).is-late { color: var(--tk-late); }
+.hp-tk-wrap .hp-tk-track { position: relative; display: inline-block; width: 54px; height: 8px; margin-left: 4px; }
+.hp-tk-wrap .hp-tk-track-fill { position: absolute; top: 1px; bottom: 1px; left: 1px; max-width: calc(100% - 2px); border-radius: 3px; background: var(--tk-fill-bg); }
+.hp-tk-wrap .hp-tk-src { display: inline-flex; align-items: center; gap: 4px; font-size: 0.8em; font-weight: 600; color: var(--tk-muted); white-space: nowrap; opacity: 0.85; }
+.hp-tk-wrap .hp-tk-src a { color: inherit !important; text-decoration: none !important; }
+.hp-tk-wrap .hp-tk-src a:hover { color: var(--tk-accent) !important; }
+/* Edit (pencil) and × show when the pointer is on the task (always, dimmer, on a touch screen). */
+.hp-tk-wrap .hp-tk-acts { display: flex; align-items: center; gap: 2px; }
+.hp-tk-wrap .hp-tk-act { width: 30px; height: 30px; display: grid; place-items: center; border-radius: 50%; color: var(--tk-muted); opacity: 0; transition: opacity 0.15s ease, background 0.15s ease, color 0.15s ease; }
+.hp-tk-wrap .hp-tk-act .hp-tk-ico svg { width: 15px; height: 15px; }
+.hp-tk-wrap .hp-tk-row:hover .hp-tk-act, .hp-tk-wrap .hp-tk-act:focus-visible { opacity: 1; }
+.hp-tk-wrap .hp-tk-pen:hover { color: var(--tk-accent); background: var(--tk-soft); }
+.hp-tk-wrap .hp-tk-act:focus-visible { outline-offset: 0; border-radius: 50%; } /* a round ring, not the theme's rounded square */
+/* The Obsidian theme pads every <button> (and greys it while pressed or focused) with "button:not(button.clickable-icon)",
+   which outranks a plain reset. The round icon buttons undo that in every state, so their icons stay centred. */
+.hp-tk-wrap .hp-tk-act, .hp-tk-wrap .hp-tk-check { padding: 0; }
+.hp-tk-wrap :is(.hp-tk-act, .hp-tk-check):is(:active, :focus-visible) { padding: 0; box-shadow: none; background: var(--tk-soft); }
+.hp-tk-wrap .hp-tk-del:is(:active, :focus-visible) { background: color-mix(in srgb, var(--tk-late) 14%, transparent); }
+.hp-tk-wrap .hp-tk-del:hover { color: var(--tk-late); background: color-mix(in srgb, var(--tk-late) 14%, transparent); }
+@media (hover: none) { .hp-tk-wrap .hp-tk-act { opacity: 0.7; } }
+.hp-tk-wrap .hp-tk-row:not(.is-new) .hp-tk-text { cursor: text; }
+/* A sermon (the homepage passes its active sermons): an event marked with a book and "Sermon · church"; its title
+   opens it, nothing here edits or moves it. */
+.hp-tk-wrap .hp-tk-row.is-sermon .hp-tk-text { cursor: pointer; }
+.hp-tk-wrap .hp-tk-row.is-sermon .hp-tk-text a { color: inherit !important; text-decoration: none !important; }
+.hp-tk-wrap .hp-tk-row.is-sermon .hp-tk-text a:hover { color: var(--tk-accent) !important; }
+.hp-tk-wrap .hp-tk-sermon { color: var(--tk-accent); }
+.hp-tk-wrap .hp-tk-blk.is-sermon { cursor: pointer; }
+.hp-tk-wrap .hp-tk-blk.is-brief { flex-direction: row; align-items: baseline; gap: 5px; white-space: nowrap; } /* only a start time: one line */
+.hp-tk-wrap .hp-tk-blk.is-brief .hp-tk-blk-text { text-overflow: ellipsis; }
+.hp-tk-wrap :is(.hp-tk-blk-text, .hp-tk-mitem-text) .hp-tk-ico { margin-right: 3px; vertical-align: -0.15em; }
+
+/* A task being edited: the text on top; Due, Start, Time, Tag (icons until set) below, then Cancel and Save
+   (on the same line when there is room, else on their own line at the right). */
+.hp-tk-wrap .hp-tk-edit {
+	position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px;
+	margin: 4px 0; padding: 6px 6px 6px 16px; border-radius: 20px; animation: hp-tk-pop 0.16s ease-out;
+}
+.hp-tk-wrap .hp-tk-edit:focus { outline: none; }
+.hp-tk-wrap .hp-tk-edit > input.hp-tk-input { flex: 1 1 100%; }
+.hp-tk-wrap .hp-tk-edit > .hp-tk-opts { flex: 0 1 auto; min-width: 0; flex-wrap: wrap; margin-left: -10px; }
+.hp-tk-wrap .hp-tk-edit .hp-tk-opt:not(.is-set) .hp-tk-opt-label { display: none; }
+.hp-tk-wrap .hp-tk-edit .hp-tk-opt { --btn-pad: 0 10px; padding: var(--btn-pad); }
+.hp-tk-wrap .hp-tk-edit-acts { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+.hp-tk-wrap .hp-tk-pop-type > span { white-space: nowrap; }
+.hp-tk-wrap .hp-tk-cancel { display: inline-flex; align-items: center; min-height: 36px; --btn-pad: 0 12px; padding: var(--btn-pad); border-radius: 999px; font-size: 0.88em; font-weight: 650; color: var(--tk-muted); }
+.hp-tk-wrap .hp-tk-cancel:hover { background: var(--tk-hover); color: var(--tk-text); }
+.hp-tk-wrap .hp-tk-save { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; --btn-pad: 0 16px; padding: var(--btn-pad); font-size: 0.93em; font-weight: 700; }
+
+/* Undo after × */
+.hp-tk-wrap .hp-tk-toast {
+	position: absolute; z-index: 20; left: 50%; bottom: 12px; transform: translateX(-50%); max-width: calc(100% - 24px);
+	display: inline-flex; align-items: center; gap: 14px; padding: 5px 5px 5px 18px; font-size: 0.93em; font-weight: 650; white-space: nowrap;
+	box-shadow: 0 14px 24px -12px var(--tk-shadow), inset 0 0 0 1px var(--tk-line); animation: hp-tk-pop 0.2s ease-out;
+}
+.hp-tk-wrap .hp-tk-toast-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.hp-tk-wrap .hp-tk-undo { display: inline-flex; align-items: center; gap: 6px; flex: none; min-height: 36px; --btn-pad: 0 14px; padding: var(--btn-pad); font-weight: 700; }
+
+/* List | Month | Week: the view switch in the head (styled like the tag filter), and the ‹ period › bar. */
+.hp-tk-wrap .hp-tk-period { display: flex; align-items: center; gap: 8px; }
+.hp-tk-wrap .hp-tk-period-label { min-width: 150px; text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; }
+.hp-tk-wrap .hp-tk-period .hp-tk-chip { margin-left: 4px; }
+.hp-tk-wrap .hp-tk-period .hp-tk-chip:disabled { opacity: 0.45; }
+
+/* Month: a Mon–Sun grid; today ringed; days from the next or last month faded. */
+.hp-tk-wrap .hp-tk-month { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; padding: 6px; overflow: hidden; }
+.hp-tk-wrap .hp-tk-month-wd { padding: 2px 6px 6px; font-size: 0.72em; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tk-muted); }
+.hp-tk-wrap .hp-tk-mday { min-height: 96px; min-width: 0; display: flex; flex-direction: column; gap: 2px; padding: 4px; border-radius: 10px; box-shadow: inset 0 0 0 1px var(--tk-line); }
+.hp-tk-wrap .hp-tk-mday.is-out { opacity: 0.5; }
+.hp-tk-wrap .hp-tk-mday.is-today { box-shadow: inset 0 0 0 1.5px var(--tk-soft-edge); background: var(--tk-soft); }
+.hp-tk-wrap .hp-tk-mday-num { align-self: flex-start; min-width: 24px; height: 24px; display: grid; place-items: center; --btn-pad: 0 6px; padding: var(--btn-pad); border-radius: 999px; font-size: 0.85em; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--tk-muted); }
+.hp-tk-wrap .hp-tk-mday.is-today .hp-tk-mday-num { color: var(--tk-on-ink); background: var(--tk-on-bg); }
+.hp-tk-wrap .hp-tk-mday-num:hover { color: var(--tk-text); background: var(--tk-hover); }
+.hp-tk-wrap .hp-tk-mitem { display: flex; align-items: center; gap: 5px; min-width: 0; font-size: 0.8em; line-height: 1.25; }
+.hp-tk-wrap .hp-tk-mitem-time { flex: none; font-weight: 750; font-variant-numeric: tabular-nums; color: var(--tk-accent); }
+.hp-tk-wrap .hp-tk-mitem-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; border-radius: 4px; }
+.hp-tk-wrap .hp-tk-mitem-text:hover { color: var(--tk-accent); }
+.hp-tk-wrap .hp-tk-mitem.is-done .hp-tk-mitem-text { color: var(--tk-muted); text-decoration: line-through; }
+.hp-tk-wrap .hp-tk-mcheck { flex: none; width: 14px; height: 14px; display: grid; place-items: center; padding: 0; color: var(--tk-on-ink); }
+.hp-tk-wrap .hp-tk-mcheck .hp-tk-ico svg { width: 10px; height: 10px; }
+.hp-tk-wrap .hp-tk-mcheck .hp-tk-ico { opacity: 0; }
+.hp-tk-wrap .hp-tk-mitem.is-done .hp-tk-mcheck { background: var(--tk-on-bg); }
+.hp-tk-wrap .hp-tk-mitem.is-done .hp-tk-mcheck .hp-tk-ico { opacity: 1; }
+.hp-tk-wrap .hp-tk-mday-more { align-self: flex-start; --btn-pad: 0 4px; padding: var(--btn-pad); font-size: 0.76em; font-weight: 700; color: var(--tk-muted); border-radius: 4px; }
+.hp-tk-wrap .hp-tk-mday-more:hover { color: var(--tk-accent); }
+
+/* Week: Not planned beside the calendar (above it on a narrow note). */
+.hp-tk-wrap .hp-tk-week { display: grid; grid-template-columns: minmax(170px, 220px) minmax(0, 1fr); gap: 12px; align-items: start; }
+.hp-tk-wrap .hp-tk-tray { display: flex; flex-direction: column; gap: 4px; padding: 10px; transition: box-shadow 0.15s ease; }
+.hp-tk-wrap .hp-tk-tray.is-drop { box-shadow: inset 0 0 0 2px var(--tk-accent); }
+.hp-tk-wrap .hp-tk-tray-item { display: flex; flex-direction: column; gap: 2px; padding: 7px 9px; border-radius: 10px; cursor: grab; user-select: none; touch-action: none; box-shadow: inset 0 0 0 1px var(--tk-line); background: var(--tk-pop-bg); }
+.hp-tk-wrap .hp-tk-tray-item:hover { box-shadow: inset 0 0 0 1px var(--tk-soft-edge); }
+.hp-tk-wrap .hp-tk-tray-item.is-dragging { opacity: 0.4; }
+.hp-tk-wrap .hp-tk-tray-text { font-size: 0.88em; font-weight: 650; line-height: 1.25; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.hp-tk-wrap .hp-tk-tray-meta { font-size: 0.76em; font-weight: 600; color: var(--tk-muted); font-variant-numeric: tabular-nums; }
+.hp-tk-wrap .hp-tk-tray-meta.is-late { color: var(--tk-late); }
+.hp-tk-wrap .hp-tk-wcal { min-width: 0; padding: 6px 8px 8px; overflow-x: auto; }
+.hp-tk-wrap .hp-tk-wrow { display: grid; grid-template-columns: 44px repeat(7, minmax(72px, 1fr)); min-width: 560px; }
+.hp-tk-wrap .hp-tk-wday { padding: 4px 6px 6px; text-align: center; font-size: 0.82em; font-weight: 700; color: var(--tk-muted); }
+.hp-tk-wrap .hp-tk-wday.is-today { color: var(--tk-accent); }
+.hp-tk-wrap .hp-tk-wall { border-bottom: 1px solid var(--tk-line); padding-bottom: 4px; }
+.hp-tk-wrap .hp-tk-wall-label { align-self: center; font-size: 0.68em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--tk-muted); }
+.hp-tk-wrap .hp-tk-wallday { min-width: 0; display: flex; flex-direction: column; gap: 2px; padding: 0 2px; }
+.hp-tk-wrap .hp-tk-wchip { display: flex; align-items: center; gap: 4px; min-width: 0; --btn-pad: 1px 6px; padding: var(--btn-pad); border-radius: 6px; font-size: 0.74em; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hp-tk-wrap .hp-tk-wchip > span:last-child { overflow: hidden; text-overflow: ellipsis; }
+.hp-tk-wrap .hp-tk-wchip.is-event { color: var(--tk-on-ink); background: var(--tk-on-bg); }
+.hp-tk-wrap .hp-tk-wchip.is-due { color: var(--tk-accent); background: var(--tk-soft); }
+.hp-tk-wrap .hp-tk-wchip.is-done { opacity: 0.55; text-decoration: line-through; }
+.hp-tk-wrap .hp-tk-wbody { position: relative; padding-top: 8px; }
+.hp-tk-wrap .hp-tk-whours { position: relative; }
+.hp-tk-wrap .hp-tk-whour { position: absolute; right: 6px; transform: translateY(-50%); font-size: 0.68em; font-weight: 650; font-variant-numeric: tabular-nums; color: var(--tk-muted); }
+.hp-tk-wrap .hp-tk-wcol { position: relative; border-left: 1px solid var(--tk-line); background-image: linear-gradient(to bottom, var(--tk-line) 1px, transparent 1px); }
+.hp-tk-wrap .hp-tk-wcol.is-today { background-color: color-mix(in srgb, var(--tk-soft) 50%, transparent); }
+.hp-tk-wrap .hp-tk-wnow { position: absolute; left: 0; right: 0; height: 2px; z-index: 3; background: var(--tk-late); pointer-events: none; }
+.hp-tk-wrap .hp-tk-wnow::before { content: ""; position: absolute; left: -4px; top: -3px; width: 8px; height: 8px; border-radius: 50%; background: var(--tk-late); }
+/* A block: a to-do's time block (soft accent) or a timed event (solid accent); the bottom edge resizes. */
+.hp-tk-wrap .hp-tk-blk {
+	position: absolute; z-index: 2; display: flex; flex-direction: column; gap: 1px; overflow: hidden; padding: 3px 6px 6px;
+	border-radius: 7px; font-size: 0.74em; line-height: 1.2; cursor: grab; user-select: none; touch-action: none;
+	color: var(--tk-text); background: var(--tk-soft); box-shadow: inset 3px 0 0 var(--tk-accent), inset 0 0 0 1px var(--tk-soft-edge);
+}
+.hp-tk-wrap .hp-tk-blk.is-event { color: var(--tk-on-ink); background: var(--tk-on-bg); box-shadow: none; }
+.hp-tk-wrap .hp-tk-blk:focus-visible { outline-offset: 1px; z-index: 4; }
+.hp-tk-wrap .hp-tk-blk.is-done, .hp-tk-wrap .hp-tk-blk.is-past { opacity: 0.5; }
+.hp-tk-wrap .hp-tk-blk.is-done .hp-tk-blk-text { text-decoration: line-through; }
+.hp-tk-wrap .hp-tk-blk.is-dragging { opacity: 0.35; }
+.hp-tk-wrap .hp-tk-blk-time { font-weight: 750; font-variant-numeric: tabular-nums; opacity: 0.85; white-space: nowrap; }
+.hp-tk-wrap .hp-tk-blk-text { font-weight: 650; overflow: hidden; }
+.hp-tk-wrap .hp-tk-blk-grip { position: absolute; left: 0; right: 0; bottom: 0; height: 7px; cursor: ns-resize; }
+.hp-tk-wrap .hp-tk-blk-grip::after { content: ""; position: absolute; left: 50%; bottom: 2px; width: 18px; height: 2px; margin-left: -9px; border-radius: 2px; background: currentColor; opacity: 0; transition: opacity 0.15s ease; }
+.hp-tk-wrap .hp-tk-blk:hover .hp-tk-blk-grip::after { opacity: 0.5; }
+.hp-tk-wrap .hp-tk-ghost { z-index: 5; pointer-events: none; opacity: 0.85; box-shadow: inset 0 0 0 2px var(--tk-accent), 0 6px 14px -6px var(--tk-shadow); }
+.hp-tk-wrap.is-dragging, .hp-tk-wrap.is-dragging * { cursor: grabbing !important; }
+
+@container (max-width: 900px) {
+	.hp-tk-wrap .hp-tk-cols { grid-template-columns: minmax(0, 1fr); }
+	.hp-tk-wrap .hp-tk-week { grid-template-columns: minmax(0, 1fr); }
+	.hp-tk-wrap .hp-tk-tray { max-height: 220px; overflow-y: auto; }
+}
+@container (max-width: 600px) {
+	/* Add: the text on the first line; Due, Start, Time, Tag (icons until set) and Add on the second. */
+	.hp-tk-wrap .hp-tk-add { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "ico text text" "opts opts go"; gap: 4px 8px; padding: 6px; border-radius: 22px; }
+	.hp-tk-wrap .hp-tk-add > .hp-tk-kind { grid-area: ico; }
+	.hp-tk-wrap .hp-tk-kind-label { display: none; }
+	.hp-tk-wrap .hp-tk-kind-btn { --btn-pad: 0 9px; padding: var(--btn-pad); }
+	.hp-tk-wrap .hp-tk-group.has-event .hp-tk-row { grid-template-columns: 46px minmax(0, 1fr) auto; }
+	.hp-tk-wrap input.hp-tk-input { grid-area: text; }
+	.hp-tk-wrap .hp-tk-opts { grid-area: opts; min-width: 0; flex-wrap: wrap; margin-left: -8px; }
+	.hp-tk-wrap .hp-tk-opt { --btn-pad: 0 9px; padding: var(--btn-pad); }
+	.hp-tk-wrap .hp-tk-opt:not(.is-set) .hp-tk-opt-label { display: none; }
+	.hp-tk-wrap .hp-tk-go { grid-area: go; min-height: 38px; --btn-pad: 0 18px; padding: var(--btn-pad); }
+	.hp-tk-wrap .hp-tk-row { grid-template-columns: auto minmax(0, 1fr) auto; }
+	.hp-tk-wrap .hp-tk-src { display: none; }
+	.hp-tk-wrap .hp-tk-text { white-space: normal; }
+}
+@media (prefers-reduced-motion: reduce) {
+	.hp-tk-wrap .hp-tk-pop, .hp-tk-wrap .hp-tk-pop.is-up, .hp-tk-wrap .hp-tk-toast, .hp-tk-wrap .hp-tk-row.is-new { animation: none; }
+	.hp-tk-wrap .hp-tk-go:hover { transform: none; }
+	.hp-tk-wrap :is(.hp-tk-cal-nav, .hp-tk-cal-day) { transition: none; }
+}
+@media print { .hp-tk-wrap .hp-tk-add, .hp-tk-wrap .hp-tk-acts { display: none; } }

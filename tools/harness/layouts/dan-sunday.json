@@ -1,0 +1,25 @@
+{
+  "name": "Sunday",
+  "items": [
+    {
+      "module": "greeting",
+      "w": 12,
+      "variant": "glow"
+    },
+    {
+      "module": "next-sermon",
+      "w": 8,
+      "variant": "event"
+    },
+    {
+      "module": "pomodoro",
+      "w": 4,
+      "variant": ""
+    },
+    {
+      "module": "roster",
+      "w": 12,
+      "variant": "list"
+    }
+  ]
+}
