@@ -93,14 +93,14 @@ var ModularHomepage = class extends import_obsidian10.Plugin {
       config: { ...DEFAULT_CONFIG, ...s2?.config || {}, templates: { ...DEFAULT_CONFIG.templates, ...s2?.config?.templates || {} } },
       defaultTheme: THEMES.some((t) => t.id === s2?.defaultTheme) ? s2.defaultTheme : DEFAULT_THEME,
       homeNote: s2?.homeNote || "Homepage",
-      hiddenModules: Array.isArray(s2?.hiddenModules) ? s2.hiddenModules : [],
+      hiddenModules: Array.isArray(s2?.hiddenModules) ? s2.hiddenModules.filter((id) => MODULES.some(([m]) => m === id)) : [],
       showTitles: s2?.showTitles === true
       // module titles above the cards (off: every module is just its card)
     };
     const saved = data?.layouts;
     this.layouts = { version: 2, list: [], defaultId: "", chosen: {} };
     if (saved?.version === 2 && Array.isArray(saved.list)) {
-      const list2 = saved.list.filter((l2) => l2 && typeof l2.id === "string" && Array.isArray(l2.items)).map((l2) => ({ id: l2.id, name: String(l2.name || "Layout"), items: l2.items }));
+      const list2 = saved.list.filter((l2) => l2 && typeof l2.id === "string" && Array.isArray(l2.items)).map((l2) => ({ id: l2.id, name: String(l2.name || "Layout"), items: l2.items.filter((i) => MODULES.some(([id]) => id === i?.module)) }));
       this.layouts = {
         version: 2,
         list: list2,

@@ -52,7 +52,6 @@ var MODULES = [
   ["recently-preached", recently_preached_default],
   ["recently-edited", recently_edited_default],
   ["vault-glance", vault_glance_default],
-  ["shortcuts", shortcuts_default],
   ["pomodoro", pomodoro_default]
 ];
 var THEMES = [

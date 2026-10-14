@@ -32,11 +32,6 @@
       "variant": ""
     },
     {
-      "module": "shortcuts",
-      "w": 6,
-      "variant": ""
-    },
-    {
       "module": "project-stats",
       "w": 6,
       "variant": ""

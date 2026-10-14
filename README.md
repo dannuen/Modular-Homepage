@@ -67,7 +67,6 @@ Every module is one card, with its buttons in the card's top-right corner. Title
 | Recently preached | The last sermons you preached, and where | |
 | Recently edited | The notes you changed last | |
 | Vault at a glance | Note counts for each part of the vault | |
-| Shortcuts | Buttons to create notes, and links you keep at hand | |
 | Pomodoro | A focus timer as pixel art (tomato, avocado or clock) | |
 
 A module switched off in the settings is left out of every page and of **Arrange → Add module**. When a note changes, only the modules that use it are redrawn.

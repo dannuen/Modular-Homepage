@@ -22,7 +22,6 @@ modules/project-stats.css
 modules/recently-preached.css
 modules/recently-edited.css
 modules/vault-glance.css
-modules/shortcuts.css
 modules/pomodoro.css
 topbar.css
 tasks.css

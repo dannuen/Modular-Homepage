@@ -23,11 +23,6 @@
       "module": "calendar",
       "w": 12,
       "variant": "planner"
-    },
-    {
-      "module": "shortcuts",
-      "w": 12,
-      "variant": ""
     }
   ]
 }

@@ -16,7 +16,7 @@ matrix.js            themes × light/dark × widths × layouts in one browser �
 fixture.js           the made-up vault, every date relative to "today"
 png.js               a tiny PNG encoder that paints the vault's "photos" (cached in .cache/attachments)
 fixtures/            data.json + manifest.json (copies of the real ones), a real Church Roster export
-layouts/all-01..10   together: all 19 modules and every variant, at widths 4/6/8/12
+layouts/all-01..10   together: all 18 modules and every variant, at widths 4/6/8/12
 layouts/dan-*.json   Dan's own Aurora, Sunday and Dune layouts (from data.json)
 www/page.html        Obsidian's DOM down to .markdown-preview-sizer
 www/obsidian-mock.js the "obsidian" module + app (vault, metadata cache, workspace, …)
