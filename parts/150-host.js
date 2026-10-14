@@ -315,6 +315,7 @@ var PageDraw = class {
         const box = layer.getBoundingClientRect(), b = button.getBoundingClientRect(), w = menu.offsetWidth;
         menu.style.top = Math.round(b.bottom - box.top + 8) + "px";
         menu.style.left = Math.round(Math.max(0, Math.min(b.right - box.left - w, box.width - w))) + "px";
+        this.fitPopups();
       };
       const set = (open) => {
         if (open) {
@@ -323,7 +324,7 @@ var PageDraw = class {
         }
         menu.hidden = !open;
         button.setAttribute("aria-expanded", String(open));
-        if (!open) return;
+        if (!open) return this.fitPopups();
         place();
         (items2.find((i) => i.classList.contains("is-on")) || items2[0])?.focus({ preventScroll: true });
       };
@@ -345,7 +346,10 @@ var PageDraw = class {
     this.pageLife.on(doc, "pointerdown", (e) => {
       const target = e.target;
       for (const m of menus) if (!m.menu.hidden && !m.button.contains(target) && !m.menu.contains(target)) m.set(false);
-      if (this.addPop && !this.addPop.hidden && !this.addPop.contains(target) && !this.addBtn?.contains(target)) this.addPop.hidden = true;
+      if (this.addPop && !this.addPop.hidden && !this.addPop.contains(target) && !this.addBtn?.contains(target)) {
+        this.addPop.hidden = true;
+        this.fitPopups();
+      }
     }, true);
     this.pageLife.on(doc, "keydown", (e) => {
       if (e.key !== "Escape") return;
@@ -355,9 +359,11 @@ var PageDraw = class {
       }
       if (this.addPop && !this.addPop.hidden) {
         this.addPop.hidden = true;
+        this.fitPopups();
         this.addBtn?.focus();
       }
     });
+    this.cleanups.push(() => host.style.minHeight = "");
     this.pageLife.on(doc, "scroll", () => {
       for (const m of menus) if (!m.menu.hidden) m.place();
     }, true);
@@ -423,6 +429,18 @@ var PageDraw = class {
         refreshing = false;
       }
     }, 6e4);
+  }
+  // An open menu or add-module list hangs below the top bar. On a short page (a new, empty layout) the note's box cut
+  // it off, so the homepage block grows to hold it while it is open.
+  fitPopups() {
+    const { host } = this;
+    const open = [...host.querySelectorAll(".hp-hs-menu:not([hidden]), .hp-add-pop:not([hidden])")];
+    if (!open.length) {
+      host.style.minHeight = "";
+      return;
+    }
+    const top = host.getBoundingClientRect().top;
+    host.style.minHeight = Math.ceil(Math.max(...open.map((el) => el.getBoundingClientRect().bottom)) - top + 16) + "px";
   }
   // ---------- Layout menu actions ----------
   async pickLayout(id) {
@@ -802,6 +820,7 @@ var PageDraw = class {
     const { G, bar, root, arrangeBtn, layout } = this;
     const ui = this.core.uiFor(this.pageLife.component);
     bar.replaceChildren();
+    this.fitPopups();
     bar.hidden = !G.arrange;
     root.classList.toggle("is-arranging", !!G.arrange);
     arrangeBtn.setAttribute("aria-pressed", String(!!G.arrange));
@@ -819,6 +838,7 @@ var PageDraw = class {
     const addWrap = ui.el(acts, "div", "hp-add-wrap");
     const addBtn = this.addBtn = ui.button(addWrap, "hp-btn hp-pill", "plus", "Add module", "Add a module to the page", () => {
       addPop.hidden = !addPop.hidden;
+      this.fitPopups();
     });
     addBtn.disabled = !unused.length;
     const addPop = this.addPop = ui.el(addWrap, "div", "hp-add-pop hp-panel");
