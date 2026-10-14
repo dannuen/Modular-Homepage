@@ -1,0 +1,35 @@
+{
+  "name": "All modules 05",
+  "items": [
+    {
+      "module": "greeting",
+      "w": 6,
+      "variant": "glow"
+    },
+    {
+      "module": "countdown",
+      "w": 6,
+      "variant": "nixie"
+    },
+    {
+      "module": "active-sermons",
+      "w": 12,
+      "variant": "desk"
+    },
+    {
+      "module": "calendar",
+      "w": 8,
+      "variant": "week"
+    },
+    {
+      "module": "pomodoro",
+      "w": 4,
+      "variant": ""
+    },
+    {
+      "module": "active-projects",
+      "w": 12,
+      "variant": "browse"
+    }
+  ]
+}

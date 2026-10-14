@@ -1,0 +1,94 @@
+/* Greeting — structure only. */
+.hp-home .m-greet { padding: 10px 6px 0; }
+.hp-home .m-greet-eyebrow { margin-bottom: 14px; }
+.hp-home .m-greet-title { font-family: var(--hm-font-display); font-weight: var(--hm-display-weight); letter-spacing: var(--hm-display-spacing); line-height: 1.04; }
+.hp-home .m-greet.is-sentence .m-greet-title { font-size: clamp(2.1em, 5.4cqi, 3.5em); }
+.hp-home .m-greet.is-simple .m-greet-title { font-size: clamp(1.7em, 4cqi, 2.4em); }
+.hp-home .m-greet-title em { color: var(--hm-accent-ink); }
+.hp-home .m-greet-lede { margin-top: 14px; max-width: 48ch; font-size: 1.08em; color: var(--hm-muted); }
+.hp-home .m-greet-sub { margin-top: 6px; color: var(--hm-muted); }
+
+/* Desk (Prism) */
+.hp-home .m-greet.is-desk { padding: 22px 6px 4px; }
+.hp-home .m-greet.is-desk .m-greet-title { margin: 8px 0 12px; font-size: clamp(1.8em, 4.6cqi, 2.7em); }
+.hp-home .m-greet.is-desk .m-greet-title em { font-style: normal; color: var(--hm-accent-ink); }
+.hp-home .m-greet.is-desk .m-greet-lede { font-size: 0.95em; color: var(--hm-muted); max-width: none; }
+.hp-home .m-greet-strong a { color: var(--hm-text) !important; font-weight: 650; }
+
+/* Masthead (Dashboard 2.0): always white on a deep accent panel. */
+.hp-home .m-greet-mast {
+	position: relative; overflow: hidden; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 32px;
+	padding: 30px 32px 24px; border-radius: var(--hm-radius); color: #fff;
+	background:
+		radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1.2px) 0 0 / 18px 18px,
+		radial-gradient(60% 90% at 88% 0%, hsl(var(--accent-h) calc(var(--accent-s) + 10%) 62% / 0.55), transparent 70%),
+		radial-gradient(50% 80% at 0% 100%, hsl(calc(var(--accent-h) + 40) var(--accent-s) 50% / 0.45), transparent 70%),
+		linear-gradient(135deg, hsl(var(--accent-h) var(--accent-s) 30%), hsl(var(--accent-h) var(--accent-s) 12%));
+	box-shadow: 0 18px 24px -18px hsl(var(--accent-h) var(--accent-s) 25% / 0.65);
+}
+.hp-home .m-greet-date { display: flex; align-items: flex-end; gap: 16px; }
+.hp-home .m-greet-daynum { font-size: 6.4em; font-weight: 800; line-height: 0.8; font-variant-numeric: tabular-nums; background: linear-gradient(180deg, #fff 30%, rgba(255, 255, 255, 0.55)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hp-home .m-greet-weekday { font-size: 1.5em; font-weight: 800; line-height: 1.05; letter-spacing: -0.01em; }
+.hp-home .m-greet-month { opacity: 0.75; font-weight: 500; }
+.hp-home .m-greet-right { min-width: 0; max-width: 520px; }
+.hp-home .m-greet-hello { font-size: 0.8em; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.7; }
+.hp-home .m-greet-next { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 6px; font-size: 1.25em; font-weight: 600; line-height: 1.3; }
+.hp-home .m-greet-when { padding: 2px 12px; border-radius: 999px; background: #fff; color: hsl(var(--accent-h) var(--accent-s) 28%); font-size: 0.8em; font-weight: 800; letter-spacing: 0.02em; }
+.hp-home .m-greet-stats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.hp-home .m-greet-stat { display: flex; align-items: baseline; gap: 6px; padding: 5px 12px; border-radius: 10px; font-size: 0.85em; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.16); }
+.hp-home .m-greet-stat b { font-size: 1.25em; font-variant-numeric: tabular-nums; }
+.hp-home .m-greet-stat span { opacity: 0.75; }
+@container slot (max-width: 600px) {
+	.hp-home .m-greet-mast { padding: 24px 20px 20px; }
+	.hp-home .m-greet-daynum { font-size: 4.6em; }
+}
+.hp-home .m-greet.is-masthead { padding: 0; }
+
+
+/* Glow: a lit slab after Dan's reference. One object in both modes: a tall, very rounded slab whose light runs from a
+   dark top-left corner through burnt orange into a cream base, with a cool steel-blue cast top right, a fine grain, and
+   amber light spilling onto the page beneath it. The content sits centred where the dark meets the glow. */
+.hp-home .m-greet.is-glow { padding: 0; }
+.hp-home .m-greet-glow {
+	--gl-ink: #fff7ea;
+	--gl-ink-dark: #3a2213;
+	--gl-r: clamp(36px, 9cqi, 72px);
+	position: relative; isolation: isolate; overflow: hidden;
+	display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center !important;
+	min-height: clamp(280px, 38cqi, 360px); padding: 44px 32px 30px;
+	border-radius: var(--gl-r); color: var(--gl-ink);
+	background:
+		radial-gradient(62% 70% at 96% 0%, #b7c6cf 0%, #8fa4b2 18%, rgba(118, 140, 156, 0.7) 38%, rgba(100, 118, 132, 0) 68%),
+		radial-gradient(60% 58% at 0% 48%, rgba(236, 118, 30, 0.95) 0%, rgba(232, 112, 29, 0.6) 30%, rgba(232, 112, 29, 0) 72%),
+		radial-gradient(80% 45% at 50% 108%, #fff6dc 0%, #ffe7b2 35%, rgba(255, 222, 160, 0) 75%),
+		linear-gradient(178deg, #140c09 0%, #241410 26%, #5e2a13 41%, #c4601e 53%, #eea647 64%, #fbd28c 77%, #ffeec6 100%);
+	/* Light falls only below (blur = −spread, as the frame's shadows do): Obsidian clips what spills past the slot's edges. */
+	box-shadow:
+		inset 0 1px 0 rgba(255, 255, 255, 0.18),
+		0 14px 22px -22px rgba(255, 190, 110, 0.9), 0 26px 40px -40px rgba(255, 170, 80, 0.8), 0 34px 54px -54px rgba(255, 150, 60, 0.6);
+}
+/* Grain, and a soft inner glow around the edge so the slab reads as lit from within. */
+.hp-home .m-greet-glow::before {
+	content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; border-radius: inherit;
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0.9 0'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+	background-size: 160px 160px; opacity: 0.5; mix-blend-mode: soft-light;
+}
+.hp-home .m-greet-glow::after {
+	content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; border-radius: inherit;
+	box-shadow: inset 0 0 60px rgba(255, 232, 190, 0.22), inset 0 -24px 60px rgba(255, 240, 210, 0.35);
+}
+.hp-home .m-greet-glow-date { font-size: 0.8em; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; opacity: 0.8; }
+.hp-home .m-greet-glow-hello {
+	margin-top: 10px; font-family: var(--hm-font-display); font-weight: 480; letter-spacing: -0.02em; line-height: 1.05;
+	font-size: clamp(2.2em, 6cqi, 3.6em); text-shadow: 0 2px 18px rgba(60, 30, 10, 0.35);
+}
+.hp-home .m-greet-glow .m-greet-next { justify-content: center; margin-top: 16px; font-size: 1.05em; font-weight: 560; text-shadow: 0 1px 10px rgba(80, 40, 10, 0.3); }
+.hp-home .m-greet-glow .m-greet-when { background: rgba(255, 248, 232, 0.92); color: #8a3d12; font-weight: 750; }
+.hp-home .m-greet-glow .m-greet-stats { justify-content: center; margin-top: 26px; }
+.hp-home .m-greet-glow .m-greet-stat { color: var(--gl-ink-dark); background: rgba(255, 252, 244, 0.5); border-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(6px); }
+.hp-home .m-greet-glow .m-greet-stat span { opacity: 0.7; }
+@container slot (max-width: 600px) {
+	.hp-home .m-greet-glow { padding: 36px 20px 24px; min-height: 300px; }
+}
+.theme-dark .hp-home .m-greet-glow { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 14px 22px -22px rgba(255, 180, 100, 0.8), 0 26px 40px -40px rgba(255, 160, 70, 0.7), 0 34px 54px -54px rgba(255, 140, 50, 0.5); }
+

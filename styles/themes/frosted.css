@@ -1,0 +1,129 @@
+/* THEME · Frosted — soft pastel cards like thick slabs of frosted acrylic (the user's "frosted acrylic" brief).
+   A double rim, a thickness lip along the bottom and a soft fall; mint and blush glows; a warm off-white page, deep
+   slate in dark. Its own palette by request (not the Obsidian accent). Font: Manrope (falls back if not installed). */
+
+/* Page: the warm off-white (deep slate in dark), on the note's own scrolling area. */
+.markdown-preview-view:has(.hp-home[data-theme="frosted"]), .markdown-source-view:has(.hp-home[data-theme="frosted"]) .cm-scroller {
+	background: radial-gradient(ellipse 120% 90% at 50% 0%, #FBFAF7 0%, #F7F5F1 45%, #F4F1EC 100%);
+}
+.theme-dark .markdown-preview-view:has(.hp-home[data-theme="frosted"]), .theme-dark .markdown-source-view:has(.hp-home[data-theme="frosted"]) .cm-scroller {
+	background: radial-gradient(ellipse 120% 90% at 50% 0%, #20262A 0%, #1A1F22 45%, #15191C 100%);
+}
+
+/* Palette — light (the design) */
+.hp-home[data-theme="frosted"] {
+	--fg-text: #2E3942; --fg-muted: #5A6670; --fg-teal: #2F6F63;
+	--fg-mint-a: #BDE6DC; --fg-mint-b: #98D2C4; --fg-mint-ink: #123A33;
+	--fg-mint-edge: rgba(116, 182, 166, 0.55); --fg-mint-shadow: rgba(96, 168, 151, 0.32);
+	--fg-fill-a: #BDE6DC; --fg-fill-b: #8FCDBE;
+	--fg-glow-mint: rgba(163, 219, 204, 0.55); --fg-glow-blush: rgba(246, 193, 192, 0.55);
+	--fg-edge: rgba(172, 199, 194, 0.55); --fg-edge-lip: rgba(172, 199, 194, 0.35); --fg-edge-soft: rgba(172, 199, 194, 0.22); --fg-edge-panel: rgba(172, 199, 194, 0.5);
+	--fg-card-a: rgba(251, 253, 253, 0.88); --fg-card-b: rgba(243, 248, 247, 0.66);
+	--fg-panel-a: rgba(255, 255, 255, 0.72); --fg-panel-b: rgba(246, 250, 249, 0.5);
+	--fg-pill-a: rgba(255, 255, 255, 0.96); --fg-pill-b: rgba(242, 247, 246, 0.86);
+	--fg-rim: rgba(255, 255, 255, 0.95); --fg-band: rgba(255, 255, 255, 0.32); --fg-shade: rgba(140, 170, 165, 0.10);
+	--fg-lip: rgba(255, 255, 255, 0.85); --fg-shadow: rgba(55, 80, 76, 0.30);
+	--fg-knob-a: #FFFFFF; --fg-knob-b: #EDF2F1; --fg-knob-edge: rgba(186, 204, 200, 0.9); --fg-knob-shadow: rgba(55, 80, 76, 0.18);
+	--fg-track-a: rgba(226, 234, 232, 0.95); --fg-track-b: rgba(246, 248, 247, 0.95);
+	--fg-shine: rgba(255, 255, 255, 0.5); --fg-blush-edge: rgba(214, 184, 182, 0.55); --fg-late: #B0605C;
+
+	--hm-bg: #FBFAF7;
+	--hm-text: var(--fg-text); --hm-muted: var(--fg-muted); --hm-faint: color-mix(in srgb, var(--fg-muted) 70%, transparent);
+	--hm-accent: var(--fg-mint-b); --hm-accent-ink: var(--fg-teal); --hm-on-accent: var(--fg-mint-ink);
+	--hm-soft: color-mix(in srgb, var(--fg-mint-a) 45%, transparent);
+	--hm-fill: linear-gradient(90deg, var(--fg-fill-a), var(--fg-fill-b));
+	--hm-late: var(--fg-late);
+	--hm-line: var(--fg-edge-soft); --hm-track: var(--fg-track-a); --hm-hover: var(--fg-panel-a);
+	--hm-surface: linear-gradient(180deg, var(--fg-card-a), var(--fg-card-b));
+	--hm-surface-2: linear-gradient(180deg, var(--fg-panel-a), var(--fg-panel-b));
+	--hm-pop: linear-gradient(180deg, var(--fg-pill-a), var(--fg-pill-b));
+	--hm-shadow-color: var(--fg-shadow);
+	--hm-radius: 30px; --hm-radius-sm: 22px; --hm-gap: 22px;
+	--hm-knob: 44px; --hm-pad: 24px;   /* buttons at least 44px; content clear of the double rim */
+	--hm-font: "Manrope", var(--font-interface); --hm-font-display: "Manrope", var(--font-interface);
+	--hm-display-weight: 650; --hm-display-spacing: -0.035em;
+}
+/* Palette — dark: smoky acrylic on a deep slate page; the same mint, dimmer glows. */
+.theme-dark .hp-home[data-theme="frosted"] {
+	--fg-text: #E3EBE9; --fg-muted: #9AA9AE; --fg-teal: #86D1BF;
+	--fg-mint-shadow: rgba(60, 140, 120, 0.35); --fg-fill-a: #6FB8A6; --fg-fill-b: #9AD6C7;
+	--fg-glow-mint: rgba(110, 190, 170, 0.20); --fg-glow-blush: rgba(226, 150, 150, 0.15);
+	--fg-edge: rgba(140, 180, 172, 0.28); --fg-edge-lip: rgba(140, 180, 172, 0.18); --fg-edge-soft: rgba(140, 180, 172, 0.14); --fg-edge-panel: rgba(140, 180, 172, 0.24);
+	--fg-card-a: rgba(44, 52, 56, 0.92); --fg-card-b: rgba(33, 39, 43, 0.86);
+	--fg-panel-a: rgba(55, 64, 68, 0.72); --fg-panel-b: rgba(42, 49, 53, 0.62);
+	--fg-pill-a: rgba(60, 69, 73, 0.96); --fg-pill-b: rgba(46, 53, 57, 0.92);
+	--fg-rim: rgba(255, 255, 255, 0.10); --fg-band: rgba(255, 255, 255, 0.03); --fg-shade: rgba(0, 0, 0, 0.18);
+	--fg-lip: rgba(255, 255, 255, 0.06); --fg-shadow: rgba(0, 0, 0, 0.65);
+	--fg-knob-a: #4B565A; --fg-knob-b: #363F43; --fg-knob-edge: rgba(255, 255, 255, 0.14); --fg-knob-shadow: rgba(0, 0, 0, 0.45);
+	--fg-track-a: rgba(16, 20, 22, 0.9); --fg-track-b: rgba(36, 42, 46, 0.9);
+	--fg-shine: rgba(255, 255, 255, 0.05); --fg-blush-edge: rgba(200, 150, 148, 0.26); --fg-late: #E7A09C;
+	--hm-bg: #20262A;
+}
+
+/* Materials */
+.hp-home[data-theme="frosted"] .hp-card {
+	border: 1px solid var(--fg-edge); background: var(--hm-surface);
+	box-shadow:
+		inset 0 0 0 1px var(--fg-rim), inset 0 0 0 5px var(--fg-band), inset 0 0 0 6px var(--fg-edge-soft), /* rim, edge band, inner line */
+		inset 0 -4px 10px var(--fg-shade),                                                            /* bottom shade */
+		0 4px 0 -2px var(--fg-lip), 0 4px 0 -1px var(--fg-edge-lip),                                  /* thickness lip */
+		0 30px 36px -30px var(--fg-shadow);                                                          /* soft fall below */
+}
+.hp-home[data-theme="frosted"] .hp-panel {
+	border: 1px solid var(--fg-edge-panel); background: var(--hm-surface-2);
+	box-shadow: inset 0 0 0 1px var(--fg-rim), inset 0 0 0 4px var(--fg-band), inset 0 0 0 5px var(--fg-edge-soft), 0 4px 8px -4px var(--fg-knob-shadow);
+}
+.hp-home[data-theme="frosted"] .hp-pill {
+	--btn-bg: linear-gradient(180deg, var(--fg-pill-a), var(--fg-pill-b));
+	--btn-shadow: inset 0 1px 0 var(--fg-rim), inset 0 -2px 3px var(--fg-shade), 0 3px 8px -4px var(--fg-knob-shadow);
+	border: 1px solid var(--fg-edge);
+}
+.hp-home[data-theme="frosted"] .hp-accent {
+	--btn-bg: linear-gradient(180deg, var(--fg-mint-a), var(--fg-mint-b));
+	--btn-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.75), inset 0 -2px 4px rgba(60, 130, 115, 0.14), 0 5px 12px -5px var(--fg-mint-shadow);
+	border: 1px solid var(--fg-mint-edge); color: var(--fg-mint-ink) !important;
+}
+.hp-home[data-theme="frosted"] .hp-knob {
+	--btn-bg: linear-gradient(180deg, var(--fg-knob-a), var(--fg-knob-b));
+	--btn-shadow: inset 0 1px 0 var(--fg-rim), 0 4px 10px var(--fg-knob-shadow), 0 1px 2px var(--fg-knob-shadow);
+	border: 1px solid var(--fg-knob-edge);
+}
+.hp-home[data-theme="frosted"] .hp-track {
+	border-radius: 6px; border: 1px solid var(--fg-edge);
+	background: linear-gradient(180deg, var(--fg-track-a), var(--fg-track-b));
+	box-shadow: inset 0 1px 2px rgba(55, 80, 76, 0.14), 0 1px 0 var(--fg-lip);
+}
+.hp-home[data-theme="frosted"] .hp-kicker { font-size: 0.93em; font-weight: 700; letter-spacing: 0.16em; color: var(--fg-teal); }
+/* Links take the text colour (hover turns them teal). */
+.hp-home[data-theme="frosted"] a { color: inherit !important; }
+.hp-home[data-theme="frosted"] a:hover { color: var(--fg-teal) !important; }
+/* Buttons at least 44px tall; section titles as small teal kickers. */
+.hp-home[data-theme="frosted"] .hp-btn { min-height: 44px; --btn-pad: 0 22px; font-size: 1em; font-weight: 700; }
+.hp-home[data-theme="frosted"] .hp-round { color: var(--fg-teal); }
+.hp-home[data-theme="frosted"] .hp-sec-title { font-size: 0.86em; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--fg-teal); }
+.hp-home[data-theme="frosted"] .hp-switch-track { box-shadow: inset 0 1px 2px rgba(55, 80, 76, 0.18); }
+
+/* Touches: the hero's glows and its big title. */
+.hp-home[data-theme="frosted"] .m-next.is-hero .m-next-card {
+	background:
+		linear-gradient(135deg, var(--fg-shine), transparent 32%),
+		radial-gradient(ellipse 55% 60% at 50% 58%, var(--fg-glow-mint), transparent 72%),
+		radial-gradient(ellipse 36% 46% at 97% 3%, var(--fg-glow-blush), transparent 72%),
+		radial-gradient(ellipse 32% 42% at 3% 97%, var(--fg-glow-blush), transparent 72%),
+		linear-gradient(180deg, var(--fg-card-a), var(--fg-card-b));
+}
+.hp-home[data-theme="frosted"] .m-next.is-hero .m-next-title { font-weight: 600; }
+.hp-home[data-theme="frosted"] .m-next-fill { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55), inset 0 -1px 2px rgba(60, 130, 115, 0.18); }
+.hp-home[data-theme="frosted"] .m-next-chip-label { font-weight: 600; }
+
+/* Task panel colours (as in Frosted) */
+.hp-home[data-theme="frosted"] .hp-tk-wrap {
+	--tk-late: var(--fg-late); --tk-hover: var(--fg-panel-a);
+	--tk-soft-edge: var(--fg-mint-edge);
+	--tk-on-bg: linear-gradient(180deg, var(--fg-mint-a), var(--fg-mint-b));
+	--tk-glow-late: var(--fg-glow-blush); --tk-glow-today: var(--fg-glow-mint); --tk-late-edge: var(--fg-blush-edge);
+}
+@container slot (max-width: 600px) {
+	.hp-home[data-theme="frosted"] .hp-tk-box { border-radius: 26px; }
+}
+

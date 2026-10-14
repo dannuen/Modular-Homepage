@@ -1,0 +1,33 @@
+{
+  "name": "All modules 08",
+  "items": [
+    {
+      "module": "next-sermon",
+      "w": 8,
+      "variant": "photo",
+      "themed": {
+        "dune": "photo"
+      }
+    },
+    {
+      "module": "active-sermons",
+      "w": 4,
+      "variant": "carousel"
+    },
+    {
+      "module": "countdown",
+      "w": 12,
+      "variant": "board"
+    },
+    {
+      "module": "calendar",
+      "w": 12,
+      "variant": "planner"
+    },
+    {
+      "module": "shortcuts",
+      "w": 12,
+      "variant": ""
+    }
+  ]
+}

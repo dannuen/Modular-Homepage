@@ -1,0 +1,132 @@
+/* TOP BAR — styles for _data_/views/home/shared/topbar/view.js (Dataview loads this file with the script).
+   Aurora's glass bar: colours from the Obsidian theme (light and dark); layout follows the width of the
+   note (container query), not the window. Inside it, the links, the create buttons and the extra buttons
+   each sit in their own pill. */
+.hp-tb-box { position: sticky; top: 10px; z-index: 40; container-type: inline-size; margin: 0 0 18px; }
+.hp-tb-box, .hp-tb-box * { box-sizing: border-box; text-align: left; }
+.hp-tb-bar {
+	--tb-line: color-mix(in srgb, var(--text-normal) 11%, transparent);
+	--tb-pill: color-mix(in srgb, var(--text-normal) 5%, transparent);
+	--tb-raised: color-mix(in srgb, var(--background-primary) 74%, transparent);
+	--tb-edge: rgba(255, 255, 255, 0.6);
+	/* Shadow: blur = −spread, so nothing is drawn past the bar's sides (Obsidian would cut it off in a hard line). */
+	--tb-shadow: 0 24px 32px -32px rgba(20, 16, 40, 0.42);
+	/* The name's column gives up room first (spare space, then the end of the name), so the links never wrap when the create pill opens. */
+	display: grid; grid-template-columns: minmax(0, 1fr) auto auto; grid-template-areas: "brand nav acts"; align-items: center; gap: 6px 10px;
+	padding: 6px 6px 6px 10px; border-radius: 999px; color: var(--text-normal); line-height: 1.45;
+	background: color-mix(in srgb, var(--background-primary) 52%, transparent);
+	-webkit-backdrop-filter: blur(24px) saturate(1.6); backdrop-filter: blur(24px) saturate(1.6);
+	border: 1px solid var(--tb-line); box-shadow: inset 0 1px 0 var(--tb-edge), var(--tb-shadow);
+}
+.theme-dark .hp-tb-bar {
+	--tb-raised: color-mix(in srgb, var(--background-primary) 62%, transparent);
+	--tb-edge: rgba(255, 255, 255, 0.12);
+	--tb-shadow: 0 24px 32px -32px rgba(0, 0, 0, 0.75);
+	background: color-mix(in srgb, var(--background-primary) 40%, transparent);
+}
+.hp-tb-bar .hp-tb-ico { display: inline-flex; flex: none; }
+.hp-tb-bar .hp-tb-ico svg { width: 1em; height: 1em; }
+.hp-tb-brand { grid-area: brand; justify-self: start; display: flex; align-items: center; gap: 10px; min-width: 0; max-width: 100%; padding-right: 6px; font-weight: 700; letter-spacing: -0.01em; white-space: nowrap; }
+.hp-tb-brand > span:last-child { overflow: hidden; text-overflow: ellipsis; }
+.hp-tb-brand[role="link"] { cursor: pointer; border-radius: 999px; }
+.hp-tb-brand[role="link"]:focus-visible { outline: 2px solid var(--interactive-accent); outline-offset: 3px; }
+.hp-tb-brand .hp-tb-ico { width: 30px; height: 30px; border-radius: 50%; align-items: center; justify-content: center; color: var(--text-on-accent); background: var(--interactive-accent); }
+.hp-tb-brand .hp-tb-ico svg { width: 16px; height: 16px; }
+
+/* The pills: links, create buttons, extra buttons. */
+.hp-tb-nav, .hp-tb-create, .hp-tb-extra { padding: 3px; border-radius: 999px; background: var(--tb-pill); box-shadow: inset 0 0 0 1px var(--tb-line); }
+
+/* Links, with a highlight that glides to the link under the pointer or keyboard focus (as in Stylish). */
+.hp-tb-nav { grid-area: nav; position: relative; display: flex; gap: 2px; }
+.hp-tb-nav > .hp-tb-value { position: relative; z-index: 1; }
+.hp-tb-nav .hp-tb-value, .hp-tb-nav .hp-tb-value p { display: inline; margin: 0 !important; padding: 0 !important; }
+.hp-tb-nav a { display: inline-flex; align-items: center; padding: 7px 12px; border-radius: 999px; font-size: 0.84em; font-weight: 550; color: var(--text-muted) !important; text-decoration: none !important; transition: color 0.15s ease; }
+.hp-tb-nav a:hover, .hp-tb-nav a:focus-visible { color: var(--text-normal) !important; }
+.hp-tb-nav a:focus-visible { outline: none; }
+.hp-tb-nav .hp-tb-value.is-current a { color: var(--text-accent) !important; background: color-mix(in srgb, var(--interactive-accent) 13%, transparent); }
+/* Iconize adds its link icon twice here; keep the first and cancel its nudge. */
+.hp-tb-nav a > .iconize-icon-in-link ~ .iconize-icon-in-link { display: none; }
+.hp-tb-nav a > .iconize-icon-in-link { display: inline-flex; align-items: center; vertical-align: middle; transform: none !important; margin-right: 6px; line-height: 1; }
+.hp-tb-nav a > .iconize-icon-in-link svg { display: block; }
+.hp-tb-glide {
+	position: absolute; z-index: 0; top: 0; left: 0; pointer-events: none; border-radius: 999px;
+	width: var(--tb-w, 0px); height: var(--tb-h, 0px); transform: translate(var(--tb-x, 0px), var(--tb-y, 0px));
+	background: var(--background-primary); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.14), inset 0 0 0 1px var(--tb-line);
+	opacity: 0; transition: transform 0.25s ease, width 0.25s ease, height 0.25s ease, opacity 0.2s ease;
+}
+.theme-dark .hp-tb-glide { background: color-mix(in srgb, var(--text-normal) 12%, transparent); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3); }
+.hp-tb-nav.is-gliding > .hp-tb-glide { opacity: 1; }
+
+/* Buttons */
+/* Pressed and focused buttons look like themselves.
+   The Obsidian theme styles every <button> with "button:not(button.clickable-icon)": padding at rest, and a grey fill,
+   other padding and an inset shadow while pressed or keyboard-focused. Those rules outrank a plain reset, but they read
+   the variables below, so each button hands the theme its own look: --btn-pad (padding), --btn-bg and --btn-shadow
+   (set by the materials). */
+.hp-tb-bar button {
+	--btn-pad: 0; --btn-bg: transparent; --btn-shadow: none;
+	--button-padding: var(--btn-pad); --button-padding-active: var(--btn-pad);
+	--interactive-normal: var(--btn-bg); --interactive-normal-hover: var(--btn-bg);
+	--button-shadow-active: var(--btn-shadow); --button-shadow-focus: var(--btn-shadow);
+}
+.hp-tb-acts { grid-area: acts; display: flex; align-items: center; gap: 8px; }
+.hp-tb-bar button.hp-tb-icon {
+	all: unset; box-sizing: border-box; cursor: pointer; width: 34px; height: 34px; border-radius: 50%;
+	display: inline-grid; place-items: center; color: var(--text-muted); transition: background 0.15s ease, color 0.15s ease;
+}
+.hp-tb-bar button.hp-tb-icon:hover, .hp-tb-bar button.hp-tb-icon[aria-expanded="true"] { background: var(--tb-raised); color: var(--text-normal); }
+.hp-tb-bar button.hp-tb-primary {
+	all: unset; box-sizing: border-box; cursor: pointer; display: inline-flex; align-items: center; gap: 7px;
+	--btn-pad: 0 16px; --btn-bg: var(--interactive-accent); --btn-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25);
+	height: 34px; padding: var(--btn-pad); border-radius: 999px; font-size: 0.84em; font-weight: 650; white-space: nowrap;
+	background: var(--btn-bg); color: var(--text-on-accent); box-shadow: var(--btn-shadow); transition: transform 0.15s ease, filter 0.15s ease;
+}
+.hp-tb-bar button.hp-tb-primary:hover { transform: translateY(-1px); filter: brightness(1.07); }
+.hp-tb-bar button:focus-visible { outline: 2px solid var(--interactive-accent); outline-offset: 2px; }
+
+/* Create and open: New sermon, with Today's note and New note (and New project) beside it. With a mouse they
+   stay folded away and slide out when the pointer (or keyboard focus) reaches the pill; on a touch screen
+   they always show. */
+.hp-tb-create { display: flex; align-items: center; }
+.hp-tb-more { display: grid; grid-template-columns: 1fr; }
+.hp-tb-more-in { display: flex; align-items: center; gap: 2px; min-width: 0; overflow: hidden; padding-right: 2px; }
+.hp-tb-more button.hp-tb-icon { flex: none; }
+.hp-tb-more button.hp-tb-icon:focus-visible { outline-offset: -2px; }
+@media (hover: hover) {
+	/* Folding: the icons fade first, then the pill closes (a short pause, so passing by doesn't flicker it). */
+	.hp-tb-more { grid-template-columns: 0fr; transition: grid-template-columns 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s; }
+	.hp-tb-more button.hp-tb-icon {
+		opacity: 0; transform: translateX(12px) scale(0.6);
+		transition: opacity 0.15s ease 0.1s, transform 0.2s ease 0.1s, background 0.15s ease, color 0.15s ease;
+	}
+	/* Opening: the pill grows to the left and the icons pop in one by one, the nearest first. */
+	.hp-tb-create:hover .hp-tb-more, .hp-tb-create:focus-within .hp-tb-more { grid-template-columns: 1fr; transition-delay: 0s; }
+	.hp-tb-create:hover .hp-tb-more button.hp-tb-icon, .hp-tb-create:focus-within .hp-tb-more button.hp-tb-icon {
+		opacity: 1; transform: none;
+		transition: opacity 0.2s ease var(--tb-d, 0s), transform 0.35s cubic-bezier(0.3, 1.5, 0.5, 1) var(--tb-d, 0s), background 0.15s ease, color 0.15s ease;
+	}
+	.hp-tb-more button.hp-tb-icon:nth-last-child(2) { --tb-d: 0.05s; }
+	.hp-tb-more button.hp-tb-icon:nth-last-child(3) { --tb-d: 0.1s; }
+}
+
+/* Extra buttons (the homepage's theme menu). */
+.hp-tb-extra { display: flex; align-items: center; gap: 2px; }
+
+/* Under 1100px the links drop to a second row (and wrap if they must); on a phone New sermon becomes a round + button. */
+@container (max-width: 1100px) {
+	.hp-tb-bar { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "brand acts" "nav nav"; border-radius: 24px; }
+	.hp-tb-nav { flex-wrap: wrap; }
+}
+@container (max-width: 600px) {
+	.hp-tb-bar button.hp-tb-primary { width: 34px; --btn-pad: 0; padding: var(--btn-pad); justify-content: center; }
+	.hp-tb-bar button.hp-tb-primary span:not(.hp-tb-ico) { display: none; }
+	.hp-tb-acts { gap: 6px; }
+	.hp-tb-nav { border-radius: 20px; }
+}
+@media (prefers-reduced-motion: reduce) {
+	.hp-tb-glide { transition: opacity 0.2s ease; }
+	.hp-tb-bar button.hp-tb-primary:hover { transform: none; }
+	.hp-tb-more, .hp-tb-more button.hp-tb-icon { transition-duration: 0s !important; transition-delay: 0s !important; }
+}
+@media print { .hp-tb-box { display: none; } }
+

@@ -1,0 +1,234 @@
+/* THEME · Pixel — the Pomodoro module's pastel pixel art for the whole page: chunky ink frames with the corner pixels
+   cut off, a "floor" strip along each card's bottom, a dot grid, keys that sink when pressed, a monospace face.
+   Its own palette (the Pomodoro's), not the Obsidian accent: pink, then mint, then lavender, one per module in turn.
+   The pastel surfaces (cards, panels, buttons, pop-ups, the top bar) look the same in light and dark, as the Pomodoro
+   does; in dark only the page and what sits straight on it (titles, the greeting) turn to a deep plum night.
+   Frames: a card's is a border-image (no clip-path), so pickers that hang out of a card are never cut off; buttons
+   use the Pomodoro's clip-path, since nothing hangs out of a button. */
+
+/* The page, on the note's own scrolling area: warm paper, deep plum in dark. */
+.markdown-preview-view:has(.hp-home[data-theme="pixel"]), .markdown-source-view:has(.hp-home[data-theme="pixel"]) .cm-scroller { background: #fdf3f0; }
+.theme-dark .markdown-preview-view:has(.hp-home[data-theme="pixel"]), .theme-dark .markdown-source-view:has(.hp-home[data-theme="pixel"]) .cm-scroller {
+	background: radial-gradient(rgba(255, 214, 222, 0.07) 1.2px, transparent 1.6px) 0 0 / 16px 16px, #2a1d29;
+}
+
+/* ---------- Palette: the Pomodoro's ink and paper; pink by default, mint and lavender for every 2nd and 3rd module ---------- */
+.hp-home[data-theme="pixel"], .hp-tb-box:has(~ .hp-home[data-theme="pixel"]), .hp-hs-layer:has(~ .hp-home[data-theme="pixel"]) {
+	--px-ink: #4a2c40; --px-muted: #8b6a7f; --px-faint: #b39aa9; --px-paper: #fffdfb; --px-page: #fdf3f0;
+	--px-font: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, monospace;
+	--px-bg: #fff0ee; --px-floor: #ffd6d2; --px-dot: rgba(255, 111, 125, 0.13); --px-accent: #ff7a88; --px-soft: #ffd3d8; --px-shade: #e9a3ab;
+	--px-accent-ink: #c43d5b; --px-h: 354; --px-s: 100%; --px-l: 74%;
+	/* The frames: 4px of ink with the corner pixel cut off (cards), 3px (buttons). */
+	--px-frame: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' shape-rendering='crispEdges'%3E%3Cpath fill='%234a2c40' d='M4 0h4v4H4zM0 4h4v4H0zM8 4h4v4H8zM4 8h4v4H4z'/%3E%3C/svg%3E");
+	--px-cut: polygon(3px 0, calc(100% - 3px) 0, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0 calc(100% - 3px), 0 3px, 3px 3px);
+}
+.theme-dark .hp-home[data-theme="pixel"] { --px-page: #2a1d29; }
+.hp-home[data-theme="pixel"] .hp-slot:nth-child(3n + 2) {
+	--px-bg: #eafaf2; --px-floor: #c6eedb; --px-dot: rgba(63, 191, 138, 0.15); --px-accent: #4fcf98; --px-soft: #c9f1de; --px-shade: #8fd2b3;
+	--px-accent-ink: #23845c; --px-h: 155; --px-s: 57%; --px-l: 56%;
+}
+.hp-home[data-theme="pixel"] .hp-slot:nth-child(3n) {
+	--px-bg: #f2eeff; --px-floor: #ddd3ff; --px-dot: rgba(155, 127, 240, 0.15); --px-accent: #b39bf7; --px-soft: #e2d9ff; --px-shade: #a996e0;
+	--px-accent-ink: #6b4fc8; --px-h: 255; --px-s: 85%; --px-l: 79%;
+}
+
+/* ---------- Tokens. The page's (light), and every pastel surface's in light and dark: ink on pastel. Obsidian's own
+   colours are mapped to them too, so whatever a module draws with them follows the palette. ---------- */
+.hp-home[data-theme="pixel"],
+.hp-home[data-theme="pixel"] :is(.hp-card, .hp-panel, .hp-pill, .hp-knob, .hp-accent, div.m-proj-filter, input.hp-track, .hp-tip, .hp-set, .hp-add-pop, .hp-tk-wrap, .hp-handle, select.hp-variant) {
+	--hm-text: var(--px-ink); --hm-muted: var(--px-muted); --hm-faint: var(--px-faint);
+	--hm-accent: var(--px-accent); --hm-accent-ink: var(--px-accent-ink); --hm-on-accent: var(--px-ink);
+	--hm-soft: var(--px-soft);
+	--hm-fill: linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0 2px, transparent 2px), var(--px-accent); /* a highlight pixel row on top */
+	--hm-late: #d23c5a; --hm-live: #2fae78; --hm-soon: #e08a2c;
+	--hm-line: color-mix(in srgb, var(--px-ink) 16%, transparent);
+	--hm-track: var(--px-floor);
+	--hm-hover: color-mix(in srgb, var(--px-soft) 75%, transparent);
+	--hm-bg: var(--px-paper);
+	--hm-surface: var(--px-bg);
+	--hm-surface-2: color-mix(in srgb, var(--px-paper) 62%, var(--px-bg));
+	--hm-pop: var(--px-paper);
+	--text-normal: var(--hm-text); --text-muted: var(--hm-muted); --text-faint: var(--hm-faint);
+	--text-accent: var(--hm-accent-ink); --text-accent-hover: var(--hm-accent-ink); --text-on-accent: var(--hm-on-accent); --text-error: var(--hm-late);
+	--interactive-accent: var(--hm-accent); --interactive-accent-hover: var(--hm-accent);
+	--background-primary: var(--hm-bg); --background-primary-alt: var(--hm-surface-2); --background-secondary: var(--hm-surface-2);
+	--background-modifier-border: var(--hm-line); --background-modifier-hover: var(--hm-hover);
+	--accent-h: var(--px-h); --accent-s: var(--px-s); --accent-l: var(--px-l);
+	--link-color: var(--hm-text); --link-color-hover: var(--hm-accent-ink); --link-external-color: var(--hm-text); --link-unresolved-color: var(--hm-muted);
+}
+/* The page itself (not its surfaces): its own paper, and in dark a plum night with light text. */
+.hp-home[data-theme="pixel"] {
+	--hm-bg: var(--px-page);
+	--hm-shadow-color: rgba(74, 44, 64, 0.32);
+	--hm-shadow: 0 0 0 0 transparent;                  /* no soft shadows: the frame and the floor do the work */
+	--hm-radius: 0px; --hm-radius-sm: 0px;
+	--hm-gap: 20px;
+	--hm-knob: 36px;                                   /* the Pomodoro's key size */
+	--hm-sec-h: 36px;                                  /* every title row: one key tall */
+	--hm-pad: 18px;                                    /* inside a card: from its frame to its content */
+	--hm-font: var(--px-font); --hm-font-display: var(--px-font);
+	--hm-display-weight: 800; --hm-display-spacing: 0;
+	font-size: 0.88em;
+}
+.theme-dark .hp-home[data-theme="pixel"] {
+	--hm-text: #fbe9f0; --hm-muted: #d0b3c3; --hm-faint: #9a8091; --hm-accent-ink: #ff9fab;
+	--hm-soft: color-mix(in srgb, var(--px-accent) 24%, transparent);
+	--hm-line: rgba(255, 214, 222, 0.16); --hm-hover: rgba(255, 214, 222, 0.08); --hm-track: rgba(255, 214, 222, 0.14);
+	--hm-shadow-color: rgba(0, 0, 0, 0.55);
+}
+/* Pixels are square: no rounded corners anywhere (the Pomodoro has none either). */
+.hp-home[data-theme="pixel"] *, .hp-home[data-theme="pixel"] *::before, .hp-home[data-theme="pixel"] *::after { border-radius: 0 !important; }
+
+/* ---------- Materials ---------- */
+.hp-home[data-theme="pixel"] .hp-card {
+	color: var(--hm-text);
+	border: 4px solid var(--px-ink); border-image: var(--px-frame) 4 / 4px stretch;
+	background: radial-gradient(var(--px-dot) 1.2px, transparent 1.6px) 0 0 / 12px 12px, var(--px-bg);
+	background-clip: padding-box;                    /* the cut corners show the page */
+	box-shadow: inset 0 -7px 0 0 var(--px-floor);    /* the floor */
+	-webkit-backdrop-filter: none; backdrop-filter: none;
+}
+.hp-home[data-theme="pixel"] .hp-panel {
+	color: var(--hm-text);
+	background: var(--hm-surface-2); border: 0; box-shadow: inset 0 0 0 2px var(--px-shade);
+}
+/* Keys: paper with an ink rim and a shaded lip; they sink when pressed. */
+.hp-home[data-theme="pixel"] :is(.hp-pill, .hp-knob, .hp-accent) {
+	--btn-bg: var(--px-paper); --btn-shadow: inset 0 0 0 3px var(--px-ink), inset 0 -5px 0 0 var(--px-shade);
+	border: 0; background: var(--btn-bg); box-shadow: var(--btn-shadow); color: var(--hm-text);
+}
+.hp-home[data-theme="pixel"] .hp-accent { --btn-bg: var(--px-accent); --btn-shadow: inset 0 0 0 3px var(--px-ink), inset 0 -5px 0 0 color-mix(in srgb, var(--px-accent) 70%, var(--px-ink)); color: var(--px-ink) !important; }
+.hp-home[data-theme="pixel"] button:is(.hp-pill, .hp-knob, .hp-accent) { clip-path: var(--px-cut); transition: transform 0.08s steps(2); }
+.hp-home[data-theme="pixel"] button:is(.hp-pill, .hp-knob):hover:not(:disabled) { --btn-bg: #fff; }
+.hp-home[data-theme="pixel"] button.hp-accent:hover:not(:disabled) { --btn-bg: color-mix(in srgb, var(--px-accent) 86%, #fff); }
+.hp-home[data-theme="pixel"] button:is(.hp-pill, .hp-knob, .hp-accent):active:not(:disabled) { transform: translateY(2px); --btn-shadow: inset 0 0 0 3px var(--px-ink), inset 0 -2px 0 0 var(--px-shade); }
+.hp-home[data-theme="pixel"] button:is(.hp-pill, .hp-knob, .hp-accent):focus-visible { outline: 2px dashed var(--px-ink); outline-offset: -7px; }
+.hp-home[data-theme="pixel"] .hp-track { background: var(--hm-track); }
+/* A track that is a box (the projects' filter, a search field) is a paper well in an ink frame. */
+.hp-home[data-theme="pixel"] :is(div.m-proj-filter, div.m-up-seg, input.hp-track) { color: var(--hm-text); background: var(--px-paper); box-shadow: inset 0 0 0 3px var(--px-ink); }
+.hp-home[data-theme="pixel"] div.m-up-seg { padding: 5px; }
+.hp-home[data-theme="pixel"] .m-up-glide { top: 5px; bottom: 5px; background: var(--px-soft); box-shadow: inset 0 0 0 2px var(--px-ink); }
+.hp-home[data-theme="pixel"] :is(.m-up-c1-card, .m-up-p, .m-up-t) { outline: 2px solid var(--px-shade); outline-offset: -2px; }
+.hp-home[data-theme="pixel"] div.m-proj-filter { padding: 5px; }
+.hp-home[data-theme="pixel"] input.hp-track { padding-inline: 14px; }
+.hp-home[data-theme="pixel"] input.hp-track:focus { box-shadow: inset 0 0 0 3px var(--px-ink), inset 0 0 0 5px var(--px-soft); }
+.hp-home[data-theme="pixel"] .hp-kicker { font-size: 0.74em; font-weight: 800; letter-spacing: 0.14em; color: var(--hm-accent-ink); }
+
+/* ---------- Shared pieces ---------- */
+.hp-home[data-theme="pixel"] a { color: inherit !important; }
+.hp-home[data-theme="pixel"] a:hover { color: var(--hm-accent-ink) !important; }
+.hp-home[data-theme="pixel"] :is(a, button, [tabindex]):not(.hp-tk-wrap *, .hp-pill, .hp-knob, .hp-accent):focus-visible { outline: 2px dashed currentColor; outline-offset: 2px; }
+/* Section titles: small caps-lock labels with a pixel in the module's colour. */
+.hp-home[data-theme="pixel"] .hp-sec-title { font-size: 0.95em; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+.hp-home[data-theme="pixel"] .hp-sec-title::before {
+	content: ""; display: inline-block; width: 10px; height: 10px; margin-right: 10px; vertical-align: 0.05em;
+	background: var(--px-accent); box-shadow: inset 0 0 0 2px var(--px-ink);
+}
+.theme-dark .hp-home[data-theme="pixel"] .hp-sec-title::before { box-shadow: none; }
+.hp-home[data-theme="pixel"] .hp-label { letter-spacing: 0.12em; }
+.hp-home[data-theme="pixel"] .hp-btn { min-height: 36px; --btn-pad: 0 14px; font-size: 0.78em; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+.hp-home[data-theme="pixel"] .hp-btn:hover:not(:disabled) { transform: none; filter: none; }
+.hp-home[data-theme="pixel"] .hp-sec-aside .hp-btn { min-height: 30px; --btn-pad: 0 11px; font-size: 0.74em; }
+.hp-home[data-theme="pixel"] .hp-round { color: var(--px-ink); }
+.hp-home[data-theme="pixel"] .hp-chip { font-size: 0.8em; font-weight: 700; --btn-pad: 0 11px; }
+.hp-home[data-theme="pixel"] .hp-chip .hp-ico { color: var(--px-accent-ink); }
+/* Bars in steps: a fill made of cells (any colour: soon, late), columns in rows of cells. */
+.hp-home[data-theme="pixel"] .hp-meter { height: 8px; }
+.hp-home[data-theme="pixel"] :is(.hp-meter-fill, .m-stats-bar-track i, .m-pstats-hbar-track i, .hp-tk-track-fill) {
+	-webkit-mask: repeating-linear-gradient(90deg, #000 0 6px, transparent 6px 8px); mask: repeating-linear-gradient(90deg, #000 0 6px, transparent 6px 8px);
+}
+.hp-home[data-theme="pixel"] :is(.m-stats-col i, .m-sermons-wave i) {
+	-webkit-mask: repeating-linear-gradient(0deg, #000 0 5px, transparent 5px 7px); mask: repeating-linear-gradient(0deg, #000 0 5px, transparent 5px 7px);
+}
+.hp-home[data-theme="pixel"] :is(.hp-ring svg, svg.m-pstats-svg) { shape-rendering: crispEdges; }
+.hp-home[data-theme="pixel"] .hp-ring-fill { stroke-linecap: butt; }
+/* The Active switch: a pixel key. */
+.hp-home[data-theme="pixel"] .hp-switch-track { box-shadow: inset 0 0 0 2px var(--px-ink); background: var(--px-paper); }
+.hp-home[data-theme="pixel"] .hp-switch-track::after { top: 4px; left: 4px; width: 12px; height: 12px; background: var(--px-muted); box-shadow: none; transition: transform 0.12s steps(3); }
+.hp-home[data-theme="pixel"] .hp-switch input:checked + .hp-switch-track { background: var(--px-accent); }
+.hp-home[data-theme="pixel"] .hp-switch input:checked + .hp-switch-track::after { background: var(--px-ink); }
+/* Pop-ups: paper in an ink frame, a hard pixel shadow below. */
+.hp-home[data-theme="pixel"] .hp-tip { color: var(--hm-text); background: var(--px-paper); box-shadow: inset 0 0 0 3px var(--px-ink); padding: 9px 12px; }
+.hp-home[data-theme="pixel"] .hp-set { background: var(--px-paper); box-shadow: inset 0 0 0 3px var(--px-ink), 0 5px 0 0 var(--hm-shadow-color); }
+.hp-home[data-theme="pixel"] .hp-set-title { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.95em; }
+.hp-home[data-theme="pixel"] .hp-set-acts { margin: 0 -13px -13px; padding: 10px 13px 13px; background: var(--px-paper); border-top: 2px solid var(--px-soft); }
+.hp-home[data-theme="pixel"] button.hp-set-chip { box-shadow: inset 0 0 0 2px var(--hm-line); }
+.hp-home[data-theme="pixel"] button.hp-set-chip.is-on { box-shadow: inset 0 0 0 2px var(--px-ink); color: var(--px-ink); }
+.hp-home[data-theme="pixel"] button.hp-set-tile.is-on { box-shadow: inset 0 0 0 3px var(--px-ink); }
+
+/* Module touches */
+.hp-home[data-theme="pixel"] :is(.m-greet-title, .m-dial-title) em { font-style: normal; }
+.hp-home[data-theme="pixel"] .m-dial-center, .hp-home[data-theme="pixel"] :is(.m-next-ev-orb, .m-next-ev-haze) { border-radius: 50% !important; } /* the dial's face and the event card's orb stay round */
+.hp-home[data-theme="pixel"] button.m-proj-filter-btn { color: var(--px-muted); font-weight: 800; }
+.hp-home[data-theme="pixel"] button.m-proj-filter-btn[aria-pressed="true"] { --btn-bg: var(--px-soft); --btn-shadow: inset 0 0 0 2px var(--px-ink); color: var(--px-ink); }
+
+/* ---------- Arrange mode ---------- */
+.hp-home[data-theme="pixel"].is-arranging .hp-slot { outline: 2px dashed color-mix(in srgb, var(--hm-text) 45%, transparent); }
+.hp-home[data-theme="pixel"] .hp-arrange-bar.hp-panel, .hp-home[data-theme="pixel"] .hp-add-pop.hp-panel { background: var(--px-paper); box-shadow: inset 0 0 0 3px var(--px-ink), 0 5px 0 0 var(--hm-shadow-color); }
+.hp-home[data-theme="pixel"] .hp-handle { color: var(--hm-text); background: var(--px-paper); box-shadow: inset 0 0 0 2px var(--px-ink); }
+.hp-home[data-theme="pixel"] .hp-seg { box-shadow: inset 0 0 0 2px var(--px-ink); }
+.hp-home[data-theme="pixel"] button.hp-seg-btn.is-on { color: var(--px-ink); }
+.hp-home[data-theme="pixel"] button.hp-seg-btn.hp-hide, .hp-home[data-theme="pixel"] select.hp-variant { box-shadow: inset 0 0 0 2px var(--px-ink); }
+.hp-home[data-theme="pixel"] select.hp-variant { background-color: var(--px-paper); }
+
+/* ---------- Task panel ---------- */
+.hp-home[data-theme="pixel"] .hp-tk-wrap { --tk-soft-edge: var(--px-shade); --tk-glow-today: var(--px-soft); --tk-glow-late: color-mix(in srgb, #d23c5a 14%, transparent); --tk-late-edge: color-mix(in srgb, #d23c5a 45%, var(--px-shade)); --tk-shadow: rgba(74, 44, 64, 0.32); }
+.hp-home[data-theme="pixel"] .hp-tk-wrap :is(button, input, a, [tabindex]):focus-visible { outline: 2px dashed var(--px-ink); }
+.hp-home[data-theme="pixel"] .hp-tk-wrap .hp-tk-kicker { letter-spacing: 0.14em; }
+.hp-home[data-theme="pixel"] .hp-tk-wrap :is(nav, div).hp-pill { box-shadow: inset 0 0 0 2px var(--px-ink); }
+.hp-home[data-theme="pixel"] .hp-tk-wrap .hp-tk-pop { background: var(--px-paper); box-shadow: inset 0 0 0 3px var(--px-ink), 0 5px 0 0 var(--hm-shadow-color); -webkit-backdrop-filter: none; backdrop-filter: none; }
+
+/* ---------- The top bar and the menus under it (outside the page box, so scoped by their sibling) ---------- */
+.hp-tb-box:has(~ .hp-home[data-theme="pixel"]) {
+	--text-normal: var(--px-ink); --text-muted: var(--px-muted); --text-accent: var(--px-accent-ink); --text-on-accent: var(--px-ink);
+	--interactive-accent: var(--px-accent); --background-primary: var(--px-paper);
+}
+.hp-tb-box:has(~ .hp-home[data-theme="pixel"]) .hp-tb-bar {
+	--tb-line: var(--px-ink); --tb-pill: var(--px-paper); --tb-raised: var(--px-soft); --tb-edge: transparent;
+	font-family: var(--px-font); border-radius: 0;
+	border: 4px solid var(--px-ink); border-image: var(--px-frame) 4 / 4px stretch;
+	background: radial-gradient(var(--px-dot) 1.2px, transparent 1.6px) 0 0 / 12px 12px, var(--px-bg); background-clip: padding-box;
+	box-shadow: inset 0 -6px 0 0 var(--px-floor);
+	-webkit-backdrop-filter: none; backdrop-filter: none;
+	padding: 5px 6px 10px 8px;
+}
+.hp-tb-box:has(~ .hp-home[data-theme="pixel"]) :is(.hp-tb-bar, .hp-tb-nav, .hp-tb-create, .hp-tb-extra, .hp-tb-nav a, .hp-tb-glide, .hp-tb-brand, .hp-tb-brand .hp-tb-ico, button) { border-radius: 0 !important; }
+.hp-tb-box:has(~ .hp-home[data-theme="pixel"]) .hp-tb-brand { font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; font-size: 0.9em; }
+.hp-tb-box:has(~ .hp-home[data-theme="pixel"]) .hp-tb-brand .hp-tb-ico { color: var(--px-ink); background: var(--px-accent); box-shadow: inset 0 0 0 3px var(--px-ink); clip-path: var(--px-cut); }
+.hp-tb-box:has(~ .hp-home[data-theme="pixel"]) :is(.hp-tb-nav, .hp-tb-extra) { background: var(--px-paper); box-shadow: inset 0 0 0 3px var(--px-ink); padding: 4px; clip-path: var(--px-cut); }
+.hp-tb-box:has(~ .hp-home[data-theme="pixel"]) .hp-tb-create { padding: 0; gap: 4px; background: none; box-shadow: none; }
+.hp-tb-box:has(~ .hp-home[data-theme="pixel"]) .hp-tb-nav a { font-size: 0.74em; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; padding: 7px 11px; }
+.hp-tb-box:has(~ .hp-home[data-theme="pixel"]) .hp-tb-nav .hp-tb-value.is-current a { color: var(--px-ink) !important; background: var(--px-soft); box-shadow: inset 0 0 0 2px var(--px-ink); }
+.hp-tb-box:has(~ .hp-home[data-theme="pixel"]) .hp-tb-glide { background: var(--px-bg); box-shadow: inset 0 0 0 2px var(--px-shade); transition-timing-function: steps(4), steps(4), steps(4), ease; }
+.hp-tb-box:has(~ .hp-home[data-theme="pixel"]) .hp-tb-bar button.hp-tb-icon { color: var(--px-ink); }
+.hp-tb-box:has(~ .hp-home[data-theme="pixel"]) .hp-tb-bar button.hp-tb-icon:hover, .hp-tb-box:has(~ .hp-home[data-theme="pixel"]) .hp-tb-bar button.hp-tb-icon[aria-expanded="true"] { background: var(--px-soft); box-shadow: inset 0 0 0 2px var(--px-ink); }
+.hp-tb-box:has(~ .hp-home[data-theme="pixel"]) .hp-tb-bar button.hp-tb-icon.is-on { color: var(--px-ink); background: var(--px-soft); box-shadow: inset 0 0 0 2px var(--px-ink); }
+.hp-tb-box:has(~ .hp-home[data-theme="pixel"]) .hp-tb-bar button.hp-tb-primary {
+	--btn-bg: var(--px-accent); --btn-shadow: inset 0 0 0 3px var(--px-ink), inset 0 -5px 0 0 color-mix(in srgb, var(--px-accent) 70%, var(--px-ink));
+	height: 36px; font-size: 0.74em; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--px-ink); clip-path: var(--px-cut);
+	transition: transform 0.08s steps(2);
+}
+.hp-tb-box:has(~ .hp-home[data-theme="pixel"]) .hp-tb-bar button.hp-tb-primary:hover { transform: none; filter: none; --btn-bg: color-mix(in srgb, var(--px-accent) 86%, #fff); }
+.hp-tb-box:has(~ .hp-home[data-theme="pixel"]) .hp-tb-bar button.hp-tb-primary:active { transform: translateY(2px); --btn-shadow: inset 0 0 0 3px var(--px-ink), inset 0 -2px 0 0 color-mix(in srgb, var(--px-accent) 70%, var(--px-ink)); }
+.hp-tb-box:has(~ .hp-home[data-theme="pixel"]) .hp-tb-bar button:focus-visible { outline: 2px dashed var(--px-ink); outline-offset: -6px; }
+@container (max-width: 1100px) { .hp-tb-box:has(~ .hp-home[data-theme="pixel"]) .hp-tb-bar { border-radius: 0; } }
+.hp-hs-layer:has(~ .hp-home[data-theme="pixel"]) .hp-hs-menu {
+	border-radius: 0; font-family: var(--px-font); background: var(--px-paper); box-shadow: inset 0 0 0 3px var(--px-ink), 0 5px 0 0 rgba(74, 44, 64, 0.32);
+	padding: 8px; animation-timing-function: steps(3);
+}
+.hp-hs-layer:has(~ .hp-home[data-theme="pixel"]) :is(.hp-hs-menu-title, .hp-hs-item b, .hp-hs-item small, button.hp-hs-item) { font-family: var(--px-font); }
+.hp-hs-layer:has(~ .hp-home[data-theme="pixel"]) .hp-hs-menu-title { color: var(--px-muted); letter-spacing: 0.12em; }
+.hp-hs-layer:has(~ .hp-home[data-theme="pixel"]) .hp-hs-menu button.hp-hs-item { border-radius: 0; color: var(--px-ink); }
+.hp-hs-layer:has(~ .hp-home[data-theme="pixel"]) .hp-hs-item small { color: var(--px-muted); }
+.hp-hs-layer:has(~ .hp-home[data-theme="pixel"]) .hp-hs-menu button.hp-hs-item:hover, .hp-hs-layer:has(~ .hp-home[data-theme="pixel"]) .hp-hs-menu button.hp-hs-item:focus-visible { background: var(--px-bg); }
+.hp-hs-layer:has(~ .hp-home[data-theme="pixel"]) .hp-hs-menu button.hp-hs-item:focus-visible { outline: 2px dashed var(--px-ink); outline-offset: -2px; }
+.hp-hs-layer:has(~ .hp-home[data-theme="pixel"]) .hp-hs-mark { border-radius: 0; box-shadow: inset 0 0 0 2px var(--px-ink); color: var(--px-ink); }
+.hp-hs-layer:has(~ .hp-home[data-theme="pixel"]) .hp-hs-item.is-on .hp-hs-mark { background: var(--px-accent); box-shadow: inset 0 0 0 2px var(--px-ink); }
+.hp-hs-layer:has(~ .hp-home[data-theme="pixel"]) .hp-hs-item.is-action .hp-hs-mark { box-shadow: none; color: var(--px-muted); }
+.hp-hs-layer:has(~ .hp-home[data-theme="pixel"]) .hp-hs-sep { height: 2px; background: var(--px-soft); }
+.hp-hs-layer:has(~ .hp-home[data-theme="pixel"]) .hp-hs-menu button.hp-hs-item.is-danger b { color: #b8324a; }
+
+@media (prefers-reduced-motion: reduce) {
+	.hp-home[data-theme="pixel"] button, .hp-home[data-theme="pixel"] .hp-switch-track::after { transition: none !important; }
+}
+

@@ -1,0 +1,10 @@
+/* Shortcuts — structure only. */
+.hp-home .m-short { display: flex; flex-wrap: wrap; align-items: center; align-content: flex-start; justify-content: space-between; gap: 12px 28px; padding: var(--hm-pad); }
+.hp-home .m-short-group { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; min-width: 0; }
+.hp-home .m-short-acts, .hp-home .m-short-links { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.hp-home .m-short-button, .hp-home .m-short-button p { display: inline; margin: 0 !important; }
+.hp-home .m-short-button .mb-button { display: inline-flex; max-width: 100%; }
+.hp-home .m-short-button button { --button-padding: 5px 11px; --button-padding-active: 5px 11px; min-height: 32px; height: auto; border-radius: 6px; font-size: 1em; white-space: normal; overflow-wrap: anywhere; }
+.hp-home .m-short-link a { display: flex; align-items: center; min-height: 32px; padding: 5px 11px; border: 1px solid var(--hm-line); border-radius: 6px; background: var(--hm-bg); color: var(--hm-text) !important; font-weight: 600; line-height: 1.25; }
+.hp-home .m-short-link a:hover { border-color: var(--hm-accent); color: var(--hm-accent-ink) !important; }
+

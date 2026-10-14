@@ -1,0 +1,14 @@
+/* Coming up — structure only. */
+.hp-home .m-soon { display: flex; flex-direction: column; gap: 16px; padding: var(--hm-pad); }
+.hp-home .m-soon-day { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 8px; font-size: 0.84em; font-weight: 700; }
+.hp-home .m-soon-day span { font-size: 0.9em; font-weight: 600; color: var(--hm-faint); }
+.hp-home .m-soon-day span.is-soon { color: var(--hm-accent-ink); }
+.hp-home .m-soon-list { display: flex; flex-direction: column; gap: 4px; margin-left: 5px; padding-left: 16px; border-left: 2px solid var(--hm-line); }
+.hp-home .m-soon-item { position: relative; margin-left: -8px; padding: 6px 8px; border-radius: 12px; cursor: pointer; transition: background 0.15s ease; }
+.hp-home .m-soon-item:hover { background: var(--hm-hover); }
+.hp-home .m-soon-item::before { content: ""; position: absolute; left: -15px; top: 12px; width: 10px; height: 10px; border-radius: 50%; background: var(--hm-bg); box-shadow: inset 0 0 0 2px var(--hm-accent); }
+.hp-home .m-soon-item.is-next::before { background: var(--hm-accent); }
+.hp-home .m-soon-time { font-size: 0.72em; font-weight: 750; letter-spacing: 0.02em; color: var(--hm-accent-ink); font-variant-numeric: tabular-nums; }
+.hp-home .m-soon-title { font-size: 0.92em; font-weight: var(--hm-row-weight); line-height: 1.3; }
+.hp-home .m-soon-sub { font-size: 0.78em; color: var(--hm-muted); }
+

@@ -1,0 +1,11 @@
+/* Vault at a glance */
+.hp-home .m-glance-card { padding: var(--hm-pad); }
+.hp-home .m-glance { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: var(--hm-gap-in); }
+.hp-home .m-glance-tile { display: flex; flex-direction: column; gap: 4px; padding: calc(var(--hm-pad-in) * 0.75) var(--hm-pad-in); }
+.hp-home .m-glance-top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.hp-home .m-glance-name { font-family: var(--hm-font-display); font-weight: var(--hm-title-weight); }
+.hp-home .m-glance-name a { color: var(--hm-text) !important; }
+.hp-home .m-glance-name a:hover { color: var(--hm-accent-ink) !important; }
+.hp-home .m-glance-top b { font-size: 1.4em; }
+.hp-home .m-glance-purpose { font-size: 0.8em; color: var(--hm-muted); }
+

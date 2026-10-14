@@ -1,0 +1,70 @@
+/* Sunday roster — structure only; colours from the theme's tokens and materials. */
+.hp-home .m-roster { display: flex; flex-direction: column; gap: 18px; padding: var(--hm-pad); }
+.hp-home .m-roster-empty { padding: 4px 0; }
+.hp-home .m-roster-view { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+.hp-home .m-roster-view:empty { display: none; }
+
+/* The date: a day badge, the day in words, how far off, and your own roles */
+.hp-home .m-roster-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
+.hp-home .m-roster-badge { display: flex; flex-direction: column; align-items: center; justify-content: center; flex: none; width: 3.9em; height: 3.9em; line-height: 1.05; }
+.hp-home .m-roster-badge b { font-size: 1.6em; }
+.hp-home .m-roster-badge span { font-size: 0.66em; font-weight: 750; letter-spacing: 0.08em; text-transform: uppercase; color: var(--hm-accent-ink); }
+.hp-home .m-roster-badge.is-today { background: var(--hm-accent); border-color: transparent; color: var(--hm-on-accent); }
+.hp-home .m-roster-badge.is-today span { color: var(--hm-on-accent); }
+.hp-home .m-roster-when { flex: 1 1 12em; min-width: 0; }
+.hp-home .m-roster-day { font-family: var(--hm-font-display); font-size: 1.22em; font-weight: var(--hm-display-weight); letter-spacing: var(--hm-display-spacing); line-height: 1.2; }
+.hp-home .m-roster-sub { margin-top: 2px; font-size: 0.84em; color: var(--hm-muted); }
+.hp-home .m-roster-you { align-self: flex-start; max-width: 100%; display: inline-flex; align-items: center; gap: 7px; min-height: 30px; padding: 0 13px; font-size: 0.82em; font-weight: 650; color: var(--hm-accent-ink); background: var(--hm-soft); box-shadow: none; }
+
+/* Churches one under the other, each with its name; a line between them */
+.hp-home .m-roster-churches { display: flex; flex-direction: column; gap: 22px; }
+.hp-home .m-roster-church { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.hp-home .m-roster-church + .m-roster-church { padding-top: 20px; border-top: 1px solid var(--hm-line); }
+.hp-home .m-roster-church-name { font-family: var(--hm-font-display); font-size: 1.05em; font-weight: var(--hm-display-weight); letter-spacing: var(--hm-display-spacing); line-height: 1.2; }
+.hp-home .m-roster-note { font-size: 0.82em; color: var(--hm-muted); }
+
+/* Services side by side when there is room */
+.hp-home .m-roster-services { display: grid; gap: 20px 32px; }
+@container slot (min-width: 640px) {
+	.hp-home .m-roster.is-list .m-roster-services.is-multi { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+}
+.hp-home .m-roster-service { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.hp-home .m-roster-svc { padding-bottom: 2px; }
+
+/* Names: a title (CS., MS.) drawn small; you, marked */
+.hp-home .m-roster-names { min-width: 0; font-weight: 600; line-height: 1.5; }
+.hp-home .m-roster-name { white-space: nowrap; }
+.hp-home .m-roster-title { margin-right: 4px; font-size: 0.74em; font-weight: 650; letter-spacing: 0.02em; color: var(--hm-faint); }
+.hp-home .m-roster-sep { color: var(--hm-faint); font-weight: 400; }
+.hp-home .m-roster-name.is-me { margin: 0 -1px; padding: 1px 6px; border-radius: 7px; background: var(--hm-soft); color: var(--hm-accent-ink); }
+.hp-home .m-roster-name a { color: inherit !important; }
+.hp-home .m-roster-name a:hover { color: var(--hm-accent-ink) !important; }
+
+/* list: role, then names, one row each */
+.hp-home .m-roster-rows { display: flex; flex-direction: column; }
+.hp-home .m-roster-row { display: grid; grid-template-columns: clamp(6.5em, 32%, 12em) minmax(0, 1fr); align-items: baseline; gap: 2px 14px; padding: 9px 0; }
+.hp-home .m-roster-row + .m-roster-row { border-top: 1px solid var(--hm-line); }
+.hp-home .m-roster-role { font-size: 0.82em; font-weight: 600; color: var(--hm-muted); overflow-wrap: anywhere; }
+.hp-home .m-roster-row.is-mine .m-roster-role { color: var(--hm-accent-ink); }
+.hp-home .m-roster-row .m-roster-name { white-space: normal; }
+@container slot (max-width: 400px) {
+	.hp-home .m-roster-row { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* tiles: a tile per role; services one under the other, so each gets the full width */
+.hp-home .m-roster-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5em, 1fr)); gap: 10px; }
+.hp-home .m-roster-tile { display: flex; flex-direction: column; gap: 6px; min-width: 0; padding: 12px 14px; }
+.hp-home .m-roster-tile .m-roster-role { font-size: 0.7em; font-weight: 750; letter-spacing: 0.07em; text-transform: uppercase; }
+.hp-home .m-roster-tile .m-roster-names { font-size: 0.95em; line-height: 1.35; }
+.hp-home .m-roster-tile .m-roster-name { white-space: normal; }
+.hp-home .m-roster-tile.is-mine { box-shadow: inset 0 0 0 1.5px var(--hm-accent); }
+.hp-home .m-roster-tile.is-mine .m-roster-role { color: var(--hm-accent-ink); }
+
+/* The note it came from */
+.hp-home .m-roster-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 0.78em; color: var(--hm-faint); }
+.hp-home .m-roster-foot a { color: var(--hm-muted) !important; }
+.hp-home .m-roster-foot a:hover { color: var(--hm-accent-ink) !important; }
+
+/* Theme touches */
+.hp-home[data-theme="pulpit"] .m-roster { padding-inline: 0; }
+

@@ -1,0 +1,17 @@
+/* Recently preached / Recently edited — rows of links. */
+.hp-home .m-recent { display: flex; flex-direction: column; padding: var(--hm-pad); }
+.hp-home .m-recent-row:first-of-type { padding-top: 0; }
+.hp-home .m-recent-row:last-child { padding-bottom: 0; }
+.hp-home .m-recent > .hp-bar { margin-bottom: 4px; }
+.hp-home .m-recent-row { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 11px 0; }
+.hp-home .m-recent-row + .m-recent-row { border-top: 1px solid var(--hm-line); }
+.hp-home .m-recent-date { display: flex; flex-direction: column; align-items: center; line-height: 1.05; }
+.hp-home .m-recent-date b { font-size: 1.35em; }
+.hp-home .m-recent-date span { font-size: 0.7em; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--hm-muted); }
+.hp-home .m-recent-main { min-width: 0; }
+.hp-home .m-recent-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: var(--hm-row-weight); }
+.hp-home .m-recent-title a { color: var(--hm-text) !important; }
+.hp-home .m-recent-title a:hover { color: var(--hm-accent-ink) !important; }
+.hp-home .m-recent-sub { font-size: 0.8em; color: var(--hm-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hp-home .m-recent-side { font-size: 0.76em; color: var(--hm-faint); white-space: nowrap; font-variant-numeric: tabular-nums; }
+

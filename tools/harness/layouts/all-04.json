@@ -1,0 +1,35 @@
+{
+  "name": "All modules 04",
+  "items": [
+    {
+      "module": "greeting",
+      "w": 12,
+      "variant": "masthead"
+    },
+    {
+      "module": "countdown",
+      "w": 4,
+      "variant": "candle"
+    },
+    {
+      "module": "active-sermons",
+      "w": 8,
+      "variant": "board"
+    },
+    {
+      "module": "active-projects",
+      "w": 6,
+      "variant": "rings"
+    },
+    {
+      "module": "roster",
+      "w": 6,
+      "variant": "list"
+    },
+    {
+      "module": "preaching-dial",
+      "w": 12,
+      "variant": ""
+    }
+  ]
+}

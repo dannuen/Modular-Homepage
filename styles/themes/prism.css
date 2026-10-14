@@ -1,0 +1,36 @@
+/* THEME · Prism — project-first: opaque cards with a hairline and a soft fall below, pill filters and a search box,
+   the accent for counts and the next date. Obsidian's colours, light and dark. */
+.hp-home[data-theme="prism"] {
+	--hm-surface: var(--background-primary);
+	--hm-surface-2: color-mix(in srgb, var(--text-normal) 5%, var(--background-primary));
+	--hm-soft: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.14);
+	--hm-line: color-mix(in srgb, var(--text-normal) 11%, transparent);
+	--hm-track: color-mix(in srgb, var(--text-normal) 12%, transparent);
+	--hm-soon: #c26a12;
+	--pr-edge: rgba(255, 255, 255, 0.6);
+	--hm-shadow: inset 0 1px 0 var(--pr-edge), 0 24px 32px -32px rgba(20, 16, 40, 0.42);
+	--hm-radius: 22px; --hm-radius-sm: 16px;
+	--hm-gap: 18px; --hm-gap-x: 28px;
+	--hm-sec-h: 36px;
+	--hm-display-weight: 760;
+	--hm-display-spacing: -0.025em;
+}
+.theme-dark .hp-home[data-theme="prism"] {
+	--hm-surface: color-mix(in srgb, var(--text-normal) 4%, var(--background-primary));
+	--hm-surface-2: color-mix(in srgb, var(--text-normal) 8%, var(--background-primary));
+	--hm-soon: #f0a458;
+	--pr-edge: rgba(255, 255, 255, 0.07);
+	--hm-shadow: inset 0 1px 0 var(--pr-edge), 0 24px 32px -32px rgba(0, 0, 0, 0.75);
+}
+.hp-home[data-theme="prism"] .hp-pill { --btn-bg: var(--hm-surface-2); --btn-shadow: none; }
+.hp-home[data-theme="prism"] .hp-knob { --btn-bg: var(--hm-surface-2); --btn-shadow: none; }
+.hp-home[data-theme="prism"] .hp-sec { margin: 8px 6px 4px; }
+.hp-home[data-theme="prism"] .hp-sec-title { font-size: 1.3em; }
+.hp-home[data-theme="prism"] a:hover { text-decoration: underline !important; text-underline-offset: 3px; }
+.hp-home[data-theme="prism"] :is(.m-proj-title, .m-sermons-title) a:hover { text-decoration: none !important; }
+.hp-home[data-theme="prism"] .m-greet-title em { font-style: normal; }
+.hp-home[data-theme="prism"] .hp-panel .hp-pill { --btn-bg: var(--hm-surface); } /* a pill on a grey tile (an open agenda item) */
+.hp-home[data-theme="prism"] .m-proj-filter { background: var(--hm-surface-2); }
+.hp-home[data-theme="prism"] input.m-proj-search { background: var(--hm-surface-2); }
+.hp-home[data-theme="prism"] .m-sermons-ddate b { letter-spacing: -0.04em; }
+

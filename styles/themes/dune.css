@@ -1,0 +1,328 @@
+/* THEME · Dune — warm frosted glass on sand, after Dan's reference: translucent cream panels with a soft bright edge
+   resting on a sand-coloured page lit by a low orange sun; the reference's black pills for the main actions (white text,
+   a round arrow joined to them), white pills for the chosen state, and one orange: the glowing orb, progress and the
+   few things that are close. Type is light and geometric (regular weight, large, sentence case: no capital kickers).
+   Next sermon shows as the reference's event card here (ThemeDef.variants): the day big on a frosted panel over the
+   orange orb. Dark mode: the same glass, smoky, over warm charcoal; the main actions turn cream.
+   Only the top bar and the pop-ups blur what is behind them (the event card's orb is blurred by a filter on a copy);
+   cards are translucent gradients, so a page full of them scrolls smoothly. Shadows under anything at the column edge
+   fall only below (blur ≈ −spread): Obsidian clips what a block draws past its sides.
+   Sections: page · palette · tokens · materials · shared pieces · module touches · arrange · task panel · top bar · menus */
+
+/* ---------- The page: sand, a haze of light at the top, a low orange sun at the bottom right; warm charcoal in dark ---------- */
+.markdown-preview-view:has(.hp-home[data-theme="dune"]), .markdown-source-view:has(.hp-home[data-theme="dune"]) .cm-scroller {
+	background:
+		radial-gradient(38% 30% at 96% 104%, rgba(255, 138, 52, 0.26), transparent 70%),
+		radial-gradient(30% 26% at 4% 96%, rgba(255, 196, 150, 0.22), transparent 70%),
+		radial-gradient(60% 40% at 72% -6%, rgba(255, 255, 255, 0.7), transparent 70%),
+		linear-gradient(180deg, #f1e9e1 0%, #ebe1d6 55%, #e6d9cc 100%);
+}
+.theme-dark .markdown-preview-view:has(.hp-home[data-theme="dune"]), .theme-dark .markdown-source-view:has(.hp-home[data-theme="dune"]) .cm-scroller {
+	background:
+		radial-gradient(38% 30% at 96% 104%, rgba(255, 122, 26, 0.17), transparent 70%),
+		radial-gradient(30% 26% at 4% 96%, rgba(255, 170, 110, 0.07), transparent 70%),
+		radial-gradient(60% 40% at 72% -6%, rgba(255, 236, 220, 0.06), transparent 70%),
+		linear-gradient(180deg, #221d19 0%, #1b1714 55%, #161210 100%);
+}
+
+/* ---------- Palette (shared with the top bar and the menus) ---------- */
+.hp-home[data-theme="dune"], .hp-tb-box:has(~ .hp-home[data-theme="dune"]), .hp-hs-layer:has(~ .hp-home[data-theme="dune"]) {
+	--du-ink: #221f1c; --du-muted: #5c534c; --du-faint: #73695f;
+	--du-solid: #f6f1ec;                                                                 /* a solid light for knock-outs and the add list */
+	--du-black: #1d1b19; --du-on-black: #fbf8f4; --du-black-hover: #34302c;              /* the main actions: the reference's black pills */
+	--du-white: #ffffff;                                                                 /* the chosen state: the reference's white pill ("I forgot") */
+	--du-orange: #ff7a1a; --du-orange-hi: #ffb27a; --du-orange-deep: #a8460c;            /* the orb; its light side; orange text */
+	--du-orange-soft: rgba(255, 122, 26, 0.14); --du-orange-edge: rgba(230, 110, 30, 0.45);
+	--du-glass-a: rgba(255, 252, 249, 0.66); --du-glass-b: rgba(250, 244, 238, 0.42);    /* a card: the lit top, the bottom */
+	--du-panel-a: rgba(255, 255, 255, 0.5); --du-panel-b: rgba(255, 255, 255, 0.3);      /* a panel or field inside a card */
+	--du-pill: rgba(255, 255, 255, 0.52); --du-pill-hover: rgba(255, 255, 255, 0.78);   /* a plain pill or knob */
+	--du-edge: rgba(255, 255, 255, 0.75); --du-edge-soft: rgba(255, 255, 255, 0.42);     /* the bright edge along the glass */
+	--du-line: rgba(34, 31, 28, 0.1); --du-line-strong: rgba(34, 31, 28, 0.26); --du-check-edge: rgba(34, 31, 28, 0.5);
+	--du-well: rgba(34, 31, 28, 0.08); --du-hover: rgba(255, 255, 255, 0.55);
+	--du-shadow: rgba(84, 56, 34, 0.3); --du-shadow-2: rgba(84, 56, 34, 0.14);
+	--du-pop: rgba(250, 246, 242, 0.9);
+	--du-late: #c2382b; --du-live: #2e9a62; --du-soon: #c25609;
+	--du-focus: #c25609;                                                                 /* keyboard focus: the orb's orange, deep enough for 3:1 on the sand */
+	--du-radius-pop: 22px;
+	/* The glass: a bright edge all round (brighter at the top), a soft lift; and the falls under it. */
+	--du-rim: inset 0 0 0 1px var(--du-edge-soft), inset 0 1px 0 var(--du-edge);
+	--du-fall: 0 26px 30px -26px var(--du-shadow);
+	--du-fall-sm: 0 1px 2px var(--du-shadow-2), 0 6px 10px -8px var(--du-shadow);
+	--du-orb: radial-gradient(circle at 32% 28%, #ffc48f 0%, #ffa257 30%, #ff7d1f 64%, #f2680a 100%);
+	--du-sun: radial-gradient(circle at 50% 50%, #ffb27a, #ff7a1a 70%);
+	/* Obsidian's accent hue, for the few module parts that mix their own colour from it (the photo card's tint, meshes). */
+	--accent-h: 24; --accent-s: 90%; --accent-l: 58%;
+}
+.theme-dark .hp-home[data-theme="dune"], .theme-dark .hp-tb-box:has(~ .hp-home[data-theme="dune"]), .theme-dark .hp-hs-layer:has(~ .hp-home[data-theme="dune"]) {
+	--du-ink: #f2ece6; --du-muted: #b8ada3; --du-faint: #a0958b;
+	--du-solid: #26211d;
+	--du-black: #f1ebe4; --du-on-black: #1d1a17; --du-black-hover: #ffffff;           /* the main actions turn cream */
+	--du-white: rgba(255, 255, 255, 0.16);
+	--du-orange: #ff8a33; --du-orange-hi: #ffbb88; --du-orange-deep: #ffab6e;
+	--du-orange-soft: rgba(255, 138, 51, 0.16); --du-orange-edge: rgba(255, 150, 80, 0.5);
+	--du-glass-a: rgba(255, 240, 228, 0.085); --du-glass-b: rgba(255, 240, 228, 0.045);
+	--du-panel-a: rgba(255, 255, 255, 0.075); --du-panel-b: rgba(255, 255, 255, 0.04);
+	--du-pill: rgba(255, 255, 255, 0.09); --du-pill-hover: rgba(255, 255, 255, 0.16);
+	--du-edge: rgba(255, 240, 225, 0.16); --du-edge-soft: rgba(255, 240, 225, 0.08);
+	--du-line: rgba(255, 240, 225, 0.11); --du-line-strong: rgba(255, 240, 225, 0.26); --du-check-edge: rgba(255, 240, 225, 0.45);
+	--du-well: rgba(0, 0, 0, 0.28); --du-hover: rgba(255, 255, 255, 0.08);
+	--du-shadow: rgba(0, 0, 0, 0.6); --du-shadow-2: rgba(0, 0, 0, 0.3);
+	--du-pop: rgba(40, 35, 31, 0.92);
+	--du-late: #f4a49b; --du-live: #5fd394; --du-soon: #ffab6e;
+	--du-focus: var(--du-orange);
+}
+
+/* ---------- Tokens: what the modules draw with ---------- */
+.hp-home[data-theme="dune"] {
+	--hm-text: var(--du-ink); --hm-muted: var(--du-muted); --hm-faint: var(--du-faint);
+	--hm-accent: var(--du-black); --hm-accent-ink: var(--du-orange-deep); --hm-on-accent: var(--du-on-black);
+	--hm-title-weight: 500; --hm-row-weight: 500;
+	--hm-soft: var(--du-orange-soft);
+	--hm-fill: linear-gradient(90deg, var(--du-orange-hi), var(--du-orange));
+	--hm-late: var(--du-late); --hm-live: var(--du-live); --hm-soon: var(--du-soon);
+	--hm-line: var(--du-line); --hm-track: var(--du-well); --hm-hover: var(--du-hover);
+	--hm-bg: var(--du-solid);
+	--hm-surface: linear-gradient(170deg, var(--du-glass-a), var(--du-glass-b));
+	--hm-surface-2: linear-gradient(180deg, var(--du-panel-a), var(--du-panel-b));
+	--hm-pop: var(--du-pop);
+	--hm-shadow-color: var(--du-shadow);
+	--hm-shadow: var(--du-rim), var(--du-fall);
+	--hm-radius: 26px; --hm-radius-sm: 18px;
+	--hm-gap: 20px; --hm-gap-x: 20px;
+	--hm-knob: 36px; --hm-sec-h: 36px; --hm-pad: 22px;
+	--hm-font-display: "Outfit", "Urbanist", "Lexend", "Segoe UI Variable Display", "SF Pro Display", "Segoe UI", var(--font-interface);
+	--hm-display-weight: 420; --hm-display-spacing: -0.02em;
+	/* Obsidian's own variables, for whatever a module draws with them. */
+	--text-normal: var(--du-ink); --text-muted: var(--du-muted); --text-faint: var(--du-faint);
+	--text-accent: var(--du-orange-deep); --text-accent-hover: var(--du-orange-deep); --text-on-accent: var(--du-on-black); --text-error: var(--du-late);
+	--interactive-accent: var(--du-black); --interactive-accent-hover: var(--du-black-hover);
+	--background-primary: var(--du-solid); --background-primary-alt: var(--du-solid); --background-secondary: var(--du-solid);
+	--background-modifier-border: var(--du-line); --background-modifier-hover: var(--du-hover);
+	--link-color: var(--du-ink); --link-color-hover: var(--du-orange-deep); --link-external-color: var(--du-ink); --link-unresolved-color: var(--du-muted);
+}
+
+/* ---------- Materials ---------- */
+/* A card: warm frosted glass, a bright edge, a soft warm fall below. */
+.hp-home[data-theme="dune"] .hp-card { border: 0; background: var(--hm-surface); color: var(--hm-text); box-shadow: var(--hm-shadow); }
+/* A panel inside a card: the reference's input field, lighter glass with a faint edge. */
+.hp-home[data-theme="dune"] .hp-panel { border: 0; background: var(--hm-surface-2); color: var(--hm-text); box-shadow: inset 0 0 0 1px var(--du-edge-soft), inset 0 1px 0 var(--du-edge-soft); }
+/* Pills and knobs: translucent white, like the reference's fields; brighter on hover. */
+.hp-home[data-theme="dune"] :is(.hp-pill, .hp-knob) {
+	--btn-bg: var(--du-pill); --btn-shadow: inset 0 0 0 1px var(--du-edge-soft), inset 0 1px 0 var(--du-edge), 0 1px 2px var(--du-shadow-2);
+	border: 0; background: var(--btn-bg); box-shadow: var(--btn-shadow); color: var(--hm-text);
+}
+.hp-home[data-theme="dune"] button:is(.hp-pill, .hp-knob):hover:not(:disabled) { --btn-bg: var(--du-pill-hover); }
+/* The main action: the reference's black pill (cream in dark). */
+.hp-home[data-theme="dune"] .hp-accent {
+	--btn-bg: var(--du-black); --btn-shadow: 0 1px 2px var(--du-shadow-2), 0 8px 12px -8px var(--du-shadow);
+	border: 0; background: var(--btn-bg); box-shadow: var(--btn-shadow); color: var(--du-on-black) !important;
+}
+.hp-home[data-theme="dune"] button.hp-accent:hover:not(:disabled) { --btn-bg: var(--du-black-hover); }
+.hp-home[data-theme="dune"] button:is(.hp-pill, .hp-knob, .hp-accent) { transition: transform 0.12s ease, background 0.15s ease, box-shadow 0.15s ease; }
+.hp-home[data-theme="dune"] button:is(.hp-pill, .hp-knob, .hp-accent):active:not(:disabled) { transform: translateY(1px); }
+/* Keyboard focus: an orange ring outside the control, following its shape (deep enough for 3:1 on the sand and cream). */
+.hp-home[data-theme="dune"] :is(a, button, [tabindex]):where(:not(.hp-tk-wrap *)):focus-visible { outline: 2px solid var(--du-focus); outline-offset: 3px; }
+.hp-home[data-theme="dune"] :is(.hp-pill, .hp-knob, .hp-accent, .hp-set-chip, .hp-seg-btn, .hp-grip, .m-proj-filter-btn, .m-next-photo-open, .m-next-ev-go, .m-up-seg-btn, .m-up-gear):focus-visible { border-radius: 999px; }
+.hp-home[data-theme="dune"] .m-banner-gear:focus-visible { border-radius: 50%; }
+.hp-home[data-theme="dune"] .m-next-photo :focus-visible { outline-color: var(--du-orange); }   /* over the dark photo the bright one shows best */
+/* Sunken things: meters, sliders. */
+.hp-home[data-theme="dune"] .hp-track { background: var(--du-well); box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.08); }
+/* The search field: the reference's e-mail field, a translucent white pill. */
+.hp-home[data-theme="dune"] input.hp-track { color: var(--hm-text); background: var(--du-pill); box-shadow: inset 0 0 0 1px var(--du-edge-soft), inset 0 1px 0 var(--du-edge); }
+.hp-home[data-theme="dune"] input.hp-track:focus { box-shadow: inset 0 0 0 1.5px var(--du-focus); }
+.hp-home[data-theme="dune"] input.hp-track::placeholder { color: var(--du-faint); }
+/* Segmented controls (the projects' filter, the task kinds, the Up next switch, arrange's segments): a translucent
+   field holding a white pill for the chosen one (the reference's password field and "I forgot"). */
+.hp-home[data-theme="dune"] :is(div.m-proj-filter, .m-up-seg, .hp-seg), .hp-home[data-theme="dune"] .hp-tk-wrap .hp-tk-kind { padding: 3px; background: var(--du-panel-b); box-shadow: inset 0 0 0 1px var(--du-edge-soft), inset 0 1px 2px rgba(0, 0, 0, 0.04); }
+/* Kickers: sentence case and quiet, as the reference's small text. */
+.hp-home[data-theme="dune"] .hp-kicker { font-size: 0.86em; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--du-muted); }
+
+/* ---------- Shared pieces ---------- */
+.hp-home[data-theme="dune"] a { color: inherit !important; }
+.hp-home[data-theme="dune"] a:hover { color: var(--du-orange-deep) !important; }
+.hp-home[data-theme="dune"] .hp-sec { margin: 2px 8px 0; }
+.hp-home[data-theme="dune"] .hp-sec-title { font-size: 1.35em; }
+.hp-home[data-theme="dune"] .hp-sec-note { color: var(--du-muted); }
+.hp-home[data-theme="dune"] .hp-btn { font-weight: 550; }
+.hp-home[data-theme="dune"] .hp-btn:hover:not(:disabled), .hp-home[data-theme="dune"] .hp-tk-wrap .hp-tk-go:hover:not(:disabled) { transform: none; filter: none; }   /* pills brighten on hover; they sink when pressed */
+.hp-home[data-theme="dune"] .hp-round { color: var(--du-ink); }
+.hp-home[data-theme="dune"] .hp-chip { font-weight: 500; }
+.hp-home[data-theme="dune"] .hp-chip .hp-ico { color: var(--du-orange-deep); }
+/* Labels: sentence case (the reference has no capitals), a touch smaller than the text. */
+.hp-home[data-theme="dune"] .hp-label { font-size: 0.8em; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--du-muted); }
+/* The modules' own capital labels: sentence case too (the countdown's flip clock, nixie tubes and departure board keep
+   theirs, as part of those skins). */
+.hp-home[data-theme="dune"] :is(.m-cal-wd-name, .m-recent-date span, .m-next-photo-count small, .m-roster-badge span, .m-roster-tile .m-roster-role, .m-sermons-rail-rel, .m-sermons-facts dt, .m-sermons-ddate span, .m-up-church),
+.hp-home[data-theme="dune"] .hp-tk-wrap :is(.hp-tk-group-head, .hp-tk-cal-wd, .hp-tk-month-wd, .hp-tk-wall-label, .hp-tk-when.is-allday) { text-transform: none; letter-spacing: 0; font-weight: 600; }
+.hp-home[data-theme="dune"] .hp-meter { height: 6px; background: var(--du-well); }
+.hp-home[data-theme="dune"] .hp-ring-track { stroke: var(--du-well); }
+.hp-home[data-theme="dune"] .hp-ring-fill { stroke: var(--du-orange); }
+.hp-home[data-theme="dune"] .hp-ring.is-done .hp-ring-fill { stroke: var(--du-live); }
+.hp-home[data-theme="dune"] .hp-ring.is-soon .hp-ring-fill { stroke: var(--du-soon); }
+.hp-home[data-theme="dune"] .hp-ring.is-urgent .hp-ring-fill { stroke: var(--du-late); }
+/* The Active switch: a translucent field with a white knob; black (cream in dark) when on. */
+.hp-home[data-theme="dune"] .hp-switch { gap: 10px; color: var(--du-muted); }
+.hp-home[data-theme="dune"] .hp-switch-track { width: 40px; height: 22px; background: var(--du-well); box-shadow: inset 0 0 0 1px var(--du-line); }
+.hp-home[data-theme="dune"] .hp-switch-track::after { top: 2px; left: 2px; width: 18px; height: 18px; background: #fff; box-shadow: 0 1px 3px rgba(60, 40, 20, 0.3); transition: transform 0.2s cubic-bezier(0.3, 1.3, 0.5, 1); }
+.hp-home[data-theme="dune"] .hp-switch input:checked + .hp-switch-track { background: var(--du-black); box-shadow: none; }
+.hp-home[data-theme="dune"] .hp-switch input:checked + .hp-switch-track::after { transform: translateX(18px); }
+.theme-dark .hp-home[data-theme="dune"] .hp-switch input:checked + .hp-switch-track::after { background: #1d1a17; box-shadow: none; }
+.hp-home[data-theme="dune"] .hp-switch input:focus-visible + .hp-switch-track { outline: 2px solid var(--du-focus); outline-offset: 3px; }
+/* Pop-ups: milky warm glass, floating. */
+.hp-home[data-theme="dune"] :is(.hp-tip, .hp-set) {
+	color: var(--hm-text); background: var(--du-pop);
+	-webkit-backdrop-filter: blur(20px) saturate(1.2); backdrop-filter: blur(20px) saturate(1.2);
+	box-shadow: var(--du-rim), 0 20px 24px -22px var(--du-shadow);   /* the settings panel can sit 14px from the column edge */
+}
+.hp-home[data-theme="dune"] .hp-set { border-radius: var(--du-radius-pop); }
+.hp-home[data-theme="dune"] .hp-set-acts { background: transparent; border-top-color: var(--du-line); }
+.hp-home[data-theme="dune"] button.hp-set-chip { background: var(--du-pill); box-shadow: inset 0 0 0 1px var(--du-line); }
+.hp-home[data-theme="dune"] button.hp-set-chip:hover { box-shadow: inset 0 0 0 1px var(--du-line-strong); }
+.hp-home[data-theme="dune"] button.hp-set-chip.is-on { --btn-bg: var(--du-black); background: var(--btn-bg); color: var(--du-on-black); box-shadow: none; }
+.hp-home[data-theme="dune"] button.hp-set-tile { background: var(--du-well); box-shadow: inset 0 0 0 1px var(--du-line); }
+.hp-home[data-theme="dune"] button.hp-set-tile.is-on { box-shadow: 0 0 0 2px var(--du-focus); }
+
+/* ---------- Module touches ---------- */
+/* Next sermon's event card: the reference's white card (warm smoke in dark), the orange orb behind a frosted panel
+   whose glass thins toward the orb (denser where the text sits, and at the top, under the big date), and the black pill
+   with its joined arrow. */
+.hp-home[data-theme="dune"] .m-next-ev {
+	--ev-orb-fill: var(--du-orb); --ev-glass: linear-gradient(180deg, rgba(242, 238, 234, 0.45) 0 26%, rgba(242, 238, 234, 0) 40%), linear-gradient(90deg, rgba(242, 238, 234, 0.6), rgba(242, 238, 234, 0.42) 45%, rgba(228, 220, 214, 0.12)); --ev-go: var(--du-black); --ev-go-ink: var(--du-on-black);
+	background: linear-gradient(170deg, #fffdfb, #fbf8f5); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.9), var(--du-fall);
+}
+.theme-dark .hp-home[data-theme="dune"] .m-next-ev { --ev-glass: linear-gradient(180deg, rgba(30, 23, 18, 0.5) 0 26%, rgba(30, 23, 18, 0) 40%), linear-gradient(90deg, rgba(30, 23, 18, 0.7), rgba(30, 23, 18, 0.62) 50%, rgba(34, 22, 14, 0.16)); background: linear-gradient(170deg, #2a241f, #221d19); box-shadow: inset 0 0 0 1px var(--du-edge-soft), inset 0 1px 0 var(--du-edge), var(--du-fall); }
+.hp-home[data-theme="dune"] .m-next-ev-panel { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.55); }
+.theme-dark .hp-home[data-theme="dune"] .m-next-ev-panel { box-shadow: inset 0 0 0 1px var(--du-edge-soft), inset 0 1px 0 var(--du-edge-soft); }
+.hp-home[data-theme="dune"] .m-next-ev-day span { color: #7e776f; }
+.theme-dark .hp-home[data-theme="dune"] .m-next-ev-day span { color: #9a9087; }
+.hp-home[data-theme="dune"] .m-next-ev-when.is-near { color: var(--du-orange-deep); }
+.hp-home[data-theme="dune"] button.m-next-ev-go:hover { --ev-go: var(--du-black-hover); }
+/* The other next-sermon looks: Open sermon on the photo card stays a white pill with dark ink in both modes. */
+.hp-home[data-theme="dune"] button.m-next-photo-open { --btn-bg: #fff; color: #1d1b19; }
+/* The masthead: the reference's black "New in" card, plain (orange over black only mixes to brown). */
+.hp-home[data-theme="dune"] .m-greet-mast { color: #fbf8f4; background: linear-gradient(160deg, #24211e, #171513); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), var(--du-fall); }
+.theme-dark .hp-home[data-theme="dune"] .m-greet-mast { background: linear-gradient(160deg, #141210, #0d0b0a); box-shadow: inset 0 0 0 1px var(--du-edge-soft), inset 0 1px 0 var(--du-edge), var(--du-fall); }
+.hp-home[data-theme="dune"] .m-greet-daynum { font-weight: 300; }
+.hp-home[data-theme="dune"] .m-greet-weekday { font-weight: 400; }
+.hp-home[data-theme="dune"] .m-greet-hello { font-size: 0.95em; font-weight: 400; letter-spacing: 0; text-transform: none; opacity: 0.7; }
+/* (The masthead's parts only: the Glow look is its own lit slab in every theme.) */
+.hp-home[data-theme="dune"] .m-greet-mast .m-greet-next { font-weight: 400; }
+.hp-home[data-theme="dune"] .m-greet-mast .m-greet-when { color: #1d1b19; background: #fff; font-weight: 600; letter-spacing: 0; }
+.hp-home[data-theme="dune"] .m-greet-mast .m-greet-stat { border: 0; border-radius: 999px; background: rgba(255, 255, 255, 0.1); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14); }
+.hp-home[data-theme="dune"] :is(.m-greet-title, .m-dial-title) em { font-style: normal; color: var(--du-orange-deep); }
+/* The projects' filter and Up next's switch: the chosen one is a white pill. */
+.hp-home[data-theme="dune"] button.m-proj-filter-btn { color: var(--du-muted); font-weight: 550; }
+.hp-home[data-theme="dune"] button.m-proj-filter-btn[aria-pressed="true"] { --btn-bg: var(--du-white); color: var(--du-ink); box-shadow: 0 1px 2px var(--du-shadow-2), 0 4px 8px -6px var(--du-shadow); }
+.hp-home[data-theme="dune"] .m-up-glide { background: var(--du-white); box-shadow: 0 1px 2px var(--du-shadow-2), 0 4px 8px -6px var(--du-shadow); }
+.hp-home[data-theme="dune"] button.m-up-seg-btn.is-on { color: var(--du-ink); }
+.hp-home[data-theme="dune"] button.hp-btn.m-up-ink, .hp-home[data-theme="dune"] button.m-up-c1-arrow { --btn-bg: var(--du-black); background: var(--btn-bg); color: var(--du-on-black); }
+.hp-home[data-theme="dune"] :is(button.hp-btn.m-up-ink, button.m-up-c1-arrow):hover:not(:disabled) { --btn-bg: var(--du-black-hover); }
+/* Up next's card is dark in light mode and light in dark mode: its switch and focus ring take the card's own ink (the
+   black or cream ones would match the card), and so does the ring of the carousel's arrows, which sit on its edge. */
+.hp-home[data-theme="dune"] :is(.m-up-c1-card, .m-up-p, .m-up-t) { --du-focus: rgb(var(--m-on)); }
+.hp-home[data-theme="dune"] .m-up-c1-rail { --du-focus: rgb(var(--m-up-on, 255, 255, 255)); }
+.theme-dark .hp-home[data-theme="dune"] .m-up-c1-rail { --du-focus: rgb(var(--m-up-on, 30, 26, 24)); }
+.hp-home[data-theme="dune"] .m-up-foot .hp-switch input:checked + .hp-switch-track { background: rgb(var(--m-on)); }
+.hp-home[data-theme="dune"] .m-up-foot .hp-switch.hp-switch input:checked + .hp-switch-track::after { background: var(--m-panel); box-shadow: none; }   /* doubled: outranks the dark mode knob */
+.hp-home[data-theme="dune"] button.m-up-c1-dot.is-on { background: linear-gradient(90deg, var(--du-black), var(--du-orange)); }   /* not the accent's hue turned to lime */
+.hp-home[data-theme="dune"] .m-cd.is-live .m-cd-card { color: var(--du-orange-deep); }
+/* Countdown rings and dots: ink, two oranges and the muted sand instead of hues turned from the accent. */
+.hp-home[data-theme="dune"] .m-cd { --cd-c1: var(--du-black); --cd-c2: #d9620e; --cd-c3: var(--du-muted); --cd-c4: var(--du-orange-deep); }
+.theme-dark .hp-home[data-theme="dune"] .m-cd { --cd-c2: var(--du-orange); --cd-c4: var(--du-orange-hi); }
+/* Calendar marks: to-dos a clear red apart from the orange events in dark; dots on a preaching day get a ring of the
+   cell's ink. */
+.theme-dark .hp-home[data-theme="dune"] :is(.m-cal-marks, .m-cal-legend) i.is-todo { background: #ff6b5b; }
+.hp-home[data-theme="dune"] button.m-cal-day.is-preach .m-cal-marks i { box-shadow: 0 0 0 1.5px var(--hm-on-accent); }
+/* Project numbers: the inactive share is data, so it gets a visible neutral instead of the sunken well. */
+.hp-home[data-theme="dune"] .m-pstats-dot.is-track { background: var(--du-faint); }
+.hp-home[data-theme="dune"] .m-pstats-track { stroke: var(--du-faint); }
+/* Titles at the reference's regular weight (500: Regular on static Segoe UI); times and dates a step above. */
+.hp-home[data-theme="dune"] :is(.m-sermons-title, .m-sermons-btitle, .m-proj-title, .m-soon-title, .m-glance-name, .m-pstats-title, .m-dial-svc-title, .m-cal-caption, .m-recent-title, .m-actions-copy a, .m-roster-names, .m-next-ev-mark) { font-weight: 500; }
+.hp-home[data-theme="dune"] .hp-tk-wrap .hp-tk-text { font-weight: 500; }
+.hp-home[data-theme="dune"] :is(.m-soon-day, .m-soon-time, .m-sermons-open, .m-actions-badge, .hp-tk-wrap .hp-tk-when) { font-weight: 600; }
+/* The task groups' heads (Overdue, Today), in sentence case above: a touch larger, at the labels' weight. */
+.hp-home[data-theme="dune"] .hp-tk-wrap .hp-tk-group-head { font-size: 0.9em; font-weight: 500; }
+
+/* ---------- Arrange mode ---------- */
+.hp-home[data-theme="dune"].is-arranging .hp-slot { outline-color: var(--du-line-strong); }
+.hp-home[data-theme="dune"] .hp-arrange-bar.hp-panel { background: var(--du-pop); -webkit-backdrop-filter: blur(20px) saturate(1.2); backdrop-filter: blur(20px) saturate(1.2); }
+.hp-home[data-theme="dune"] .hp-arrange-bar.hp-arrange-bar { border-radius: var(--du-radius-pop); box-shadow: var(--du-rim), 0 24px 28px -26px var(--du-shadow); }   /* full width: the fall stays below */
+/* The add-module list opens inside the bar, which already blurs: it is solid. */
+.hp-home[data-theme="dune"] .hp-add-pop.hp-add-pop.hp-panel { color: var(--hm-text); background: var(--du-solid); -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: var(--du-rim), 0 18px 22px -20px var(--du-shadow); }
+.hp-home[data-theme="dune"] .hp-handle { color: var(--hm-text); background: var(--du-pop); box-shadow: var(--du-rim), 0 8px 12px -12px var(--du-shadow); }
+.hp-home[data-theme="dune"] .hp-seg { overflow: visible; }   /* its padding keeps the round buttons inside; hidden would cut their focus ring */
+.hp-home[data-theme="dune"] button.hp-seg-btn { border-radius: 999px; }
+.hp-home[data-theme="dune"] button.hp-seg-btn.is-on { --btn-bg: var(--du-white); color: var(--du-ink); box-shadow: 0 1px 2px var(--du-shadow-2), 0 4px 8px -6px var(--du-shadow); }
+.hp-home[data-theme="dune"] button.hp-seg-btn.hp-hide { background: var(--du-pill); box-shadow: inset 0 0 0 1px var(--du-line); }
+/* The variant select: view.css's chevron over a plain pill (its shorthand drops the chevron when --hm-surface is a gradient). */
+.hp-home[data-theme="dune"] select.hp-variant {
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236b625a' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 9px center / 11px, var(--du-pill);
+	box-shadow: inset 0 0 0 1px var(--du-line);
+}
+.theme-dark .hp-home[data-theme="dune"] select.hp-variant { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b8ada3' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); }
+.hp-home[data-theme="dune"] button.hp-grip:hover { background: var(--du-hover); }
+
+/* ---------- Task panel ---------- */
+.hp-home[data-theme="dune"] .hp-tk-wrap {
+	--tk-soft-edge: var(--du-orange-edge); --tk-on-bg: var(--du-black); --tk-on-ink: var(--du-on-black);
+	--tk-glow-today: var(--du-orange-soft); --tk-glow-late: color-mix(in srgb, var(--du-late) 13%, transparent); --tk-late-edge: color-mix(in srgb, var(--du-late) 45%, var(--du-line));
+	--tk-pop-bg: var(--du-pop); --tk-shadow: var(--du-shadow); --tk-group-bg: linear-gradient(180deg, var(--du-panel-a), var(--du-panel-b));
+}
+.hp-home[data-theme="dune"] .hp-tk-wrap :is(button, input, a, [tabindex]):focus-visible { outline: 2px solid var(--du-focus); }
+.hp-home[data-theme="dune"] .hp-tk-wrap .hp-tk-check { --btn-shadow: inset 0 0 0 1.5px var(--du-check-edge), 0 1px 2px var(--du-shadow-2); }   /* an empty check is only its edge: a white one would vanish */
+.hp-home[data-theme="dune"] .hp-tk-wrap .hp-tk-filter button.is-on, .hp-home[data-theme="dune"] .hp-tk-wrap .hp-tk-kind-btn.is-on { --btn-bg: var(--du-white); background: var(--btn-bg); color: var(--du-ink); box-shadow: 0 1px 2px var(--du-shadow-2), 0 4px 8px -6px var(--du-shadow); }
+.hp-home[data-theme="dune"] .hp-tk-wrap .hp-tk-pop { border-radius: var(--du-radius-pop); background: var(--du-pop); -webkit-backdrop-filter: blur(20px) saturate(1.2); backdrop-filter: blur(20px) saturate(1.2); box-shadow: var(--du-rim), 0 18px 30px -12px var(--du-shadow); }
+.hp-home[data-theme="dune"] .hp-tk-wrap .hp-tk-group { box-shadow: inset 0 0 0 1px var(--du-edge-soft); }
+
+/* ---------- The top bar and the menus under it (outside the page box, so scoped by their sibling) ---------- */
+.hp-tb-box:has(~ .hp-home[data-theme="dune"]) {
+	--text-normal: var(--du-ink); --text-muted: var(--du-muted); --text-accent: var(--du-orange-deep); --text-on-accent: var(--du-on-black);
+	--interactive-accent: var(--du-black); --background-primary: var(--du-solid); --background-modifier-border: var(--du-line);
+}
+.hp-tb-box:has(~ .hp-home[data-theme="dune"]) .hp-tb-bar {
+	--tb-line: transparent; --tb-pill: var(--du-panel-b); --tb-raised: var(--du-pill-hover); --tb-edge: transparent;
+	--tb-shadow: 0 26px 30px -26px var(--du-shadow);
+	border: 0; background: linear-gradient(170deg, var(--du-glass-a), var(--du-glass-b));
+	-webkit-backdrop-filter: blur(20px) saturate(1.25); backdrop-filter: blur(20px) saturate(1.25);
+	box-shadow: var(--du-rim), var(--tb-shadow);
+}
+.hp-tb-box:has(~ .hp-home[data-theme="dune"]) .hp-tb-brand { font-weight: 500; }
+/* The brand mark: the little orange sun. */
+.hp-tb-box:has(~ .hp-home[data-theme="dune"]) .hp-tb-brand .hp-tb-ico { color: #fff; background: var(--du-sun); box-shadow: 0 2px 6px rgba(255, 122, 26, 0.35); }
+.hp-tb-box:has(~ .hp-home[data-theme="dune"]) :is(.hp-tb-nav, .hp-tb-create, .hp-tb-extra) { background: var(--tb-pill); box-shadow: inset 0 0 0 1px var(--du-edge-soft); }
+.hp-tb-box:has(~ .hp-home[data-theme="dune"]) .hp-tb-nav a { font-weight: 500; color: var(--du-muted) !important; }
+.hp-tb-box:has(~ .hp-home[data-theme="dune"]) .hp-tb-nav a:hover, .hp-tb-box:has(~ .hp-home[data-theme="dune"]) .hp-tb-nav a:focus-visible { color: var(--du-ink) !important; }
+.hp-tb-box:has(~ .hp-home[data-theme="dune"]) .hp-tb-nav .hp-tb-value.is-current a { color: var(--du-ink) !important; background: var(--du-white); box-shadow: 0 1px 2px var(--du-shadow-2); }
+.hp-tb-box:has(~ .hp-home[data-theme="dune"]) .hp-tb-glide { background: transparent; box-shadow: inset 0 0 0 1px var(--du-line-strong); }   /* an outline: the white pill is the current link */
+.hp-tb-box:has(~ .hp-home[data-theme="dune"]) .hp-tb-nav a:focus-visible { outline: 2px solid var(--du-focus); outline-offset: -2px; }
+.hp-tb-box:has(~ .hp-home[data-theme="dune"]) .hp-tb-bar button.hp-tb-icon { color: var(--du-muted); }
+.hp-tb-box:has(~ .hp-home[data-theme="dune"]) .hp-tb-bar button.hp-tb-icon:hover, .hp-tb-box:has(~ .hp-home[data-theme="dune"]) .hp-tb-bar button.hp-tb-icon[aria-expanded="true"] { color: var(--du-ink); background: var(--du-pill-hover); }
+.hp-tb-box:has(~ .hp-home[data-theme="dune"]) .hp-tb-bar button.hp-tb-icon.is-on { color: var(--du-on-black); background: var(--du-black); }
+.hp-tb-box:has(~ .hp-home[data-theme="dune"]) .hp-tb-bar button.hp-tb-primary { --btn-bg: var(--du-black); --btn-shadow: 0 1px 2px var(--du-shadow-2), 0 6px 10px -8px var(--du-shadow); color: var(--du-on-black); font-weight: 600; transition: transform 0.12s ease, background 0.15s ease; }
+.hp-tb-box:has(~ .hp-home[data-theme="dune"]) .hp-tb-bar button.hp-tb-primary:hover { transform: none; filter: none; --btn-bg: var(--du-black-hover); }
+.hp-tb-box:has(~ .hp-home[data-theme="dune"]) .hp-tb-bar button.hp-tb-primary:active { transform: translateY(1px); }
+.hp-tb-box:has(~ .hp-home[data-theme="dune"]) .hp-tb-bar button:focus-visible { outline: 2px solid var(--du-focus); outline-offset: 2px; }
+.hp-tb-box:has(~ .hp-home[data-theme="dune"]) .hp-tb-more button.hp-tb-icon:focus-visible { outline-offset: -2px; }
+.hp-tb-box:has(~ .hp-home[data-theme="dune"]) .hp-tb-brand[role="link"]:focus-visible { outline-color: var(--du-focus); }
+/* The theme and layout menus: milky warm glass; the chosen item marked with a small black dot (cream in dark). */
+.hp-hs-layer:has(~ .hp-home[data-theme="dune"]) .hp-hs-menu {
+	border-radius: var(--du-radius-pop); padding: 8px; color: var(--du-ink); background: var(--du-pop);
+	-webkit-backdrop-filter: blur(20px) saturate(1.2); backdrop-filter: blur(20px) saturate(1.2);
+	box-shadow: var(--du-rim), 0 20px 24px -22px var(--du-shadow);   /* 10px from the column edge: the fall stays below */
+}
+.hp-hs-layer:has(~ .hp-home[data-theme="dune"]) .hp-hs-menu-title { color: var(--du-muted); letter-spacing: 0; text-transform: none; font-size: 12px; font-weight: 500; }
+.hp-hs-layer:has(~ .hp-home[data-theme="dune"]) .hp-hs-menu button.hp-hs-item { border-radius: 12px; color: var(--du-ink); }
+.hp-hs-layer:has(~ .hp-home[data-theme="dune"]) .hp-hs-item small { color: var(--du-muted); }
+.hp-hs-layer:has(~ .hp-home[data-theme="dune"]) .hp-hs-menu button.hp-hs-item:hover, .hp-hs-layer:has(~ .hp-home[data-theme="dune"]) .hp-hs-menu button.hp-hs-item:focus-visible { background: var(--du-hover); }
+.hp-hs-layer:has(~ .hp-home[data-theme="dune"]) .hp-hs-menu button.hp-hs-item:focus-visible { outline: 2px solid var(--du-focus); outline-offset: -2px; }
+.hp-hs-layer:has(~ .hp-home[data-theme="dune"]) .hp-hs-mark { box-shadow: inset 0 0 0 1.5px var(--du-line-strong); color: var(--du-on-black); }
+.hp-hs-layer:has(~ .hp-home[data-theme="dune"]) .hp-hs-item.is-on .hp-hs-mark { background: var(--du-black); box-shadow: none; }
+.hp-hs-layer:has(~ .hp-home[data-theme="dune"]) .hp-hs-item.is-action .hp-hs-mark { box-shadow: none; background: none; color: var(--du-muted); }
+.hp-hs-layer:has(~ .hp-home[data-theme="dune"]) .hp-hs-sep { background: var(--du-line); }
+.hp-hs-layer:has(~ .hp-home[data-theme="dune"]) .hp-hs-menu button.hp-hs-item.is-danger b { color: var(--du-late); }
+
+@media (prefers-reduced-motion: reduce) {
+	.hp-home[data-theme="dune"] button, .hp-tb-box:has(~ .hp-home[data-theme="dune"]) .hp-tb-bar button.hp-tb-primary, .hp-home[data-theme="dune"] .hp-switch-track::after { transition: none !important; }
+}
+.theme-dark .hp-home[data-theme="dune"] .m-next-ev { --ev-haze: blur(26px) saturate(1.7); }
+

@@ -1,0 +1,43 @@
+{
+  "name": "All modules 07",
+  "items": [
+    {
+      "module": "next-sermon",
+      "w": 4,
+      "variant": "compact",
+      "themed": {
+        "dune": "compact"
+      }
+    },
+    {
+      "module": "countdown",
+      "w": 8,
+      "variant": "words"
+    },
+    {
+      "module": "active-sermons",
+      "w": 6,
+      "variant": "panel"
+    },
+    {
+      "module": "roster",
+      "w": 6,
+      "variant": "tiles"
+    },
+    {
+      "module": "project-stats",
+      "w": 12,
+      "variant": ""
+    },
+    {
+      "module": "recently-edited",
+      "w": 6,
+      "variant": ""
+    },
+    {
+      "module": "vault-glance",
+      "w": 6,
+      "variant": ""
+    }
+  ]
+}

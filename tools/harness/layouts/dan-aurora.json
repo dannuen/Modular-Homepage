@@ -1,0 +1,35 @@
+{
+  "name": "Aurora",
+  "items": [
+    {
+      "module": "countdown",
+      "w": 12,
+      "variant": "flip"
+    },
+    {
+      "module": "banner",
+      "w": 12,
+      "variant": "photo"
+    },
+    {
+      "module": "active-sermons",
+      "w": 4,
+      "variant": "cards"
+    },
+    {
+      "module": "pomodoro",
+      "w": 4,
+      "variant": ""
+    },
+    {
+      "module": "calendar",
+      "w": 4,
+      "variant": "month"
+    },
+    {
+      "module": "active-projects",
+      "w": 12,
+      "variant": "browse"
+    }
+  ]
+}

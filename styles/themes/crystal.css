@@ -1,0 +1,341 @@
+/* THEME · Crystal — clear glass on soft grey, after Dan's reference: pill-shaped controls and rounded slabs cut from
+   thick clear glass (a bright rim that catches the light at both corners, a clear band behind it, a darker refraction
+   line just inside the top, a body shaded under that line and brightening toward a lit bottom edge, so it reads as
+   curved and thick), resting on a flat neutral-grey page under a soft fall of shadow. The glass is clear: a body no
+   lighter than the page, defined by its rim and its shadow. Steel blue is the one colour: a blue-tinted glass for the
+   primary button, the chosen segment and the masthead, a flat blue disc for the Active toggle's knob — with dark ink
+   on it, as in the reference. Dark mode: the same glass, smoky, over cool charcoal with a cool rim light. Its own
+   palette (the reference's), not the Obsidian accent.
+   Only the top bar and the pop-ups blur what is behind them; cards, pills and knobs are gradients and inset rims, so
+   a page full of them stays smooth. Shadows under anything at the column edge fall only below (blur ≈ −spread):
+   Obsidian clips what a block draws past its sides.
+   Sections: page · palette · tokens · materials · shared pieces · module touches · arrange · task panel · top bar · menus */
+
+/* ---------- The page: flat grey, lit softly from above; charcoal in dark ---------- */
+.markdown-preview-view:has(.hp-home[data-theme="crystal"]), .markdown-source-view:has(.hp-home[data-theme="crystal"]) .cm-scroller {
+	background: radial-gradient(140% 60% at 50% -8%, #eceef1 0%, #e1e3e7 48%, #dcdee2 100%);
+}
+.theme-dark .markdown-preview-view:has(.hp-home[data-theme="crystal"]), .theme-dark .markdown-source-view:has(.hp-home[data-theme="crystal"]) .cm-scroller {
+	background: radial-gradient(140% 60% at 50% -8%, #262930 0%, #1a1c21 48%, #141619 100%);
+}
+
+/* ---------- Palette: ink, the grey page, sky blue, and the glass itself (shared with the top bar and the menus) ---------- */
+.hp-home[data-theme="crystal"], .hp-tb-box:has(~ .hp-home[data-theme="crystal"]), .hp-hs-layer:has(~ .hp-home[data-theme="crystal"]) {
+	--cr-ink: #1b2130; --cr-muted: #525b6c; --cr-faint: #566070;
+	--cr-solid: #f5f6f9;                                                        /* a solid light for knock-outs */
+	--cr-blue: #7f9fd0; --cr-blue-deep: #275ab9; --cr-blue-ink: #0c2a5b;        /* the tint; blue text; ink on the tint */
+	--cr-blue-a: #aabfdc; --cr-blue-b: #8ea5c6; --cr-blue-c: #9bb1d0;           /* blue glass: the lit bottom, the shaded top, the middle */
+	--cr-blue-soft: rgba(104, 136, 190, 0.2); --cr-blue-edge: rgba(80, 115, 170, 0.45); --cr-blue-glow: rgba(90, 120, 170, 0.35);
+	--cr-blue-shade: rgba(20, 60, 140, 0.12);
+	--cr-glass-a: rgba(255, 255, 255, 0.3); --cr-glass-b: rgba(255, 255, 255, 0.14);                /* a slab's body: the lit bottom, the top */
+	--cr-pill-a: rgba(255, 255, 255, 0.4); --cr-pill-b: rgba(255, 255, 255, 0.12); --cr-pill-c: rgba(255, 255, 255, 0.26); /* a pill's body: bottom, top, middle */
+	--cr-chip-a: rgba(255, 255, 255, 0.8); --cr-chip-b: rgba(255, 255, 255, 0.56); --cr-chip-c: rgba(255, 255, 255, 0.64); /* a chip on the blue masthead: whiter, for its small text */
+	--cr-well: rgba(27, 33, 48, 0.07); --cr-well-edge: rgba(27, 33, 48, 0.1);                        /* sunken: tracks, fields */
+	--cr-rim: rgba(255, 255, 255, 0.98); --cr-rim-hi: rgba(255, 255, 255, 0.85); --cr-rim-lo: rgba(255, 255, 255, 0.75); --cr-rim-catch: #ffffff; /* the rim; its catch of light top-left and bottom-right */
+	--cr-band: rgba(255, 255, 255, 0.36); --cr-refract: rgba(38, 50, 78, 0.2);                       /* the clear band; the darker line inside it */
+	--cr-glow-in: rgba(255, 255, 255, 0.7); --cr-shade-in: rgba(38, 50, 78, 0.12);                   /* light along the inside of the top; shade along the bottom */
+	--cr-sheen: rgba(255, 255, 255, 0.12);                                                          /* the soft glint across the masthead */
+	--cr-radius-pop: 22px;                                                                          /* one corner for every pop-up */
+	--cr-line: rgba(27, 33, 48, 0.1); --cr-line-strong: rgba(27, 33, 48, 0.2); --cr-hover: rgba(255, 255, 255, 0.5);
+	--cr-shadow: rgba(26, 34, 52, 0.34); --cr-shadow-2: rgba(26, 34, 52, 0.16);
+	--cr-pop: rgba(255, 255, 255, 0.9);
+	--cr-late: #cf3038; --cr-live: #2aa66f; --cr-soon: #d9842a;
+	/* The rims (inset, first on top): rim · top-left catch · bottom-right catch · clear band · refraction line ·
+	   inner light along the top · inner shade along the bottom. Bold for controls, calmer for slabs and panels. */
+	--cr-rim-ctl: inset 0 0 0 1px var(--cr-rim), inset 2px 2px 0 -1px var(--cr-rim-hi), inset -2px -2px 0 -0.5px var(--cr-rim-catch),
+		inset 0 0 0 3px var(--cr-band), inset 0 4px 0 0 var(--cr-refract), inset 0 10px 10px -8px var(--cr-shade-in), inset 0 -12px 14px -12px var(--cr-glow-in);
+	--cr-rim-slab: inset 0 0 0 1px var(--cr-rim), inset 1.5px 1.5px 0 -0.5px var(--cr-rim-hi), inset -1.5px -1.5px 0 -0.5px var(--cr-rim-catch),
+		inset 0 0 0 4px color-mix(in srgb, var(--cr-band) 85%, transparent), inset 0 5px 0 0 color-mix(in srgb, var(--cr-refract) 85%, transparent),
+		inset 0 28px 32px -22px color-mix(in srgb, var(--cr-shade-in) 70%, transparent), inset 0 -28px 32px -24px color-mix(in srgb, var(--cr-glow-in) 60%, transparent);
+	--cr-rim-panel: inset 0 0 0 1px color-mix(in srgb, var(--cr-rim) 85%, transparent), inset 1px 1px 0 -0.5px var(--cr-rim-hi),
+		inset 0 0 0 3px color-mix(in srgb, var(--cr-band) 60%, transparent), inset 0 4px 0 0 color-mix(in srgb, var(--cr-refract) 65%, transparent),
+		inset 0 14px 18px -14px color-mix(in srgb, var(--cr-shade-in) 70%, transparent);
+	--cr-rim-blue: inset 0 0 0 1px rgba(255, 255, 255, 0.9), inset 2px 2px 0 -1px rgba(255, 255, 255, 0.85), inset -2px -2px 0 -0.5px rgba(255, 255, 255, 0.95),
+		inset 0 0 0 3px rgba(255, 255, 255, 0.3), inset 0 4px 0 0 var(--cr-blue-shade), inset 0 10px 12px -10px var(--cr-blue-shade), inset 0 -12px 14px -12px rgba(255, 255, 255, 0.7);
+	--cr-rim-track: inset 0 0 0 1px var(--cr-rim), inset 0 0 0 2.5px var(--cr-band), inset 0 0 0 3.5px var(--cr-refract), inset 0 2px 4px rgba(27, 33, 48, 0.08);
+	--cr-rim-chip: inset 0 0 0 1px rgba(255, 255, 255, 0.85), inset 0 -1.5px 0 -0.5px #fff, inset 0 2px 0 var(--cr-blue-shade);   /* a chosen chip: rim, lit bottom, shaded top */
+	/* The falls: a lifted control, a pressed one; and the press itself. */
+	--cr-fall: 0 1px 2px var(--cr-shadow-2), 0 8px 14px -8px var(--cr-shadow);
+	--cr-fall-down: 0 1px 1px var(--cr-shadow-2), 0 3px 6px -5px var(--cr-shadow);
+	--cr-press: inset 0 3px 6px rgba(27, 33, 48, 0.16);
+	/* The glass bodies. */
+	--cr-glass-sheen: linear-gradient(112deg, transparent 30%, var(--cr-sheen) 50%, transparent 70%);
+	--cr-glass-ctl: linear-gradient(180deg, var(--cr-pill-b) 0%, var(--cr-pill-c) 50%, var(--cr-pill-a) 100%);
+	--cr-glass-ctl-hover: linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.42) 45%, rgba(255, 255, 255, 0.66) 100%);
+	--cr-glass-chip: linear-gradient(180deg, var(--cr-chip-b) 0%, var(--cr-chip-c) 50%, var(--cr-chip-a) 100%);
+	--cr-glass-blue: linear-gradient(180deg, var(--cr-blue-b) 0%, var(--cr-blue-c) 55%, var(--cr-blue-a) 100%);
+	--cr-glass-blue-hover: linear-gradient(180deg, #a2b6d2 0%, #aec0d9 42%, #b9cbe3 100%);
+	--cr-bead-blue: radial-gradient(circle at 35% 30%, #b9d2f8, #5f90e6 60%, #3d72d4);   /* the menus' chosen mark */
+	/* Obsidian's accent hue, for the few module parts that mix their own colour from it (the photo card's tint). */
+	--accent-h: 219; --accent-s: 40%; --accent-l: 62%;
+}
+.theme-dark .hp-home[data-theme="crystal"], .theme-dark .hp-tb-box:has(~ .hp-home[data-theme="crystal"]), .theme-dark .hp-hs-layer:has(~ .hp-home[data-theme="crystal"]) {
+	--cr-ink: #e9ecf2; --cr-muted: #bec4ce; --cr-faint: #a0a6b0;
+	--cr-solid: #2a2e36;
+	--cr-blue: #6e9ce8; --cr-blue-deep: #c7dbfb; --cr-blue-ink: #0a1d3f;
+	--cr-blue-a: #a9c7f3; --cr-blue-b: #6f9de6; --cr-blue-c: #86b0ec;
+	--cr-blue-soft: rgba(120, 165, 240, 0.24); --cr-blue-edge: rgba(150, 190, 250, 0.5); --cr-blue-glow: rgba(110, 156, 232, 0.4);
+	--cr-blue-shade: rgba(10, 30, 70, 0.3);
+	--cr-glass-a: rgba(255, 255, 255, 0.11); --cr-glass-b: rgba(255, 255, 255, 0.05);
+	--cr-pill-a: rgba(255, 255, 255, 0.19); --cr-pill-b: rgba(255, 255, 255, 0.07); --cr-pill-c: rgba(255, 255, 255, 0.11);
+	--cr-chip-a: rgba(255, 255, 255, 0.2); --cr-chip-b: rgba(255, 255, 255, 0.08); --cr-chip-c: rgba(255, 255, 255, 0.12);
+	--cr-well: rgba(0, 0, 0, 0.26); --cr-well-edge: rgba(255, 255, 255, 0.08);
+	--cr-rim: rgba(255, 255, 255, 0.4); --cr-rim-hi: rgba(210, 230, 255, 0.5); --cr-rim-lo: rgba(160, 195, 245, 0.28); --cr-rim-catch: rgba(220, 236, 255, 0.6);
+	--cr-band: rgba(255, 255, 255, 0.06); --cr-refract: rgba(0, 0, 0, 0.32);
+	--cr-glow-in: rgba(190, 215, 255, 0.14); --cr-shade-in: rgba(0, 0, 0, 0.3);
+	--cr-sheen: rgba(255, 255, 255, 0.05);
+	--cr-rim-chip: inset 0 0 0 1px rgba(255, 255, 255, 0.5), inset 0 -1.5px 0 -0.5px rgba(255, 255, 255, 0.6), inset 0 2px 0 rgba(0, 0, 0, 0.25);
+	--cr-line: rgba(255, 255, 255, 0.1); --cr-line-strong: rgba(255, 255, 255, 0.22); --cr-hover: rgba(255, 255, 255, 0.09);
+	--cr-shadow: rgba(0, 0, 0, 0.62); --cr-shadow-2: rgba(0, 0, 0, 0.3);
+	--cr-pop: rgba(38, 42, 50, 0.92);
+	--cr-late: #f6aeb2; --cr-live: #4fcf92; --cr-soon: #f0a458;
+	--cr-press: inset 0 3px 6px rgba(0, 0, 0, 0.45);
+	--cr-glass-ctl-hover: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.15) 45%, rgba(255, 255, 255, 0.26) 100%);
+	--cr-glass-blue-hover: linear-gradient(180deg, #86adec 0%, #97bbef 42%, #bdd4f7 100%);
+	--cr-bead-blue: radial-gradient(circle at 35% 30%, #d2e3fb, #8fb5ef 65%, #7aa4ea);
+	--accent-l: 66%;
+}
+
+/* ---------- Tokens: what the modules draw with ---------- */
+.hp-home[data-theme="crystal"] {
+	--hm-text: var(--cr-ink); --hm-muted: var(--cr-muted); --hm-faint: var(--cr-faint);
+	--hm-accent: var(--cr-blue); --hm-accent-ink: var(--cr-blue-deep); --hm-on-accent: var(--cr-blue-ink);
+	--hm-soft: var(--cr-blue-soft);
+	--hm-fill: linear-gradient(180deg, var(--cr-blue-a), var(--cr-blue-b));
+	--hm-late: var(--cr-late); --hm-live: var(--cr-live); --hm-soon: var(--cr-soon);
+	--hm-line: var(--cr-line); --hm-track: var(--cr-well); --hm-hover: var(--cr-hover);
+	--hm-bg: var(--cr-solid);
+	--hm-surface: linear-gradient(160deg, var(--cr-glass-b), var(--cr-glass-a));
+	--hm-surface-2: linear-gradient(180deg, var(--cr-pill-b), var(--cr-pill-a));
+	--hm-pop: var(--cr-pop);
+	--hm-shadow-color: var(--cr-shadow);
+	--hm-shadow: var(--cr-rim-slab), 0 30px 34px -30px var(--cr-shadow);
+	--hm-radius: 26px; --hm-radius-sm: 18px;
+	--hm-gap: 20px; --hm-gap-x: 20px;
+	--hm-knob: 36px; --hm-sec-h: 36px; --hm-pad: 20px;
+	--hm-display-weight: 700; --hm-display-spacing: -0.025em;
+	/* Obsidian's own variables, for whatever a module draws with them. */
+	--text-normal: var(--cr-ink); --text-muted: var(--cr-muted); --text-faint: var(--cr-faint);
+	--text-accent: var(--cr-blue-deep); --text-accent-hover: var(--cr-blue-deep); --text-on-accent: var(--cr-blue-ink); --text-error: var(--cr-late);
+	--interactive-accent: var(--cr-blue); --interactive-accent-hover: var(--cr-blue);
+	--background-primary: var(--cr-solid); --background-primary-alt: var(--cr-solid); --background-secondary: var(--cr-solid);
+	--background-modifier-border: var(--cr-line); --background-modifier-hover: var(--cr-hover);
+	--link-color: var(--cr-ink); --link-color-hover: var(--cr-blue-deep); --link-external-color: var(--cr-ink); --link-unresolved-color: var(--cr-muted);
+}
+
+/* ---------- Materials ---------- */
+/* A slab: a clear body (no blur: the page behind it is flat, and a page of blurred cards scrolls badly), the thick rim, a soft fall below. */
+.hp-home[data-theme="crystal"] .hp-card {
+	border: 0; background: var(--hm-surface); color: var(--hm-text);
+	box-shadow: var(--hm-shadow);
+}
+/* A panel inside a slab: lighter glass, a thinner rim, a faint lift. */
+.hp-home[data-theme="crystal"] .hp-panel {
+	border: 0; background: var(--hm-surface-2); color: var(--hm-text);
+	box-shadow: var(--cr-rim-panel), 0 6px 10px -10px var(--cr-shadow-2);
+}
+/* Pills and knobs: thick clear glass, lifted; they sink when pressed. */
+.hp-home[data-theme="crystal"] :is(.hp-pill, .hp-knob) {
+	--btn-bg: var(--cr-glass-ctl); --btn-shadow: var(--cr-rim-ctl), inset 0 3px 6px transparent, var(--cr-fall);   /* the transparent slot is where the press goes, so the two lists ease into each other */
+	border: 0; background: var(--btn-bg); box-shadow: var(--btn-shadow); color: var(--hm-text);
+}
+.hp-home[data-theme="crystal"] button:is(.hp-pill, .hp-knob):hover:not(:disabled) { --btn-bg: var(--cr-glass-ctl-hover); }
+/* The tinted glass: the primary button, the chosen state. */
+.hp-home[data-theme="crystal"] .hp-accent {
+	--btn-bg: var(--cr-glass-blue); --btn-shadow: var(--cr-rim-blue), inset 0 3px 6px transparent, 0 1px 2px var(--cr-shadow-2), 0 8px 14px -8px var(--cr-blue-glow);
+	border: 0; background: var(--btn-bg); box-shadow: var(--btn-shadow); color: var(--cr-blue-ink) !important;
+}
+.hp-home[data-theme="crystal"] button.hp-accent:hover:not(:disabled) { --btn-bg: var(--cr-glass-blue-hover); }
+.hp-home[data-theme="crystal"] button:is(.hp-pill, .hp-knob, .hp-accent) { transition: transform 0.12s ease, box-shadow 0.12s ease; }
+.hp-home[data-theme="crystal"] button:is(.hp-pill, .hp-knob):active:not(:disabled) { transform: translateY(1px); --btn-shadow: var(--cr-rim-ctl), var(--cr-press), var(--cr-fall-down); }
+.hp-home[data-theme="crystal"] button.hp-accent:active:not(:disabled) { transform: translateY(1px); --btn-shadow: var(--cr-rim-blue), inset 0 3px 6px var(--cr-blue-shade), 0 1px 1px transparent, 0 2px 4px -3px var(--cr-blue-glow); }
+/* Keyboard focus: a blue ring outside the glass, following each control's own shape. */
+.hp-home[data-theme="crystal"] :is(a, button, [tabindex]):where(:not(.hp-tk-wrap *)):focus-visible { outline: 2px solid var(--cr-blue-deep); outline-offset: 3px; }
+.hp-home[data-theme="crystal"] :is(.hp-pill, .hp-knob, .hp-accent, .hp-set-chip, .hp-seg-btn, .hp-grip, .m-proj-filter-btn, .m-next-photo-open, .m-up-seg-btn, .m-up-gear):focus-visible { border-radius: 999px; }
+.hp-home[data-theme="crystal"] .m-banner-gear:focus-visible { border-radius: 50%; }
+/* Sunken things: meters and sliders only. */
+.hp-home[data-theme="crystal"] .hp-track { background: var(--cr-well); box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), 0 1px 0 var(--cr-rim-lo); }
+/* The search field and the segmented controls (the projects' filter, the task kinds, the Up next switch, arrange's
+   segments): raised clear pills like the buttons (the reference's Search and Today | Week), holding their chips
+   inside the rim. */
+.hp-home[data-theme="crystal"] input.hp-track { color: var(--hm-text); background: var(--cr-glass-ctl); box-shadow: var(--cr-rim-ctl), var(--cr-fall-down); }
+.hp-home[data-theme="crystal"] input.hp-track:focus { box-shadow: var(--cr-rim-ctl), inset 0 0 0 1.5px var(--cr-blue-edge), var(--cr-fall-down); }
+.hp-home[data-theme="crystal"] :is(div.m-proj-filter, .m-up-seg, .hp-seg), .hp-home[data-theme="crystal"] .hp-tk-wrap .hp-tk-kind { padding: 4px; background: var(--cr-glass-ctl); box-shadow: var(--cr-rim-ctl), var(--cr-fall-down); }
+.hp-home[data-theme="crystal"] input.hp-track::placeholder { color: var(--cr-faint); }
+.hp-home[data-theme="crystal"] .hp-kicker { color: var(--cr-blue-deep); font-weight: 700; letter-spacing: 0.12em; }
+
+/* ---------- Shared pieces ---------- */
+.hp-home[data-theme="crystal"] a { color: inherit !important; }
+.hp-home[data-theme="crystal"] a:hover { color: var(--cr-blue-deep) !important; }
+.hp-home[data-theme="crystal"] .hp-sec { margin: 2px 8px 0; }
+.hp-home[data-theme="crystal"] .hp-sec-title { font-size: 1.25em; }
+.hp-home[data-theme="crystal"] .hp-sec-note { color: var(--cr-muted); }
+.hp-home[data-theme="crystal"] .hp-btn { font-weight: 650; }
+.hp-home[data-theme="crystal"] .hp-btn:hover:not(:disabled), .hp-home[data-theme="crystal"] .hp-tk-wrap .hp-tk-go:hover:not(:disabled) { transform: none; filter: none; }   /* pills sink when pressed; they do not lift on hover */
+.hp-home[data-theme="crystal"] .hp-round { color: var(--cr-ink); }
+.hp-home[data-theme="crystal"] .hp-chip { font-weight: 600; }
+.hp-home[data-theme="crystal"] .hp-chip .hp-ico { color: var(--cr-blue-deep); }
+.hp-home[data-theme="crystal"] .hp-label { color: var(--cr-muted); }
+.hp-home[data-theme="crystal"] .hp-meter { height: 7px; background: var(--cr-well); box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), 0 1px 0 var(--cr-rim-lo); }
+.hp-home[data-theme="crystal"] .hp-meter-fill { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6); }
+.hp-home[data-theme="crystal"] .hp-ring-track { stroke: var(--cr-well-edge); }
+/* The Active switch: the same lifted glass pill as the buttons; the knob a flat matte disc, blue when on (the reference's toggle). */
+.hp-home[data-theme="crystal"] .hp-switch { gap: 10px; color: var(--cr-muted); }
+.hp-home[data-theme="crystal"] .hp-switch-track { width: 44px; height: 24px; background: var(--cr-glass-ctl); box-shadow: var(--cr-rim-ctl), var(--cr-fall-down); }
+.hp-home[data-theme="crystal"] .hp-switch-track::after {
+	top: 2px; left: 2px; width: 20px; height: 20px;
+	background: #e4e6ea; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), inset 0 -1.5px 0 rgba(27, 33, 48, 0.28), 0 1px 2px rgba(27, 33, 48, 0.25);
+	transition: transform 0.2s cubic-bezier(0.3, 1.3, 0.5, 1), background 0.2s ease;
+}
+.hp-home[data-theme="crystal"] .hp-switch input:checked + .hp-switch-track { background: var(--cr-glass-ctl); }
+.hp-home[data-theme="crystal"] .hp-switch input:checked + .hp-switch-track::after { transform: translateX(20px); background: #7498d2; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), inset 0 -1.5px 0 rgba(20, 45, 100, 0.5), 0 1px 2px var(--cr-blue-glow); }
+.theme-dark .hp-home[data-theme="crystal"] .hp-switch-track::after { background: #b8bfca; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), inset 0 -1.5px 0 rgba(0, 0, 0, 0.35), 0 1px 2px rgba(0, 0, 0, 0.45); }
+.theme-dark .hp-home[data-theme="crystal"] .hp-switch input:checked + .hp-switch-track::after { background: #7aa4ea; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), inset 0 -1.5px 0 rgba(10, 30, 70, 0.5), 0 1px 2px var(--cr-blue-glow); }
+.hp-home[data-theme="crystal"] .hp-switch input:focus-visible + .hp-switch-track { outline: 2px solid var(--cr-blue-deep); outline-offset: 3px; }
+/* Pop-ups: milky glass with a rim, floating. */
+.hp-home[data-theme="crystal"] :is(.hp-tip, .hp-set) {
+	color: var(--hm-text); background: var(--cr-pop);
+	-webkit-backdrop-filter: blur(20px) saturate(1.3); backdrop-filter: blur(20px) saturate(1.3);
+	box-shadow: var(--cr-rim-panel), 0 20px 24px -22px var(--cr-shadow);   /* the settings panel can sit 14px from the column edge */
+}
+.hp-home[data-theme="crystal"] .hp-set { border-radius: var(--cr-radius-pop); }
+.hp-home[data-theme="crystal"] .hp-set-acts { background: transparent; border-top-color: var(--cr-line); }
+.hp-home[data-theme="crystal"] button.hp-set-chip { background: var(--cr-glass-ctl); box-shadow: inset 0 1px 0 var(--cr-rim), inset 0 0 0 1px var(--cr-well-edge); }
+.hp-home[data-theme="crystal"] button.hp-set-chip:hover { box-shadow: inset 0 1px 0 var(--cr-rim), inset 0 0 0 1.5px var(--cr-blue-edge); }
+.hp-home[data-theme="crystal"] button.hp-set-chip.is-on { --btn-bg: var(--cr-glass-blue); background: var(--btn-bg); color: var(--cr-blue-ink); box-shadow: var(--cr-rim-chip); }
+.hp-home[data-theme="crystal"] button.hp-set-tile { background: var(--cr-well); box-shadow: inset 0 0 0 1px var(--cr-well-edge); }
+.hp-home[data-theme="crystal"] button.hp-set-tile.is-on { box-shadow: 0 0 0 2px var(--cr-blue-deep); }
+
+/* ---------- Module touches ---------- */
+.hp-home[data-theme="crystal"] :is(.m-greet-title, .m-dial-title) em { font-style: normal; }
+/* The masthead: a slab of the blue glass with dark ink on it (the reference's blue button), not a deep accent panel. */
+.hp-home[data-theme="crystal"] .m-greet-mast {
+	color: var(--cr-blue-ink); background: var(--cr-glass-sheen), var(--cr-glass-blue);
+	box-shadow: var(--cr-rim-blue), 0 28px 32px -28px var(--cr-shadow);
+}
+.hp-home[data-theme="crystal"] .m-greet-daynum { background: linear-gradient(180deg, var(--cr-blue-ink) 35%, color-mix(in srgb, var(--cr-blue-ink) 65%, transparent)); -webkit-background-clip: text; background-clip: text; }
+.hp-home[data-theme="crystal"] .m-greet-when { color: var(--cr-blue-deep); background: var(--cr-glass-chip); box-shadow: var(--cr-rim-track), 0 2px 4px -2px var(--cr-shadow-2); }
+.hp-home[data-theme="crystal"] .m-greet-stat { border: 0; border-radius: 999px; background: var(--cr-glass-chip); box-shadow: var(--cr-rim-track), 0 2px 4px -2px var(--cr-shadow-2); }
+.hp-home[data-theme="crystal"] .m-greet-stat b { color: var(--cr-ink); }
+.hp-home[data-theme="crystal"] .m-greet-stat span { color: var(--cr-muted); opacity: 1; }
+/* greeting.css fades the greeting and the month for white on a deep panel; on pale glass with dark ink they need less fading. */
+.hp-home[data-theme="crystal"] .m-greet-hello { opacity: 0.88; }
+.hp-home[data-theme="crystal"] .m-greet-month { opacity: 0.9; }
+.theme-dark .hp-home[data-theme="crystal"] .m-greet-mast { color: var(--cr-ink); background: var(--cr-glass-sheen), linear-gradient(180deg, rgba(95, 142, 220, 0.22), rgba(120, 164, 232, 0.36)), var(--hm-surface); box-shadow: var(--cr-rim-slab), 0 28px 32px -28px var(--cr-shadow); }
+.theme-dark .hp-home[data-theme="crystal"] .m-greet-daynum { background: linear-gradient(180deg, #fff 30%, rgba(255, 255, 255, 0.55)); -webkit-background-clip: text; background-clip: text; }
+.theme-dark .hp-home[data-theme="crystal"] .m-greet-when { color: var(--cr-blue-ink); background: var(--cr-glass-blue); box-shadow: var(--cr-rim-chip); }
+.theme-dark .hp-home[data-theme="crystal"] .m-greet-stat span { color: #d3d8e0; }
+.hp-home[data-theme="crystal"] button.m-proj-filter-btn { color: var(--cr-muted); font-weight: 650; }
+.hp-home[data-theme="crystal"] button.m-proj-filter-btn[aria-pressed="true"] { --btn-bg: var(--cr-glass-blue); color: var(--cr-blue-ink); box-shadow: var(--cr-rim-chip), 0 2px 4px -2px var(--cr-blue-glow); }
+.hp-home[data-theme="crystal"] .m-next-photo { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.16), 0 30px 34px -30px var(--cr-shadow); }
+.hp-home[data-theme="crystal"] .m-cd.is-live .m-cd-card { color: var(--cr-blue-deep); }
+/* Up next: its style switch's sliding highlight is the chosen blue glass; "Explore all sermons" and the carousel's
+   arrows are clear glass like every other pill and knob (the module paints them navy and black). */
+.hp-home[data-theme="crystal"] .m-up-glide { background: var(--cr-glass-blue); box-shadow: var(--cr-rim-chip), 0 2px 4px -2px var(--cr-blue-glow); }
+.hp-home[data-theme="crystal"] button.m-up-seg-btn.is-on { color: var(--cr-blue-ink); }
+.hp-home[data-theme="crystal"] button.hp-btn.m-up-ink, .hp-home[data-theme="crystal"] button.m-up-c1-arrow {
+	--btn-bg: var(--cr-glass-ctl); --btn-shadow: var(--cr-rim-ctl), inset 0 3px 6px transparent, var(--cr-fall);
+	background: var(--btn-bg); box-shadow: var(--btn-shadow); color: var(--cr-ink); transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.hp-home[data-theme="crystal"] button.hp-btn.m-up-ink { font-weight: 650; }
+.hp-home[data-theme="crystal"] :is(button.hp-btn.m-up-ink, button.m-up-c1-arrow):hover:not(:disabled) { --btn-bg: var(--cr-glass-ctl-hover); }
+.hp-home[data-theme="crystal"] :is(button.hp-btn.m-up-ink, button.m-up-c1-arrow):active:not(:disabled) { transform: translateY(1px); --btn-shadow: var(--cr-rim-ctl), var(--cr-press), var(--cr-fall-down); }
+.hp-home[data-theme="crystal"] button.m-up-c1-arrow:active:not(:disabled) { transform: translateY(-50%) translateY(1px); }
+
+/* ---------- Arrange mode ---------- */
+.hp-home[data-theme="crystal"].is-arranging .hp-slot { outline-color: var(--cr-blue-edge); }
+.hp-home[data-theme="crystal"] .hp-arrange-bar.hp-panel {
+	background: var(--cr-pop); -webkit-backdrop-filter: blur(20px) saturate(1.3); backdrop-filter: blur(20px) saturate(1.3);
+}
+.hp-home[data-theme="crystal"] .hp-arrange-bar.hp-arrange-bar { border-radius: var(--cr-radius-pop); box-shadow: var(--cr-rim-panel), 0 24px 28px -26px var(--cr-shadow); }   /* full width: the fall stays below */
+/* The add-module list opens inside the bar, which already blurs: a blur of its own would have nothing to blur, so it is solid. */
+.hp-home[data-theme="crystal"] .hp-add-pop.hp-add-pop.hp-panel { color: var(--hm-text); background: var(--cr-solid); -webkit-backdrop-filter: none; backdrop-filter: none; box-shadow: var(--cr-rim-panel), 0 18px 22px -20px var(--cr-shadow); }
+.hp-home[data-theme="crystal"] .hp-handle { color: var(--hm-text); background: var(--cr-glass-ctl); box-shadow: var(--cr-rim-ctl), 0 8px 12px -12px var(--cr-shadow); }
+.hp-home[data-theme="crystal"] button.hp-seg-btn { border-radius: 999px; }
+.hp-home[data-theme="crystal"] button.hp-seg-btn.is-on { --btn-bg: var(--cr-glass-blue); color: var(--cr-blue-ink); box-shadow: var(--cr-rim-chip), 0 2px 4px -2px var(--cr-blue-glow); }
+.hp-home[data-theme="crystal"] button.hp-seg-btn.hp-hide { background-color: transparent; background-image: var(--cr-glass-ctl); box-shadow: var(--cr-rim-track); }
+/* The variant select keeps view.css's chevron as its first layer, over the glass. */
+.hp-home[data-theme="crystal"] select.hp-variant {
+	background-color: transparent;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23525b6c' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"), var(--cr-glass-ctl);
+	background-repeat: no-repeat; background-position: right 9px center, 0 0; background-size: 11px, 100% 100%; box-shadow: var(--cr-rim-track);
+}
+.theme-dark .hp-home[data-theme="crystal"] select.hp-variant { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23bec4ce' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"), var(--cr-glass-ctl); }
+.hp-home[data-theme="crystal"] button.hp-grip:hover { background: var(--cr-hover); }
+
+/* ---------- Task panel ---------- */
+.hp-home[data-theme="crystal"] .hp-tk-wrap {
+	--tk-soft-edge: var(--cr-blue-edge); --tk-on-bg: var(--cr-glass-blue); --tk-on-ink: var(--cr-blue-ink);
+	--tk-glow-today: var(--cr-blue-soft); --tk-glow-late: color-mix(in srgb, var(--cr-late) 13%, transparent); --tk-late-edge: color-mix(in srgb, var(--cr-late) 45%, var(--cr-line));
+	--tk-pop-bg: var(--cr-pop); --tk-shadow: var(--cr-shadow); --tk-group-bg: linear-gradient(180deg, var(--cr-pill-b), var(--cr-pill-a));
+}
+.hp-home[data-theme="crystal"] .hp-tk-wrap :is(button, input, a, [tabindex]):focus-visible { outline: 2px solid var(--cr-blue-deep); }
+.hp-home[data-theme="crystal"] .hp-tk-wrap :is(nav, div).hp-pill { box-shadow: var(--cr-rim-ctl), 0 8px 16px -10px var(--cr-shadow); }
+.hp-home[data-theme="crystal"] .hp-tk-wrap .hp-tk-filter button.is-on, .hp-home[data-theme="crystal"] .hp-tk-wrap .hp-tk-kind-btn.is-on { --btn-bg: var(--cr-glass-blue); background: var(--btn-bg); color: var(--cr-blue-ink); box-shadow: var(--cr-rim-chip), 0 2px 4px -2px var(--cr-blue-glow); }
+.hp-home[data-theme="crystal"] .hp-tk-wrap .hp-tk-check:is(:active, :focus-visible) { background: var(--btn-bg); box-shadow: var(--btn-shadow); }   /* tasks.css flattens a pressed check; the knob keeps its glass */
+.hp-home[data-theme="crystal"] .hp-tk-wrap .hp-tk-pop { border-radius: var(--cr-radius-pop); background: var(--cr-pop); -webkit-backdrop-filter: blur(20px) saturate(1.3); backdrop-filter: blur(20px) saturate(1.3); box-shadow: var(--cr-rim-panel), 0 18px 30px -12px var(--cr-shadow); }
+.hp-home[data-theme="crystal"] .hp-tk-wrap .hp-tk-group { box-shadow: var(--cr-rim-panel); }
+.hp-home[data-theme="crystal"] .hp-tk-wrap .hp-tk-src { opacity: 1; }   /* tasks.css fades the source links to 85%; the muted ink is already quiet */
+
+/* ---------- The top bar and the menus under it (outside the page box, so scoped by their sibling) ---------- */
+.hp-tb-box:has(~ .hp-home[data-theme="crystal"]) {
+	--text-normal: var(--cr-ink); --text-muted: var(--cr-muted); --text-accent: var(--cr-blue-deep); --text-on-accent: var(--cr-blue-ink);
+	--interactive-accent: var(--cr-blue); --background-primary: var(--cr-solid); --background-modifier-border: var(--cr-line);
+}
+.hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-bar {
+	--tb-line: transparent; --tb-pill: var(--cr-glass-ctl); --tb-raised: var(--cr-hover); --tb-edge: transparent;
+	--tb-shadow: 0 28px 32px -28px var(--cr-shadow);
+	border: 0; background: linear-gradient(160deg, var(--cr-glass-b), var(--cr-glass-a));
+	-webkit-backdrop-filter: blur(18px) saturate(1.3); backdrop-filter: blur(18px) saturate(1.3);
+	box-shadow: var(--cr-rim-slab), var(--tb-shadow);
+	padding: 7px 7px 7px 12px;
+}
+.hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-brand { font-weight: 700; }
+.hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-brand .hp-tb-ico {
+	color: var(--cr-blue-ink); background: radial-gradient(circle at 35% 30%, #d6e6fb, #85adee 60%, #5f8fe0);
+	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 2px 5px var(--cr-blue-glow);
+}
+.hp-tb-box:has(~ .hp-home[data-theme="crystal"]) :is(.hp-tb-nav, .hp-tb-create, .hp-tb-extra) { padding: 3px; background: var(--tb-pill); box-shadow: var(--cr-rim-ctl), 0 6px 12px -8px var(--cr-shadow); }
+/* The links: short dividers between them (the reference's "Home | Library | Profile"), drawn in the 2px gap; none
+   on a phone, where the links wrap. */
+.hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-nav > .hp-tb-value + .hp-tb-value { box-shadow: -9px 0 0 -8px var(--cr-line-strong); }
+@container (max-width: 600px) { .hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-nav > .hp-tb-value + .hp-tb-value { box-shadow: none; } }
+.hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-nav a { font-weight: 600; color: var(--cr-muted) !important; }
+.hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-nav a:hover, .hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-nav a:focus-visible { color: var(--cr-ink) !important; }
+.hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-nav .hp-tb-value.is-current a { color: var(--cr-blue-ink) !important; background: var(--cr-glass-blue); box-shadow: var(--cr-rim-chip); }
+.hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-glide { background: var(--cr-glass-ctl-hover); box-shadow: inset 0 1px 0 var(--cr-rim), inset 0 0 0 1px rgba(255, 255, 255, 0.6), 0 2px 6px -2px var(--cr-shadow); }
+.theme-dark .hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-glide { box-shadow: inset 0 1px 0 var(--cr-rim), 0 2px 6px -2px var(--cr-shadow); }
+.hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-bar button.hp-tb-icon { color: var(--cr-muted); }
+.hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-bar button.hp-tb-icon:hover, .hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-bar button.hp-tb-icon[aria-expanded="true"] { color: var(--cr-ink); background: var(--cr-glass-ctl-hover); box-shadow: inset 0 1px 0 var(--cr-rim), inset 0 0 0 1px rgba(255, 255, 255, 0.6), 0 2px 6px -2px var(--cr-shadow); }
+.theme-dark .hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-bar button.hp-tb-icon:hover, .theme-dark .hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-bar button.hp-tb-icon[aria-expanded="true"] { box-shadow: inset 0 1px 0 var(--cr-rim), 0 2px 6px -2px var(--cr-shadow); }
+.hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-bar button.hp-tb-icon.is-on { color: var(--cr-blue-ink); background: var(--cr-glass-blue); box-shadow: var(--cr-rim-chip); }
+.hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-bar button.hp-tb-primary {
+	--btn-bg: var(--cr-glass-blue); --btn-shadow: var(--cr-rim-blue), inset 0 3px 6px transparent, 0 1px 2px var(--cr-shadow-2), 0 6px 12px -8px var(--cr-blue-glow);
+	color: var(--cr-blue-ink); font-weight: 700; transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-bar button.hp-tb-primary:hover { transform: none; filter: none; --btn-bg: var(--cr-glass-blue-hover); }
+.hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-bar button.hp-tb-primary:active { transform: translateY(1px); --btn-shadow: var(--cr-rim-blue), inset 0 3px 6px var(--cr-blue-shade), 0 1px 1px transparent, 0 2px 4px -3px var(--cr-blue-glow); }
+.hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-bar button:focus-visible { outline: 2px solid var(--cr-blue-deep); outline-offset: 2px; }
+.hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-more button.hp-tb-icon:focus-visible { outline-offset: -2px; }   /* the folded icons clip at the pill's edge */
+.hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-brand[role="link"]:focus-visible { outline-color: var(--cr-blue-deep); }
+/* The theme and layout menus: milky glass, a rim, the chosen item marked with a blue bead. */
+.hp-hs-layer:has(~ .hp-home[data-theme="crystal"]) .hp-hs-menu {
+	border-radius: var(--cr-radius-pop); padding: 8px; color: var(--cr-ink); background: var(--cr-pop);
+	-webkit-backdrop-filter: blur(20px) saturate(1.3); backdrop-filter: blur(20px) saturate(1.3);
+	box-shadow: var(--cr-rim-panel), 0 20px 24px -22px var(--cr-shadow);   /* 10px from the column edge: the fall stays below */
+}
+.hp-hs-layer:has(~ .hp-home[data-theme="crystal"]) .hp-hs-menu-title { color: var(--cr-muted); }
+.hp-hs-layer:has(~ .hp-home[data-theme="crystal"]) .hp-hs-menu button.hp-hs-item { border-radius: 12px; color: var(--cr-ink); }
+.hp-hs-layer:has(~ .hp-home[data-theme="crystal"]) .hp-hs-item small { color: var(--cr-muted); }
+.hp-hs-layer:has(~ .hp-home[data-theme="crystal"]) .hp-hs-menu button.hp-hs-item:hover, .hp-hs-layer:has(~ .hp-home[data-theme="crystal"]) .hp-hs-menu button.hp-hs-item:focus-visible { background: var(--cr-hover); box-shadow: inset 0 1px 0 var(--cr-rim-lo); }
+.hp-hs-layer:has(~ .hp-home[data-theme="crystal"]) .hp-hs-menu button.hp-hs-item:focus-visible { outline: 2px solid var(--cr-blue-deep); outline-offset: -2px; }
+.hp-hs-layer:has(~ .hp-home[data-theme="crystal"]) .hp-hs-mark { box-shadow: inset 0 0 0 1.5px var(--cr-well-edge), inset 0 1px 2px rgba(0, 0, 0, 0.08); color: var(--cr-blue-ink); }
+.hp-hs-layer:has(~ .hp-home[data-theme="crystal"]) .hp-hs-item.is-on .hp-hs-mark { background: var(--cr-bead-blue); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7), 0 1px 3px var(--cr-blue-glow); }
+.hp-hs-layer:has(~ .hp-home[data-theme="crystal"]) .hp-hs-item.is-action .hp-hs-mark { box-shadow: none; background: none; color: var(--cr-muted); }
+.hp-hs-layer:has(~ .hp-home[data-theme="crystal"]) .hp-hs-sep { background: var(--cr-line); }
+.hp-hs-layer:has(~ .hp-home[data-theme="crystal"]) .hp-hs-menu button.hp-hs-item.is-danger b { color: var(--cr-late); }
+
+@media (prefers-reduced-motion: reduce) {
+	.hp-home[data-theme="crystal"] button, .hp-tb-box:has(~ .hp-home[data-theme="crystal"]) .hp-tb-bar button.hp-tb-primary, .hp-home[data-theme="crystal"] .hp-switch-track, .hp-home[data-theme="crystal"] .hp-switch-track::after { transition: none !important; }
+}
+

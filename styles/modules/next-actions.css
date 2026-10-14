@@ -1,0 +1,12 @@
+/* Next actions — structure only. */
+.hp-home .m-actions-card { display: flex; flex-direction: column; gap: var(--hm-gap-in); padding: var(--hm-pad); }
+.hp-home .m-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: var(--hm-gap-in); align-content: start; }
+.hp-home .m-actions-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; min-width: 0; padding: calc(var(--hm-pad-in) * 0.75) var(--hm-pad-in); font-size: 0.9em; }
+.hp-home .m-actions-copy { flex: 1 1 0; min-width: 0; }
+.hp-home .m-actions-copy a { color: var(--hm-text) !important; font-weight: var(--hm-row-weight); }
+.hp-home .m-actions-meta { margin-top: 2px; font-size: 0.84em; color: var(--hm-muted); }
+.hp-home .m-actions-more { grid-column: 1 / -1; }
+.hp-home .m-actions-badge { flex: none; padding: 3px 10px; border-radius: 999px; font-size: 0.78em; font-weight: 700; white-space: nowrap; color: var(--hm-muted); background: var(--hm-track); }
+.hp-home .m-actions-badge.is-warning { color: var(--hm-soon); background: color-mix(in srgb, var(--hm-soon) 14%, transparent); }
+@container slot (max-width: 600px) { .hp-home .m-actions-row { flex-wrap: wrap; } }
+

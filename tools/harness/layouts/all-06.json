@@ -1,0 +1,38 @@
+{
+  "name": "All modules 06",
+  "items": [
+    {
+      "module": "next-sermon",
+      "w": 12,
+      "variant": "hero",
+      "themed": {
+        "dune": "hero"
+      }
+    },
+    {
+      "module": "countdown",
+      "w": 4,
+      "variant": "dots"
+    },
+    {
+      "module": "active-sermons",
+      "w": 8,
+      "variant": "table"
+    },
+    {
+      "module": "active-projects",
+      "w": 6,
+      "variant": "panel"
+    },
+    {
+      "module": "next-actions",
+      "w": 6,
+      "variant": ""
+    },
+    {
+      "module": "stats",
+      "w": 12,
+      "variant": "band"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "name": "All modules 09",
+  "items": [
+    {
+      "module": "banner",
+      "w": 12,
+      "variant": "hero"
+    },
+    {
+      "module": "next-sermon",
+      "w": 12,
+      "variant": "week",
+      "themed": {
+        "dune": "week"
+      }
+    },
+    {
+      "module": "active-sermons",
+      "w": 6,
+      "variant": "profile"
+    },
+    {
+      "module": "stats",
+      "w": 6,
+      "variant": "tiles"
+    },
+    {
+      "module": "next-actions",
+      "w": 8,
+      "variant": ""
+    },
+    {
+      "module": "pomodoro",
+      "w": 4,
+      "variant": ""
+    }
+  ]
+}

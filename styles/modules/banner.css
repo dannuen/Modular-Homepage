@@ -1,0 +1,49 @@
+/* Banner — structure only. */
+.hp-home img.m-banner-photo { width: 100% !important; height: 200px !important; object-fit: cover !important; object-position: center; border-radius: var(--hm-radius) !important; }
+.hp-home .m-banner-empty { padding: var(--hm-pad); }
+
+/* Hero (Stylish): the photo fades into the page colour (--m-fade, from the ⚙ panel) so the text stays readable. */
+.hp-home .m-banner-hero {
+	position: relative; overflow: hidden; min-height: 380px; border-radius: var(--hm-radius);
+	display: flex; flex-direction: column; align-items: center; padding: 44px 24px 170px; text-align: center !important;
+	background: linear-gradient(180deg, color-mix(in srgb, var(--hm-accent) 30%, transparent), color-mix(in srgb, var(--hm-accent) 14%, transparent)), var(--background-secondary);
+}
+.hp-home img.m-banner-img { position: absolute; inset: 0; width: 100% !important; height: 100% !important; object-position: center 70%; z-index: 0; }
+.hp-home img.m-banner-img[hidden] { display: none !important; }
+.hp-home .m-banner-hero::after {
+	content: ""; position: absolute; inset: 0; z-index: 1;
+	background: var(--m-fade, linear-gradient(180deg, var(--background-primary) 30%, color-mix(in srgb, var(--background-primary) 94%, transparent) 45%, color-mix(in srgb, var(--background-primary) 55%, transparent) 70%, color-mix(in srgb, var(--background-primary) 10%, transparent) 100%));
+}
+.hp-home .m-banner-hero > :not(.m-banner-img) { position: relative; z-index: 2; }
+.hp-home .m-banner-mark { font-size: 2em; color: var(--hm-text); }
+.hp-home .m-banner-greet { margin-top: 10px; font-size: 0.95em; color: var(--hm-muted); }
+.hp-home .m-banner-title { margin: 6px 0 12px; font-size: clamp(2.1em, 5.4cqi, 3.1em); font-weight: 400; letter-spacing: -0.035em; }
+.hp-home .m-banner-sub { max-width: 34em; font-size: 1.02em; opacity: 0.8; }
+.hp-home .m-banner-sub strong { font-weight: 600; }
+.hp-home .m-banner-sermon { margin-top: 4px; max-width: 30em; font-family: var(--hm-font-display); font-size: 1.35em; font-weight: 500; letter-spacing: -0.015em; }
+.hp-home .m-banner-sermon a { color: var(--hm-text) !important; }
+.hp-home .m-banner-sermon a:hover { color: var(--hm-accent-ink) !important; }
+/* The three numbers, pinned to the bottom of the photo. */
+.hp-home .m-banner-stats {
+	position: absolute !important; left: 50%; bottom: 18px; transform: translateX(-50%); display: flex; gap: 4px; padding: 5px;
+	border-radius: 999px; white-space: nowrap; color: #fff; background: rgba(0, 0, 0, 0.42);
+	backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+.hp-home .m-banner-stat { display: flex; align-items: baseline; gap: 7px; padding: 5px 14px; border-radius: 999px; font-size: 0.85em; }
+.hp-home .m-banner-stat + .m-banner-stat { box-shadow: -1px 0 0 rgba(255, 255, 255, 0.16); border-radius: 0 999px 999px 0; }
+.hp-home .m-banner-stat b { font-family: var(--hm-font-display); font-size: 1.35em; font-weight: 500; font-variant-numeric: tabular-nums; }
+.hp-home .m-banner-stat span { opacity: 0.78; }
+/* ⚙ shows when the banner is hovered (or the panel is open). */
+.hp-home button.m-banner-gear {
+	position: absolute !important; top: 14px; right: 14px; z-index: 4 !important; width: 34px; height: 34px; border-radius: 50%;
+	display: grid; place-items: center; color: #fff; --btn-bg: rgba(0, 0, 0, 0.38); background: var(--btn-bg); backdrop-filter: blur(6px);
+	opacity: 0; transition: opacity 0.15s ease;
+}
+.hp-home .m-banner-hero:hover button.m-banner-gear, .hp-home button.m-banner-gear:focus-visible, .hp-home button.m-banner-gear.is-open { opacity: 1; }
+.hp-home .m-banner-hero > .hp-set { position: absolute; z-index: 5; max-height: calc(100% - 70px); }
+@container slot (max-width: 640px) {
+	.hp-home .m-banner-hero { min-height: 320px; padding: 32px 16px 120px; }
+	.hp-home .m-banner-stat { padding: 4px 9px; font-size: 0.78em; }
+}
+@media (hover: none) { .hp-home button.m-banner-gear { opacity: 1; } }
+
