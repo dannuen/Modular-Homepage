@@ -204,7 +204,7 @@ function buildVault({ today = "2026-10-14", tz = "+07:00", theme = "aurora", hom
 	}
 	// The second church's roster (its name in the file name, a different table).
 	{
-		const people = [["MSQN", "CS. Lê Văn Bình", "Ngọc Anh", "Hùng, Mai"], ["CS. Đỗ Văn Khải", "CS. Đỗ Thị Hạnh", "Thanh Tâm", "Tâm, Lan"], ["TĐPT", "CS. Lê Văn Bình", "Ngọc Anh", "Phúc, Hà"], ["TĐPT", "CS. Đỗ Thị Hạnh", "Thanh Tâm", "Hùng, Lan"], ["MSQN", "CS. Phan Minh Trí", "Ngọc Anh", "Mai, Tâm"]];
+		const people = [["MSQN", "CS. Lê Văn Bình", "Ngọc Anh", "Hùng, Mai"], ["CS. Đỗ Văn Khải", "CS. Đỗ Thị Hạnh", "Thanh Tâm", "Tâm, Lan"], ["MSNC", "CS. Lê Văn Bình", "Ngọc Anh", "Phúc, Hà"], ["MSNC", "CS. Đỗ Thị Hạnh", "Thanh Tâm", "Hùng, Lan"], ["MSQN", "CS. Phan Minh Trí", "Ngọc Anh", "Mai, Tâm"]];
 		const sundays = [];
 		for (let d = new Date(Date.UTC(parts(today).y, 9, 1)); d.getUTCMonth() < 12 && d.getUTCFullYear() === parts(today).y; d = new Date(d.getTime() + 864e5)) if (d.getUTCDay() === 0) sundays.push(d.toISOString().slice(0, 10));
 		add("Church Roster/Lịch Trường Xuân Quý 4 - " + parts(today).y + ".md", [
