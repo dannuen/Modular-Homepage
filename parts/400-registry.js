@@ -15,7 +15,7 @@ var DEFAULT_CONFIG = {
   // the Church Roster plugin's exports, one note per quarter (Sunday roster)
   rosterChurches: ["Tam Dân", "Trường Xuân"],
   // roster notes are grouped by these churches, in this order
-  rosterMe: ["TĐPT", "Nguyễn Hải Đăng"],
+  rosterMe: ["MSNC", "Nguyễn Hải Đăng"],
   // how the roster writes your name: those rows are marked as yours
   spokenWpm: 140,
   // words per minute, for "≈ min spoken" and the preaching dial
