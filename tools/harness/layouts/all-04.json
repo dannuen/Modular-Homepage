@@ -24,7 +24,7 @@
     {
       "module": "roster",
       "w": 6,
-      "variant": "list"
+      "variant": "table"
     },
     {
       "module": "preaching-dial",

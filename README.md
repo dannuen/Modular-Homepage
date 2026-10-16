@@ -54,7 +54,7 @@ Every module is one card, with its buttons in the card's top-right corner. Title
 | Banner | A photo across the page, from the `banner` property | Photo, Hero |
 | Next sermon | Countdown, preparation slider and the sermons in preparation | Hero, Compact, Photo, This week, Event |
 | Coming up | The next preaching dates as a timeline | |
-| Sunday roster | Who does what this week, church by church, from the roster notes | List, Tiles |
+| Sunday roster | Who does what this week, church by church, from the roster notes | Table, Tiles |
 | Countdown | Live countdown to dates you tag `#countdown` | Flip clock, Rings, Hourglass, Candle, Nixie tubes, Dots, Words, Departures |
 | Preaching dial | The next preaching day on a 12-hour clock | |
 | Active sermons | Sermons in preparation, with outline and progress | Cards, Agenda, List, Board, Desk, Table, Panel, Carousel, Profile, Photo |
@@ -79,7 +79,7 @@ A module switched off in the settings is left out of every page and of **Arrange
   - a to-do: `- [ ] Write intro #sermon 📅 2026-10-18`
   - an event: `- [ ] Elders meeting [time:: 19:00] [duration:: 1h] 📅 2026-10-20`
 - **Countdown** dates come only from note lines like `- Christmas #countdown [[2026-12-24]]`. There are no presets.
-- **Sunday roster** reads the Church Roster plugin's quarterly exports from the roster folder (one note per quarter). Rows with the names set in **Your names on the roster** are marked as yours.
+- **Sunday roster** reads the Church Roster plugin's quarterly exports from the roster folder (one note per quarter). The Table look shows the week the way the note does: a table per service, a column per role and a row per day, leaving out roles nobody fills that week; in a narrow slot each role gets its own line. Names set in **Your names on the roster** are marked as yours.
 - **Banner** reads the `banner` property of the home note, for example `![[photo.jpg]]`. The ⚙ button on the banner sets the photo, page colour and fade (`banner_fade_color`, `banner_fade_strength`, `banner_fade_reach`).
 
 ### Pomodoro

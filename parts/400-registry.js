@@ -104,7 +104,7 @@ var DEFAULT_THEME = "aurora";
 var FIRST_LAYOUT = [
   { module: "preaching-dial", w: 12, variant: "" },
   { module: "countdown", w: 12, variant: "rings" },
-  { module: "roster", w: 12, variant: "list" },
+  { module: "roster", w: 12, variant: "table" },
   { module: "active-sermons", w: 12, variant: "cards" },
   { module: "tasks", w: 12, variant: "" },
   { module: "stats", w: 12, variant: "full" }
