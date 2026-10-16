@@ -227,10 +227,10 @@ var def5 = (() => {
     name: "Sunday roster",
     about: "Who is doing what this week, church by church, from the roster notes",
     width: 12,
-    variants: [["list", "List"], ["tiles", "Tiles"]],
+    variants: [["table", "Table"], ["tiles", "Tiles"]],
     parse: parse2,
     // for the harness's parser checks
-    async render(body2, { ui, time, app, config, store, variant }) {
+    async render(body2, { ui, time, app, config, store, variant, life }) {
       const { el } = ui;
       const today = time.today, todayIso = today.toISODate();
       const folder = config.rosterFolder || FOLDER;
@@ -292,6 +292,7 @@ var def5 = (() => {
         });
         return list2;
       }
+      // tiles: one box per service and day, a tile per role
       function serviceBox(parent, s2, label) {
         const box = el(parent, "div", "m-roster-service");
         if (label) el(box, "div", "m-roster-svc hp-kicker", label);
@@ -302,14 +303,80 @@ var def5 = (() => {
           el(box, "div", "hp-empty", "Nobody on the roster.");
           return;
         }
-        const list2 = el(box, "div", variant === "tiles" ? "m-roster-tiles" : "m-roster-rows");
+        const list2 = el(box, "div", "m-roster-tiles");
         for (const r of filled) {
-          const row = el(list2, "div", variant === "tiles" ? "m-roster-tile hp-panel" : "m-roster-row");
+          const row = el(list2, "div", "m-roster-tile hp-panel");
           if (r.people.some(isMe)) row.classList.add("is-mine");
           el(row, "div", "m-roster-role", r.role);
           names(row, r.people);
         }
       }
+      // table: one table per service, as in the roster note: a column per role, a row per day (the week's Sunday, and
+      // any other day of that week on the roster). Roles nobody fills on those days are left out.
+      const withRole = (node, role) => (node.setAttribute("role", role), node);
+      function columnsOf(rows) {
+        const cols = [];
+        const add = (kind, label) => cols.some((c) => c.kind === kind && c.label === label) || cols.push({ kind, label });
+        for (const r of rows) for (const x of r.roles) add("role", x.role);
+        for (const r of rows) for (const x of r.info) add("info", x.label);
+        return cols.filter((c) => c.kind === "info" || rows.some((r) => r.roles.some((x) => x.role === c.label && x.people.length)));
+      }
+      function serviceTable(parent, t, church, sundayIso) {
+        const cols = columnsOf(t.rows);
+        // just the week's Sunday, with no note: when the roles go one under the other, its day can go (the header says it)
+        const plain2 = t.rows.length === 1 && t.rows[0].iso === sundayIso && !t.rows[0].note;
+        const table = withRole(el(parent, "div", "m-roster-table" + (plain2 ? " is-one-day" : "")), "table");
+        table.style.setProperty("--span", String(Math.max(1, cols.length) + 1));
+        table.setAttribute("aria-label", [church, t.service].filter(Boolean).join(" · "));
+        // a role or note column that appears twice in the note shows everyone in it
+        const peopleIn = (r, c) => r.roles.filter((x) => x.role === c.label).flatMap((x) => x.people);
+        const head = withRole(el(table, "div", "m-roster-tr is-head"), "row");
+        withRole(el(head, "div", "m-roster-th is-corner hp-kicker", t.service), "columnheader");
+        for (const c of cols) {
+          const th = withRole(el(head, "div", "m-roster-th", c.label), "columnheader");
+          if (c.kind === "role" && t.rows.some((r) => peopleIn(r, c).some(isMe))) th.classList.add("is-mine");
+        }
+        if (!cols.length) withRole(el(head, "div", "m-roster-th"), "columnheader");
+        for (const r of t.rows) {
+          const day = dt(r.iso);
+          const tr = withRole(el(table, "div", "m-roster-tr"), "row");
+          const when = withRole(el(tr, "div", "m-roster-th is-date"), "rowheader");
+          when.title = fmt2(day, "cccc d LLLL");
+          if (day.weekday !== 7) el(when, "small", "m-roster-wd", fmt2(day, "ccc"));
+          el(when, "b", "hp-num", fmt2(day, "dd/LL"));
+          if (r.note) el(when, "small", "m-roster-note", r.note);
+          if (!cols.length) {
+            withRole(el(tr, "div", "m-roster-td is-none hp-empty", "Nobody on the roster."), "cell");
+            continue;
+          }
+          for (const c of cols) {
+            const td = withRole(el(tr, "div", "m-roster-td"), "cell");
+            el(td, "div", "m-roster-role", c.label);
+            const people = c.kind === "role" ? peopleIn(r, c) : [];
+            const info = c.kind === "info" ? r.info.filter((x) => x.label === c.label).map((x) => x.value).join(" · ") : "";
+            if (people.length) {
+              if (people.some(isMe)) td.classList.add("is-mine");
+              names(td, people);
+            } else if (info) el(td, "div", "m-roster-info", info);
+            else {
+              td.classList.add("is-empty");
+              el(td, "span", "m-roster-none", "–");
+            }
+          }
+        }
+        return cols.length;
+      }
+      // When the card is too narrow for its widest table (about 7em a role column, after the day column), each service
+      // shows its roles one under the other instead. Measured, since how narrow is too narrow depends on the columns.
+      let cols = 0;
+      function fit() {
+        const css = (card.ownerDocument.defaultView || window).getComputedStyle(card), em = parseFloat(css.fontSize) || 16;
+        const inner = card.clientWidth - (parseFloat(css.paddingLeft) || 0) - (parseFloat(css.paddingRight) || 0);
+        card.classList.toggle("is-stacked", cols > 0 && inner < (6 + 7 * cols) * em);
+      }
+      const resize = new ResizeObserver(() => fit());
+      resize.observe(card);
+      life.cleanup(() => resize.disconnect());
       function draw() {
         view.replaceChildren();
         bar.row.querySelector(":scope > .hp-bar-main")?.remove();
@@ -318,6 +385,8 @@ var def5 = (() => {
         prev.disabled = week ? i <= 0 : !weeks.some((w) => w.monday < thisMonday);
         next.disabled = !week || i >= weeks.length - 1;
         back.classList.toggle("is-off", !store.pick);
+        cols = 0;
+        fit();
         if (!week) {
           empty("Nothing on the roster from this week on. The last date in “" + folder + "” is " + fmt2(dt(days.at(-1).iso), "d LLL yyyy") + "; add the next quarter's roster.");
           return;
@@ -329,20 +398,18 @@ var def5 = (() => {
           return k < 0 ? churches.length + (c ? 0 : 1) : k;
         };
         const all = week.days.flatMap((d) => d.services.map((s2) => ({ ...s2, iso: d.iso }))).sort((a, b) => rank(a.church) - rank(b.church) || a.church.localeCompare(b.church) || a.iso.localeCompare(b.iso) || a.team - b.team || a.service.localeCompare(b.service, "vi", { numeric: true }));
+        // The week on one line: the Sunday, how far off, and your own roles
         const head = el(null, "div", "m-roster-head hp-bar-main");
         bar.row.insertBefore(head, aside);
-        const badge = el(head, "div", "m-roster-badge hp-panel" + (n2 === 0 ? " is-today" : ""));
-        el(badge, "b", "hp-num", fmt2(sunday, "d"));
-        el(badge, "span", "", fmt2(sunday, "LLL"));
-        const when = el(head, "div", "m-roster-when");
+        const when = el(head, "div", "m-roster-when" + (n2 === 0 ? " is-today" : ""));
         ui.heading(when, 3, "m-roster-day", fmt2(sunday, "cccc d LLLL"));
-        el(when, "div", "m-roster-sub", time.relLabel(n2));
+        el(when, "span", "m-roster-sub", time.relLabel(n2));
         const mine = all.flatMap((s2) => s2.roles.filter((r) => r.people.some(isMe)).map((r) => {
           const where = [s2.church, s2.service, s2.iso !== sunday.toISODate() && dayOf2(s2)].filter(Boolean).join(" · ");
           return r.role + (where ? " (" + where + ")" : "");
         }));
         if (mine.length) {
-          const you = el(view, "div", "m-roster-you hp-pill");
+          const you = el(head, "div", "m-roster-you hp-pill");
           ui.icon(you, "check");
           el(you, "span", "", "You: " + mine.join(", "));
         }
@@ -352,14 +419,31 @@ var def5 = (() => {
           groups.at(-1).services.push(s2);
         }
         const list2 = el(view, "div", "m-roster-churches");
+        let widest = 0;
         for (const g of groups) {
           const block = el(list2, "section", "m-roster-church");
           if (g.church) ui.heading(block, 3, "m-roster-church-name", g.church);
-          const manyDays = new Set(g.services.map((s2) => s2.iso)).size > 1;
-          const manyServices = new Set(g.services.map((s2) => s2.service)).size > 1;
-          const grid = el(block, "div", "m-roster-services" + (g.services.length > 1 ? " is-multi" : ""));
-          for (const s2 of g.services) serviceBox(grid, s2, [manyDays && dayOf2(s2), manyServices && s2.service].filter(Boolean).join(" · "));
+          if (variant === "tiles") {
+            const manyDays = new Set(g.services.map((s2) => s2.iso)).size > 1;
+            const manyServices = new Set(g.services.map((s2) => s2.service)).size > 1;
+            const grid = el(block, "div", "m-roster-services");
+            for (const s2 of g.services) serviceBox(grid, s2, [manyDays && dayOf2(s2), manyServices && s2.service].filter(Boolean).join(" · "));
+            continue;
+          }
+          const tables = [];
+          for (const s2 of g.services) {
+            let t = tables.find((x) => x.service === s2.service);
+            if (!t) tables.push(t = { service: s2.service, team: s2.team, rows: [] });
+            t.rows.push(s2);
+          }
+          tables.sort((a, b) => a.rows[0].iso.localeCompare(b.rows[0].iso) || a.team - b.team || a.service.localeCompare(b.service, "vi", { numeric: true }));
+          const grid = el(block, "div", "m-roster-tables");
+          const most = Math.max(1, ...tables.map((t) => serviceTable(grid, t, g.church, sunday.toISODate())));
+          grid.style.setProperty("--max-cols", String(most));
+          widest = Math.max(widest, most);
         }
+        cols = variant === "tiles" ? 0 : widest;
+        fit();
         const files = [...new Set(all.map((s2) => s2.path))];
         const foot = el(view, "div", "m-roster-foot");
         ui.icon(foot, "note");

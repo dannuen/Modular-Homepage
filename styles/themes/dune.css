@@ -152,7 +152,7 @@
 .hp-home[data-theme="dune"] .hp-label { font-size: 0.8em; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--du-muted); }
 /* The modules' own capital labels: sentence case too (the countdown's flip clock, nixie tubes and departure board keep
    theirs, as part of those skins). */
-.hp-home[data-theme="dune"] :is(.m-cal-wd-name, .m-recent-date span, .m-next-photo-count small, .m-roster-badge span, .m-roster-tile .m-roster-role, .m-sermons-rail-rel, .m-sermons-facts dt, .m-sermons-ddate span, .m-up-church),
+.hp-home[data-theme="dune"] :is(.m-cal-wd-name, .m-recent-date span, .m-next-photo-count small, .m-roster-tile .m-roster-role, .m-sermons-rail-rel, .m-sermons-facts dt, .m-sermons-ddate span, .m-up-church),
 .hp-home[data-theme="dune"] .hp-tk-wrap :is(.hp-tk-group-head, .hp-tk-cal-wd, .hp-tk-month-wd, .hp-tk-wall-label, .hp-tk-when.is-allday) { text-transform: none; letter-spacing: 0; font-weight: 600; }
 .hp-home[data-theme="dune"] .hp-meter { height: 6px; background: var(--du-well); }
 .hp-home[data-theme="dune"] .hp-ring-track { stroke: var(--du-well); }
