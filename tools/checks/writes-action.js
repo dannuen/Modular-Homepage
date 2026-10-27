@@ -48,4 +48,32 @@ await H.settleAfterAction();
 const link = H.$$("a.internal-link", H.slot("next-actions")).find((a) => a.textContent.includes("Gọi nhà thầu"));
 if (!link) throw new Error("Next actions does not show the meeting note's task");
 expect("Next actions link", link.getAttribute("data-href").replace(/\.md$/, ""), folder + "/Meetings/Họp thêm");
+
+// The top bar's New note uses the Name from Settings → New notes.
+const [template, noteFolder] = H.plugin.config.templates.note;
+H.plugin.config.templates.note = [template, noteFolder, "Inbox note"];
+await H.redraw();
+H.click('button[aria-label="New note"]');
+await H.settleAfterAction();
+if (!H.file(noteFolder + "/Inbox note.md")) throw new Error("New note in the top bar ignored the Name setting");
+
+// The layout name prompt: Enter saves the typed name, Escape keeps the old one, and no prompt is left open.
+const draw = () => [...H.plugin.blocks][0].draw;
+const layoutId = draw().layout.id, layoutName = () => H.plugin.layoutById(layoutId).name;
+const rename = async (key, text) => {
+  const asked = draw().renameLayout();
+  const input = H.$(".modal-container input");
+  if (text !== undefined) {
+    input.value = text;
+    input.dispatchEvent(new Event("input"));
+  }
+  (key === "Escape" ? document : input).dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true }));
+  await asked;
+  await H.settleAfterAction();
+};
+await rename("Enter", "Renamed");
+expect("layout name after Enter", layoutName(), "Renamed");
+await rename("Escape", "Not saved");
+expect("layout name after Escape", layoutName(), "Renamed");
+expect("prompts left open", H.$$(".modal-container").length, 0);
 return "ok";

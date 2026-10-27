@@ -6,13 +6,6 @@ function renderTopbar(env, input) {
   const options = input || {};
   const app = env.app;
   const doc = env.container.ownerDocument;
-  const ICONS2 = {
-    lighthouse: '<path d="m9 5 3-2.5L15 5"/><rect x="9" y="5" width="6" height="4" rx="0.5"/><path d="M9.6 9 8.2 21h7.6L14.4 9"/><path d="M8.9 15h6.2"/><path d="M5 21h14"/><path d="M6 6 3 5"/><path d="M6 8 3 9"/><path d="m18 6 3-1"/><path d="m18 8 3 1"/>',
-    plus: '<path d="M5 12h14"/><path d="M12 5v14"/>',
-    note: '<path d="M16 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8Z"/><path d="M15 3v4a2 2 0 0 0 2 2h4"/>',
-    calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/>',
-    project: '<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/><path d="M12 10v6"/><path d="M9 13h6"/>'
-  };
   const make = (parent, tag, cls, text) => {
     const n2 = doc.createElement(tag);
     if (cls) n2.className = cls;
@@ -23,7 +16,7 @@ function renderTopbar(env, input) {
   function icon(parent, name) {
     const s2 = make(parent, "span", "hp-tb-ico");
     s2.setAttribute("aria-hidden", "true");
-    s2.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + ICONS2[name] + "</svg>";
+    s2.innerHTML = svgOf(name);
     return s2;
   }
   function button(parent, cls, iconName, label, title, onClick) {
@@ -40,9 +33,7 @@ function renderTopbar(env, input) {
     return env.render(parent, Link.file(target, false, label), "hp-tb-value");
   }
   function notify(message) {
-    const Notice5 = globalThis.Notice;
-    if (Notice5) new Notice5(message);
-    else console.warn("Top bar:", message);
+    new import_obsidian2.Notice(message);
   }
   const dailyFolder = (d) => env.config.dailyFolder + "/" + d.setLocale("en").toFormat("yyyy/MM-LLLL");
   async function createFromTemplate(templatePath, folderPath, name, open) {
@@ -67,9 +58,9 @@ function renderTopbar(env, input) {
       notify("Could not open today's note");
     }
   }
-  async function newFrom([template, folder], what) {
+  async function newFrom([template, folder, name], what) {
     try {
-      await createFromTemplate(template, folder, void 0, true);
+      await createFromTemplate(template, folder, name || void 0, true);
     } catch (err) {
       console.error(err);
       notify("Could not create a new " + what);
@@ -95,7 +86,7 @@ function renderTopbar(env, input) {
     const file = app.metadataCache?.getFirstLinkpathDest?.(target, here);
     return (file?.path || target).replace(/.(md|base)$/i, "") === here;
   };
-  for (const [target, label] of [...NAV, ...options.links || []]) {
+  for (const [target, label] of NAV) {
     const item = link(nav, target, label);
     if (isHere(target)) {
       item.classList.add("is-current");
@@ -134,7 +125,6 @@ function renderTopbar(env, input) {
   const more = make(make(create, "div", "hp-tb-more"), "div", "hp-tb-more-in");
   button(more, "hp-tb-icon", "calendar", "", "Today's note", (e) => openToday(e.ctrlKey || e.metaKey));
   button(more, "hp-tb-icon", "note", "", "New note", () => newFrom(TEMPLATES.note, "note"));
-  if (options.project) button(more, "hp-tb-icon", "project", "", "New project", () => newFrom(TEMPLATES.project, "project"));
   button(create, "hp-tb-primary", "plus", "New sermon", "Create a new sermon", () => newFrom(TEMPLATES.sermon, "sermon"));
   const extra = make(acts, "div", "hp-tb-extra");
   try {

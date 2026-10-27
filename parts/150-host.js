@@ -269,8 +269,8 @@ var PageDraw = class {
         container: host,
         sourcePath: this.block.sourcePath,
         homeNote: plugin.settings.homeNote,
-        render: (parent, md, cls) => ui.render(parent, md, cls)
-      }, { ...theme.bar || {}, buttons: (acts) => acts.append(layoutBtn, themeBtn) });
+        render: ui.render
+      }, { buttons: (acts) => acts.append(layoutBtn, themeBtn) });
     } catch (err) {
       console.error("Modular Homepage: could not draw the top bar", err);
     }
@@ -632,7 +632,7 @@ var PageDraw = class {
         config: this.plugin.config,
         container: node,
         life,
-        render: (parent, md, cls) => ui.render(parent, md, cls)
+        render: ui.render
       }, input),
       redraw: () => life.active && this.alive && slot.isConnected ? this.renderSlot(slot) : Promise.resolve(),
       // A module's own style switch (Stylish's card styles): changes its variant and saves the layout, as Done would.

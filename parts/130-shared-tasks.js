@@ -17,24 +17,6 @@ async function renderTasks(env, input) {
   const isEvent = (x) => x?.kind === "event";
   const store = options.state ?? (win.__homeTasks ??= {});
   store.draft ??= emptyDraft();
-  const ICONS2 = {
-    calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/>',
-    start: '<path d="M3 5v14"/><path d="M21 12H7"/><path d="m15 18 6-6-6-6"/>',
-    timer: '<path d="M10 2h4"/><path d="m12 14 3-3"/><circle cx="12" cy="14" r="8"/>',
-    hash: '<path d="M4 9h16"/><path d="M4 15h16"/><path d="M10 3 8 21"/><path d="m16 3-2 18"/>',
-    check: '<path d="M20 6 9 17l-5-5"/>',
-    x: '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
-    undo: '<path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/>',
-    note: '<path d="M16 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8Z"/><path d="M15 3v4a2 2 0 0 0 2 2h4"/>',
-    list: '<path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/>',
-    clock: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
-    todo: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="m9 12 2 2 4-4"/>',
-    event: '<path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h5"/><path d="M17.5 17.5 16 16.3V14"/><circle cx="16" cy="16" r="6"/>',
-    prev: '<path d="m15 18-6-6 6-6"/>',
-    next: '<path d="m9 18 6-6-6-6"/>',
-    pencil: '<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/>',
-    book: '<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>'
-  };
   const cls = (...names) => names.filter(Boolean).join(" ");
   function el(parent, tag, className, text) {
     const node = doc.createElement(tag);
@@ -46,7 +28,7 @@ async function renderTasks(env, input) {
   function icon(parent, name) {
     const s2 = el(parent, "span", "hp-tk-ico");
     s2.setAttribute("aria-hidden", "true");
-    s2.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + ICONS2[name] + "</svg>";
+    s2.innerHTML = svgOf(name);
     return s2;
   }
   function button(parent, className, iconName, label, title, onClick) {
@@ -67,9 +49,7 @@ async function renderTasks(env, input) {
     return env.render(parent, text, className);
   }
   function notify(message) {
-    const Notice5 = globalThis.Notice;
-    if (Notice5) new Notice5(message);
-    else console.warn("Tasks:", message);
+    new import_obsidian2.Notice(message);
   }
   const dayNow = () => DateTime.now().startOf("day");
   let today = dayNow();
@@ -1020,9 +1000,9 @@ async function renderTasks(env, input) {
       store.calMonth = iso(month.plus({ months: n2 }));
       draw(focusKey);
     };
-    button(head, "hp-tk-cal-nav", "prev", "", "Previous month", () => turn(-1, name + "-cal-prev")).dataset.tkFocus = name + "-cal-prev";
+    button(head, "hp-tk-cal-nav", "left", "", "Previous month", () => turn(-1, name + "-cal-prev")).dataset.tkFocus = name + "-cal-prev";
     el(head, "span", "hp-tk-cal-month", month.setLocale("en").toFormat("LLLL yyyy"));
-    button(head, "hp-tk-cal-nav", "next", "", "Next month", () => turn(1, name + "-cal-next")).dataset.tkFocus = name + "-cal-next";
+    button(head, "hp-tk-cal-nav", "right", "", "Next month", () => turn(1, name + "-cal-next")).dataset.tkFocus = name + "-cal-next";
     const grid = el(cal, "div", "hp-tk-cal-grid");
     for (const wd of ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"]) el(grid, "span", "hp-tk-cal-wd", wd).setAttribute("aria-hidden", "true");
     const first = month.minus({ days: month.weekday - 1 });
@@ -1067,9 +1047,9 @@ async function renderTasks(env, input) {
   const plainText = (s2) => String(s2 || "").replace(/\[\[([^\]|]*\|)?([^\]]*)\]\]/g, "$2").replace(/\[([^\]]*)\]\([^)]*\)/g, "$1") || "(no text)";
   function periodNav(box, label, unit, step, toToday, current) {
     const nav = el(box, "div", "hp-tk-period");
-    button(nav, "hp-tk-cal-nav", "prev", "", "Previous " + unit, () => step(-1)).dataset.tkFocus = "period-prev";
+    button(nav, "hp-tk-cal-nav", "left", "", "Previous " + unit, () => step(-1)).dataset.tkFocus = "period-prev";
     el(nav, "span", "hp-tk-period-label", label);
-    button(nav, "hp-tk-cal-nav", "next", "", "Next " + unit, () => step(1)).dataset.tkFocus = "period-next";
+    button(nav, "hp-tk-cal-nav", "right", "", "Next " + unit, () => step(1)).dataset.tkFocus = "period-next";
     const b = button(nav, cls("hp-tk-chip", SKIN2.pill), "", "Today", "Back to this " + unit, toToday);
     b.disabled = current;
     b.dataset.tkFocus = "period-today";
