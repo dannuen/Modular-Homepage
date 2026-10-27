@@ -41,7 +41,7 @@ All themes follow light and dark mode and the note's width.
 
 ## Layouts
 
-A layout is a named list of modules with their width (1 to 12 columns) and look. Layouts are yours: you create and name them, and any layout works with any theme. A homepage note shows the layout picked in its layout menu, or the default layout.
+A layout is a named list of modules with their width (1 to 12 columns) and look. Layouts are yours: you create and name them, and any layout works with any theme. A homepage note shows the layout picked in its layout menu, or the default layout, and keeps it when the note is renamed or moved.
 
 The **Layout** button in the top bar opens a menu to pick a layout, **Arrange** it (move, resize, add or hide modules, change a module's look), create a new one, duplicate, rename, make default or delete. The settings tab has the same actions. The last layout can't be deleted.
 
@@ -76,16 +76,18 @@ A module switched off in the settings is left out of every page and of **Arrange
 
 - **Sermons** are notes with `type: sermon` in the sermons folder. `is_active: true` marks one as in preparation; its `date` and `time` properties feed Next sermon, Coming up, Tasks and Calendar. Church photos in the attachments folder are named after the church (`<Church name>.png`).
 - **Projects** are folders whose `Home.md` has `document_type: project-dashboard`, with a `Tasks.md` and a `Meetings/` folder.
-- **Daily notes** live in `Daily Notes/yyyy/MM-MMMM/yyyy-MM-dd.md`. The Tasks module reads and writes their `## Tasks` section:
+- **Daily notes** live in `Daily Notes/yyyy/MM-MMMM/yyyy-MM-dd.md`. The Tasks module reads and writes their `## Tasks` section, and Calendar reads it the same way:
   - a to-do: `- [ ] Write intro #sermon 📅 2026-10-18`
   - an event (no checkbox): `- Elders meeting [time:: 19:00] [duration:: 1h] 📅 2026-10-20`
 - **Countdown** dates come only from note lines like `- Christmas #countdown [[2026-12-24]]`. There are no presets.
 - **Sunday roster** reads the Church Roster plugin's quarterly exports from the roster folder (one note per quarter). The Table look shows the week the way the note does: a table per service, a column per role and a row per day, leaving out roles nobody fills that week; in a narrow slot each role gets its own line. Names set in **Your names on the roster** are marked as yours.
-- **Banner** reads the `banner` property of the home note, for example `![[photo.jpg]]`. The ⚙ button on the banner sets the photo, page colour and fade (`banner_fade_color`, `banner_fade_strength`, `banner_fade_reach`).
+- **Banner** reads the `banner` property of the home note, for example `![[photo.jpg]]`. The ⚙ button on the banner sets the photo and fade (`banner_fade_color`, `banner_fade_strength`, `banner_fade_reach`).
 
 ### Pomodoro
 
-Presets are Classic (25/5/15 ×4), Quick (15/3/10 ×4) and Deep work (50/10/30 ×2). The ⚙ button edits presets (focus, short and long break, cycles), the chime and auto-start. The timer ignores themes, survives restarts, and is saved in the plugin's `pomodoro.json`.
+Presets are Classic (25/5/15 ×4), Quick (15/3/10 ×4) and Deep work (50/10/30 ×2). The ⚙ button edits presets (focus, short and long break, cycles), the chime and auto-start. The timer ignores themes, survives restarts, and is saved in the plugin's `pomodoro.json`, which is read again when Obsidian's window comes back, so a copy synced from another device (Syncthing, iCloud, git) is picked up.
+
+Each session is logged under `# Focus` in the day's daily note, which is created (with its folders) if missing: its name, cycles, focus minutes and times. A focus stopped part-way by Skip, End or a break tab counts the minutes it ran; Reset starts it again without counting them, and so does the Focus tab while the focus is paused.
 
 ## Settings
 
@@ -101,7 +103,7 @@ Open **Settings → Modular Homepage**.
 
 The defaults are set up for the author's vault, so change the name and folders to match yours. Settings and layouts are stored in the plugin's `data.json`; if it changes outside Obsidian (a sync), the plugin reads it again and redraws.
 
-Optional plugins: Templater (the create buttons make notes from templates) and Periodic Notes (opens today's note; without it the plugin opens or creates it itself).
+Optional plugins: Templater (the create buttons make notes from templates; a missing daily note is made from the daily note template, or empty without Templater) and Periodic Notes (opens today's note; without it the plugin opens or creates it itself).
 
 ## Install
 
@@ -122,7 +124,7 @@ node build.mjs --out main.js      # writes elsewhere
 node build.mjs --check main.js    # also compares with an existing build
 ```
 
-`tools/harness` runs the real bundle in headless Chromium against a made-up vault and writes screenshots and a DOM report for every theme, light and dark, at desktop and phone widths (see its README). `tools/checks` tests the button rows, and `writes.js` tests what the homepage writes to notes and `data.json`.
+`tools/harness` runs the real bundle in headless Chromium against a made-up vault and writes screenshots and a DOM report for every theme, light and dark, at desktop and phone widths (see its README). `tools/checks` tests the button rows, `writes.js` tests how task lines are read and what the homepage writes to notes and `data.json`, `dates.js` tests date, time and duration parsing, word counts, colour reading, the preaching dial, the roster and countdown parsers and the Bible books in Stats, `host.js` tests how a page follows changes (a theme pick, Arrange in a second view, an open ⚙ panel, a root folder, a rename of the note), and `pomodoro.js` tests the Pomodoro's reload of a synced `pomodoro.json` and its focus log.
 
 Read [GUIDELINES.md](GUIDELINES.md) before changing a module. It sets the card rules (one card per module, buttons in the top-right corner, spacing from theme tokens), the check to run, and how to install a fix safely.
 

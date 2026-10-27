@@ -34,7 +34,7 @@ Read this before changing the plugin. These rules come from the unified card wor
 ## How to make a fix
 
 1. **Ask first only when the change is big.** For a styling change across modules, write down how you read the request and confirm it with Dan. Small fixes go straight ahead.
-2. **Start from this folder.** Copy it to a scratch folder and edit `parts/` and `styles/`. Run `node build.mjs` to get `dist/main.js`. The git history is in `history.bundle`.
+2. **Start from this folder.** Copy it to a scratch folder and edit `parts/` and `styles/`. Run `node build.mjs` to get `dist/main.js`. The git history is in `history.bundle`; in a git clone, work on a new branch instead.
 3. **Run one check.** Use the preview harness in `tools/harness`, which runs the real bundle in headless Chromium against a made-up vault. Run it on every theme, light and dark, at 1230 and 420px:
 
    ```sh
@@ -43,7 +43,10 @@ Read this before changing the plugin. These rules come from the unified card wor
 
    - `summary.txt` must show no errors, no sideways scrolling, nothing poking out, and no controls outside a card. Banner hero, Greeting desk and Next sermon photo are allowed to have controls outside a card, because they have no card by design.
    - If you touched the button row, also run `node tools/checks/geom.js dist/main.js /tmp/g.json`, then `node tools/checks/geom-summary.js /tmp/g.json`.
-   - If you touched the Tasks panel, a note write or the settings, also run `node tools/checks/writes.js dist/main.js`. It must print `writes: ok`.
+   - If you touched the Tasks panel, Calendar, a note write or the settings, also run `node tools/checks/writes.js dist/main.js`. It must print `writes: ok`.
+   - If you touched dates, times, durations, word counts, colour reading, the preaching dial, the roster or countdown parsers or the Bible books in Stats, also run `node tools/checks/dates.js dist/main.js`. It must print `dates: ok`.
+   - If you touched the page host (redraws, Arrange, the theme or layout menu, folder watching, renames), also run `node tools/checks/host.js dist/main.js`. It must print `host: ok`.
+   - If you touched the Pomodoro timer, also run `node tools/checks/pomodoro.js dist/main.js`. It must print `pomodoro: ok`.
    - Look at the slot screenshots (`--slots`) of the modules you changed.
 
    Fix what this check finds, then install. Don't run more review rounds: Dan wants the result quickly.
@@ -52,7 +55,7 @@ Read this before changing the plugin. These rules come from the unified card wor
    - Check that its md5 matches the last install recorded in project memory, so another thread's work isn't overwritten.
    - Write the new build with `device_commit_files`, passing `expectedMtimeMs`, then check the md5 on the device.
    - Device path: `D:\Obsidian\dannuenobsidianvault\.obsidian\plugins\modular-homepage\main.js`.
-5. **Save the source back here.** Copy the changed `parts/` and `styles/` back to this folder, then refresh `history.bundle` (`git bundle create history.bundle --all`). Update the installed md5 in project memory.
+5. **Save the source back here.** Copy the changed `parts/` and `styles/` back to this folder, then refresh `history.bundle` (`git bundle create history.bundle --all`). In a git clone, commit on the branch instead (`.gitignore` keeps a stray `history.bundle` out). Update the installed md5 in project memory.
 6. **Reply to Dan with the result only.** Send no screenshots and no progress chatter. Tell Dan to turn the plugin off and on to load it, and list any small leftovers in one line each.
 
 ## Vault rules

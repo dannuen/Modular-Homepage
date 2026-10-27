@@ -14,10 +14,12 @@ var def7 = /* @__PURE__ */ (() => {
       const dayEntries = upcoming.length ? upcoming.filter((e) => e.date.toMillis() === upcoming[0].date.toMillis()) : [];
       const dayN = upcoming.length ? time.daysUntil(upcoming[0].date) : null;
       const lengthOf = (e) => e.time?.length ?? time.minutesOf(byPath.get(e.page.file.path)?.ms.total || 0);
+      const busyOf = (e) => e.time.length ?? Math.max(lengthOf(e), 20); // the arc and "Now" use the same length
+      const clockOf = (t) => t?.clock || time.timeText(t);
       const lengthText = (e) => (e.time?.length ? "" : "≈ ") + lengthOf(e) + " min";
       const statusOf = (e, now2) => {
         if (dayN !== 0 || !e.time) return "later";
-        if (now2 >= e.time.minutes + (e.time.length ?? Math.max(lengthOf(e), 15))) return "past";
+        if (now2 >= e.time.minutes + busyOf(e)) return "past";
         return now2 >= e.time.minutes ? "now" : "later";
       };
       const hero = el(body2, "section", "m-dial hp-card hp-grow");
@@ -53,11 +55,11 @@ var def7 = /* @__PURE__ */ (() => {
         }
         dayEntries.forEach((e, i) => {
           if (!e.time) return;
-          const d0 = deg(e.time.minutes), d1 = d0 + span(e.time.length ?? Math.max(lengthOf(e), 20));
+          const d0 = deg(e.time.minutes), d1 = d0 + span(busyOf(e));
           const path = svg(face2, "path", { d: arc(R, d0, d1), fill: "none", "stroke-width": W }, "m-dial-svc" + (statuses[i] === "past" ? " is-past" : ""));
           ui.tip(path, e.page.file.name + "\n" + time.timeText(e.time) + " · " + lengthText(e) + (data.churchesOf(e.page)[0] ? " · " + data.churchesOf(e.page)[0] : ""));
           const [lx, ly] = polar(R + W / 2 + 16, d0);
-          svg(face2, "text", { x: lx, y: ly, "text-anchor": "middle", "dominant-baseline": "central" }, "m-dial-at").textContent = e.time.clock;
+          svg(face2, "text", { x: lx, y: ly, "text-anchor": "middle", "dominant-baseline": "central" }, "m-dial-at").textContent = clockOf(e.time);
         });
         if (dayN === 0) {
           const [nx0, ny0] = polar(R - W / 2 - 34, deg(now2)), [nx1, ny1] = polar(R + W / 2 + 4, deg(now2));
@@ -68,14 +70,15 @@ var def7 = /* @__PURE__ */ (() => {
         const center = el(dial, "div", "m-dial-center hp-panel");
         const centre = (label, big, sub) => {
           el(center, "div", "hp-label", label);
-          el(center, "div", "m-dial-big hp-num", big);
+          el(center, "div", "m-dial-big hp-num" + (big.length > 5 ? " is-word" : ""), big); // a period ("Afternoon") is wider than a clock
           el(center, "div", "m-dial-sub", sub);
         };
         if (!dayEntries.length) centre("Next", "—", "nothing scheduled");
-        else if (dayN > 0) centre(dayN === 1 ? "Tomorrow" : "In", dayN === 1 ? dayEntries[0].time?.clock || "—" : String(dayN), dayN === 1 ? "first service" : "days");
-        else if (statuses.includes("now")) centre("Now", dayEntries[statuses.indexOf("now")].time.clock, "preaching");
-        else if (nextIdx >= 0) centre("Next", dayEntries[nextIdx].time.clock, time.inLabel(dayEntries[nextIdx].time.minutes - now2));
-        else centre("Today", "Done", "rest well");
+        else if (dayN > 0) centre(dayN === 1 ? "Tomorrow" : "In", dayN === 1 ? clockOf(dayEntries[0].time) || "—" : String(dayN), dayN === 1 ? "first service" : "days");
+        else if (statuses.includes("now")) centre("Now", clockOf(dayEntries[statuses.indexOf("now")].time), "preaching");
+        else if (nextIdx >= 0) centre("Next", clockOf(dayEntries[nextIdx].time), time.inLabel(dayEntries[nextIdx].time.minutes - now2));
+        else if (statuses.every((s2) => s2 === "past")) centre("Today", "Done", "rest well");
+        else centre("Today", "—", "any time");
         const side = el(hero, "div", "m-dial-side");
         const today = time.today;
         if (!dayEntries.length) {
@@ -96,7 +99,7 @@ var def7 = /* @__PURE__ */ (() => {
           const c = byPath.get(e.page.file.path);
           const s2 = statuses[i];
           const row = el(plan, "div", "m-dial-svc-row hp-panel" + (s2 === "past" ? " is-past" : ""));
-          el(row, "div", "m-dial-svc-time hp-num", e.time?.clock || time.timeText(e.time) || "—");
+          el(row, "div", "m-dial-svc-time hp-num", clockOf(e.time) || "—");
           ui.avatar(row, data.churchesOf(e.page)[0]);
           const main = el(row, "div", "");
           el(main, "div", "m-dial-svc-title", c ? c.title : e.page.file.name);

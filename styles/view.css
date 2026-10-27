@@ -218,19 +218,6 @@
 .hp-home button.hp-set-tile.is-on { box-shadow: 0 0 0 2px var(--hm-accent); }
 .hp-home .hp-set-acts { position: sticky; bottom: -16px; z-index: 1; flex: none; display: flex; justify-content: flex-end; gap: 8px; margin: 0 -15px -15px; padding: 10px 15px 15px; background: var(--hm-bg); border-top: 1px solid var(--hm-line); }
 .hp-home .hp-set-acts .hp-btn { min-height: 32px; --btn-pad: 0 14px; }
-/* Page colour "accent" (themes with pageColor): a soft accent tint on this note's tab, light and dark. */
-[data-hp-page="accent"] {
-	--background-primary: hsl(var(--accent-h), calc(var(--accent-s) * 0.45), 95%);
-	--background-primary-alt: hsl(var(--accent-h), calc(var(--accent-s) * 0.45), 92%);
-	--background-secondary: hsl(var(--accent-h), calc(var(--accent-s) * 0.45), 91%);
-	--background-modifier-border: hsl(var(--accent-h), calc(var(--accent-s) * 0.35), 84%);
-}
-.theme-dark [data-hp-page="accent"] {
-	--background-primary: hsl(var(--accent-h), calc(var(--accent-s) * 0.3), 11%);
-	--background-primary-alt: hsl(var(--accent-h), calc(var(--accent-s) * 0.3), 13%);
-	--background-secondary: hsl(var(--accent-h), calc(var(--accent-s) * 0.3), 15%);
-	--background-modifier-border: hsl(var(--accent-h), calc(var(--accent-s) * 0.25), 22%);
-}
 /* One shared tooltip */
 .hp-home .hp-tip { position: absolute; z-index: 30; left: 0; top: 0; max-width: 260px; padding: 8px 11px; border-radius: 12px; font-size: 0.78em; line-height: 1.4; white-space: pre-line; pointer-events: none; opacity: 0; transform: translate(-50%, calc(-100% - 14px)); transition: opacity 0.12s ease; background: var(--hm-pop); }
 .hp-home .hp-tip.is-on { opacity: 1; }

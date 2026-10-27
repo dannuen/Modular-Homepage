@@ -49,11 +49,11 @@ var def3 = /* @__PURE__ */ (() => {
         const count = el(foot, "div", "m-next-photo-count");
         el(count, "small", "", "Until you preach");
         const num = el(count, "div", "m-next-photo-num");
-        const target = e.date.plus({ minutes: e.time ? e.time.minutes : 0 });
+        const m = e.time ? e.time.minutes : 0, target = e.date.set({ hour: Math.floor(m / 60), minute: m % 60 }); // wall-clock time, also on a DST day
         let lastDisplay;
         const tick = () => {
           const mins = Math.floor(target.diff(time.DateTime.now(), "minutes").minutes);
-          const display = mins <= 0 ? "today" : mins < 60 * 48 ? mins : "days:" + Math.ceil(mins / 1440);
+          const display = mins <= 0 ? "today" : mins < 60 * 48 ? mins : "days:" + c.n;
           if (display === lastDisplay) return;
           lastDisplay = display;
           num.replaceChildren();
@@ -65,7 +65,7 @@ var def3 = /* @__PURE__ */ (() => {
           else if (mins < 60 * 48) {
             if (mins >= 60) unit(Math.floor(mins / 60), "h");
             unit(mins % 60, "m");
-          } else unit(Math.ceil(mins / 1440), "days");
+          } else unit(c.n, "days"); // calendar days, as the chip above says
         };
         tick();
         life.interval(tick, 3e4);
@@ -74,7 +74,7 @@ var def3 = /* @__PURE__ */ (() => {
         ui.ring(ready, secs ? c.ms.filled / secs * 100 : 0, 50, 5, secs ? c.ms.filled + "/" + secs : "—");
         const rt = el(ready, "div", "");
         el(rt, "b", "", secs ? c.ms.filled + " of " + ui.plural(secs, "section", "sections") + " written" : "No headings yet");
-        el(rt, "span", "", ui.plural(c.ms.total, "word", "words") + " · ≈ " + time.minutesOf(c.ms.total) + " min spoken");
+        el(rt, "span", "", c.ms.total ? ui.plural(c.ms.total, "word", "words") + " · ≈ " + time.minutesOf(c.ms.total) + " min spoken" : "Nothing written yet");
         const open = ui.button(foot, "m-next-photo-open", "", "Open sermon", "Open " + c.p.file.name, (ev) => act.openNote(c.p.file.path, ev.ctrlKey || ev.metaKey));
         ui.icon(open, "arrow");
       }

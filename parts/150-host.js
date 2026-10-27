@@ -3,11 +3,10 @@ var PROPERTY = "home_theme";
 var WIDTHS = [[4, "⅓", "One third"], [6, "½", "Half"], [8, "⅔", "Two thirds"], [12, "Full", "Full width"]];
 var SKIN = { card: "hp-card", panel: "hp-panel", pill: "hp-pill", knob: "hp-knob", mint: "hp-accent", kicker: "hp-kicker", track: "hp-track" };
 var REDRAW_DELAY = 600;
-var plainItems = (list2) => list2.map(({ module: module2, w, variant, settings, themed }) => ({
+var plainItems = (list2) => list2.map(({ module: module2, w, variant, themed }) => ({
   module: module2,
   w,
   variant,
-  ...Object.keys(settings || {}).length ? { settings: { ...settings } } : {},
   ...Object.keys(themed || {}).length ? { themed: { ...themed } } : {}
 }));
 function makeLife(win) {
@@ -89,7 +88,7 @@ var HomeBlock = class extends import_obsidian5.MarkdownRenderChild {
     const win = this.containerEl.win;
     win.clearTimeout(this.fullTimer);
     win.clearTimeout(this.changeTimer);
-    this.draw?.dispose(true);
+    this.draw?.dispose();
     this.draw = null;
   }
   get theme() {
@@ -105,7 +104,7 @@ var HomeBlock = class extends import_obsidian5.MarkdownRenderChild {
   redraw() {
     this.drawing = this.drawing.then(async () => {
       if (!this.plugin.blocks.has(this)) return;
-      this.draw?.dispose(false);
+      this.draw?.dispose();
       this.containerEl.empty();
       const draw = this.draw = new PageDraw(this);
       try {
@@ -167,7 +166,7 @@ var PageDraw = class {
   arrangeBtn;
   addBtn = null;
   addPop = null;
-  dispose(closing) {
+  dispose() {
     if (!this.alive) return;
     this.alive = false;
     for (const s2 of this.slots()) {
@@ -181,7 +180,6 @@ var PageDraw = class {
         console.error("Modular Homepage: clean-up failed", err);
       }
     }
-    if (closing) this.core?.page.reset();
   }
   notify(message) {
     new import_obsidian5.Notice(message);
@@ -198,8 +196,6 @@ var PageDraw = class {
       root: this.root,
       tipBox: this.tipBox,
       host: this.host,
-      theme: this.theme,
-      self: this.self,
       sourcePath: this.block.sourcePath,
       manuscripts: this.plugin.manuscripts
     });
@@ -209,10 +205,7 @@ var PageDraw = class {
     const THEMES2 = plugin.themes;
     const self = this.self;
     const themeById = (id) => THEMES2.find((t) => t.id === String(id ?? "").trim().toLowerCase()) || null;
-    const pending = G.themePending;
-    const saved = themeById(self?.[PROPERTY]);
-    this.theme = pending && Date.now() - pending.at < 15e3 && themeById(pending.id) || saved || themeById(plugin.settings.defaultTheme) || THEMES2[0];
-    if (pending && saved && saved.id === pending.id) G.themePending = null;
+    this.theme = themeById(self?.[PROPERTY]) || themeById(plugin.settings.defaultTheme) || THEMES2[0];
     const theme = this.theme;
     const layout = this.layout = plugin.layoutFor(this.block.sourcePath);
     for (const [id, def20] of plugin.modules) this.defs.set(id, {
@@ -221,7 +214,6 @@ var PageDraw = class {
       about: def20.about || "",
       width: def20.width || 12,
       variants: def20.variants || [],
-      settings: def20.settings || {},
       render: def20.render,
       watch: def20.watch
     });
@@ -248,7 +240,6 @@ var PageDraw = class {
     this.tipBox.className = "hp-tip hp-panel";
     this.core = this.makeCore();
     const ui = this.core.uiFor(this.pageLife.component);
-    this.core.page.apply(this.core.page.enabled ? this.core.page.read() : "theme");
     const barButton = (iconName, title) => {
       const b = ui.el(null, "button", "hp-tb-icon");
       b.type = "button";
@@ -269,8 +260,8 @@ var PageDraw = class {
         container: host,
         sourcePath: this.block.sourcePath,
         homeNote: plugin.settings.homeNote,
-        render: (parent, md, cls) => ui.render(parent, md, cls)
-      }, { ...theme.bar || {}, buttons: (acts) => acts.append(layoutBtn, themeBtn) });
+        render: ui.render
+      }, { buttons: (acts) => acts.append(layoutBtn, themeBtn) });
     } catch (err) {
       console.error("Modular Homepage: could not draw the top bar", err);
     }
@@ -372,17 +363,15 @@ var PageDraw = class {
     });
     const chooseTheme = async (id) => {
       if (id === theme.id) return;
-      G.themePending = { id, at: Date.now() };
       const file = this.app.vault.getAbstractFileByPath(this.block.sourcePath);
       try {
         if (file instanceof import_obsidian5.TFile) await this.app.fileManager.processFrontMatter(file, (fm) => {
-          fm[PROPERTY] = id;
+          fm[fmKey(fm, PROPERTY)] = id;
         });
       } catch (err) {
         console.error("Modular Homepage: could not save the theme", err);
         this.notify("Could not save the theme choice");
       }
-      if (this.alive) this.block.redraw();
     };
     const themeMenu = makeMenu(themeBtn, "Homepage theme", () => THEMES2.map((t) => ({ label: t.name, about: t.about, on: t.id === theme.id, run: () => chooseTheme(t.id) })));
     themeBtn.addEventListener("click", () => themeMenu(!isOpen(themeBtn)));
@@ -472,7 +461,7 @@ var PageDraw = class {
     const from = this.layout;
     const name = await askName(this.app, "Duplicate “" + from.name + "”", this.plugin.uniqueName(from.name + " copy"), "Duplicate");
     if (!name) return;
-    const items = this.G.arrange ? this.draftItems() : this.savedItems();
+    const items = this.G.arrange ? this.draftItems() : this.plugin.layoutById(from.id)?.items ?? [];
     try {
       const made = await this.plugin.createLayout(name, plainItems(items));
       if (this.G.arrange) {
@@ -521,6 +510,16 @@ var PageDraw = class {
   async refresh(paths) {
     if (!this.alive || !this.root?.isConnected) return;
     const dirty = this.slots().filter((s2) => {
+      if (s2.querySelector(".hp-set:not([hidden])")) { // an open ⚙ panel would lose its unsaved choices: catch up when it closes
+        if (!s2.__missed) s2.addEventListener("hp-set-closed", () => {
+          s2.__missed = false;
+          if (!this.alive || !s2.isConnected) return;
+          this.core = this.makeCore();
+          this.renderSlot(s2);
+        }, { once: true });
+        s2.__missed = true;
+        return false;
+      }
       const def20 = this.defOf(s2.__item);
       try {
         return !def20.watch || def20.watch(paths, { config: this.plugin.config, app: this.app, seen: s2.__seen ?? /* @__PURE__ */ new Set() });
@@ -543,7 +542,7 @@ var PageDraw = class {
       const w = WIDTHS.some(([n2]) => n2 === Number(i.w)) ? Number(i.w) : def20.width;
       const variant = known(i.variant) ? i.variant : def20.variants[0]?.[0] || "";
       const themed = Object.fromEntries(Object.entries(i.themed && typeof i.themed === "object" ? i.themed : {}).filter(([, v]) => known(v)));
-      return { module: i.module, w, variant, settings: i.settings || {}, ...Object.keys(themed).length ? { themed } : {} };
+      return { module: i.module, w, variant, ...Object.keys(themed).length ? { themed } : {} };
     });
   }
   // The variant a module shows in this theme: your pick in this theme, else the theme's own look for the module (Dune's
@@ -591,7 +590,13 @@ var PageDraw = class {
   slots = () => this.grid ? [...this.grid.querySelectorAll(":scope > .hp-slot")] : [];
   draftItems = () => this.slots().map((s2) => s2.__item);
   syncDraft() {
-    if (this.G.arrange) this.G.arrange.items = this.draftItems().map((i) => ({ ...i }));
+    if (!this.G.arrange) return;
+    this.G.arrange.items = this.draftItems().map((i) => ({ ...i }));
+    this.redrawTwins();
+  }
+  // Every view of this note shares G.arrange, so the others are drawn again to follow it.
+  redrawTwins() {
+    for (const b of this.plugin.blocks) if (b !== this.block && b.sourcePath === this.block.sourcePath) b.redraw();
   }
   // renderSlot(): draw one module into its slot, with its own ctx and clean-up.
   async renderSlot(slot) {
@@ -620,7 +625,6 @@ var PageDraw = class {
       theme: this.theme.id,
       module: def20.id,
       variant,
-      settings: { ...def20.settings, ...item.settings },
       store: G.state[def20.id] ??= {},
       life,
       root: this.root,
@@ -632,7 +636,7 @@ var PageDraw = class {
         config: this.plugin.config,
         container: node,
         life,
-        render: (parent, md, cls) => ui.render(parent, md, cls)
+        render: ui.render
       }, input),
       redraw: () => life.active && this.alive && slot.isConnected ? this.renderSlot(slot) : Promise.resolve(),
       // A module's own style switch (Stylish's card styles): changes its variant and saves the layout, as Done would.
@@ -849,7 +853,7 @@ var PageDraw = class {
       ui.el(b, "b", "", d.name);
       ui.el(b, "small", "", d.about);
       b.addEventListener("click", () => {
-        const item = { module: d.id, w: d.width, variant: d.variants[0]?.[0] || "", settings: {} };
+        const item = { module: d.id, w: d.width, variant: d.variants[0]?.[0] || "" };
         const slot = this.makeSlot(item);
         this.grid.append(slot);
         this.addHandle(slot);
@@ -870,12 +874,14 @@ var PageDraw = class {
       G.arrange = { layoutId: this.layout.id, items: this.draftItems().map((i) => ({ ...i })) };
       this.slots().forEach((s2) => this.addHandle(s2));
       this.drawBar();
+      this.redrawTwins();
       return;
     }
     const list2 = this.draftItems();
     const wasSaved = save ? await this.saveItems(list2) : false;
     if (save && !wasSaved) return;
     G.arrange = null;
+    this.redrawTwins();
     this.drawBar();
     if (save) {
       for (const s2 of this.slots()) {

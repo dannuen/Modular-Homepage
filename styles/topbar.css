@@ -84,7 +84,7 @@
 .hp-tb-bar button.hp-tb-primary:hover { transform: translateY(-1px); filter: brightness(1.07); }
 .hp-tb-bar button:focus-visible { outline: 2px solid var(--interactive-accent); outline-offset: 2px; }
 
-/* Create and open: New sermon, with Today's note and New note (and New project) beside it. With a mouse they
+/* Create and open: New sermon, with Today's note and New note beside it. With a mouse they
    stay folded away and slide out when the pointer (or keyboard focus) reaches the pill; on a touch screen
    they always show. */
 .hp-tb-create { display: flex; align-items: center; }
@@ -106,7 +106,6 @@
 		transition: opacity 0.2s ease var(--tb-d, 0s), transform 0.35s cubic-bezier(0.3, 1.5, 0.5, 1) var(--tb-d, 0s), background 0.15s ease, color 0.15s ease;
 	}
 	.hp-tb-more button.hp-tb-icon:nth-last-child(2) { --tb-d: 0.05s; }
-	.hp-tb-more button.hp-tb-icon:nth-last-child(3) { --tb-d: 0.1s; }
 }
 
 /* Extra buttons (the homepage's theme menu). */
