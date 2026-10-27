@@ -86,7 +86,7 @@ A module switched off in the settings is left out of every page and of **Arrange
 
 Presets are Classic (25/5/15 ×4), Quick (15/3/10 ×4) and Deep work (50/10/30 ×2). The ⚙ button edits presets (focus, short and long break, cycles), the chime and auto-start. The timer ignores themes, survives restarts, and is saved in the plugin's `pomodoro.json`, which is read again when Obsidian's window comes back, so a copy synced from another device (Syncthing, iCloud, git) is picked up.
 
-Each session is logged under `# Focus` in the day's daily note, which is created (with its folders) if missing: its name, cycles, focus minutes and times. A focus stopped part-way by Skip, End or a phase tab counts the minutes it ran; Reset starts the phase again without counting them.
+Each session is logged under `# Focus` in the day's daily note, which is created (with its folders) if missing: its name, cycles, focus minutes and times. A focus stopped part-way by Skip, End or a break tab counts the minutes it ran; Reset (or the Focus tab) starts it again without counting them.
 
 ## Settings
 

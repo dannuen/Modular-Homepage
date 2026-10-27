@@ -1,4 +1,4 @@
-// node pomodoro.js <main.js>: checks that a synced pomodoro.json is read again and that a tab logs a paused focus. Exit 1 on a failure.
+// node pomodoro.js <main.js>: checks that a synced pomodoro.json is read again (but not over a change made here) and that a tab logs a paused focus. Exit 1 on a failure.
 const path = require("path");
 const { renderHomepage, launch } = require(path.resolve(__dirname, "../harness/render.js"));
 // Runs in the page. "Today" is 2026-10-14 10:00; the fixture's timer is idle at the start of a focus.
@@ -21,6 +21,15 @@ expect("status after the window comes back", status(), "Paused");
 H.click(H.$$(".m-pomo-tab", H.slot("pomodoro")).find((b) => b.dataset.phase === "short"));
 await H.settleAfterAction();
 expect("focus log line", H.text(day).split("\\n").find((l) => l.endsWith("^pomo-check")), "- **Check** · 0 chu kỳ · 13m · 09:47–10:00 ^pomo-check");
+// A preset picked here wins over a synced file, even when its save starts while a slow read of that file is under way.
+const ad = H.app.vault.adapter, read = ad.read;
+H.app.vault.adapterFiles.set(file, JSON.stringify({ ...JSON.parse(await read(file)), presetId: "deep" }));
+ad.read = async (p) => { const v = await read(p); await H.sleep(800); return v; };
+H.click(H.$$(".m-pomo-presets .m-pomo-chip", H.slot("pomodoro")).find((b) => b.textContent === "Quick"));
+window.dispatchEvent(new Event("focus"));
+await H.sleep(1200);
+ad.read = read;
+expect("preset after a slow read", H.$(".m-pomo-presets .is-on", H.slot("pomodoro")).textContent + " / " + JSON.parse(await read(file)).presetId, "Quick / quick");
 `;
 (async () => {
   const browser = await launch();

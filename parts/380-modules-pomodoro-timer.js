@@ -324,13 +324,14 @@ var PomodoroTimer = class {
     this.changed();
   }
   // ---------- Saving ----------
-  // `again` (the window is back): take the file only if a sync of .obsidian changed it and no change here awaits saving.
+  // `again` (the window is back): take the file only if a sync of .obsidian changed it and no change here awaits or began saving.
   async load(again = false) {
     try {
-      await this.saving;
+      const saving = this.saving;
+      await saving;
       if (await this.app.vault.adapter.exists(this.path)) {
         const text = await this.app.vault.adapter.read(this.path);
-        if (again && (text === this.text || this.saveId)) return;
+        if (again && (text === this.text || this.saveId || this.saving !== saving)) return;
         this.data = clean(JSON.parse(this.text = text));
       }
     } catch (err) {
