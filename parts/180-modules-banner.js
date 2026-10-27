@@ -32,9 +32,11 @@ var def2 = /* @__PURE__ */ (() => {
     }
   };
   async function hero(body2, ctx, savedFile) {
-    const { ui, time, data, act, app, self, config, settings, page, life } = ctx;
+    const { ui, time, data, act, app, self, config, settings, page, life, redraw } = ctx;
     const { el } = ui;
     const box = el(body2, "div", "m-banner-hero");
+    const said = time.greeting();
+    life.interval(() => time.greeting() !== said && redraw(), 6e4); // "Good morning" turns to afternoon at 12:00, evening at 18:00
     const img = el(box, "img", "m-banner-img");
     img.alt = "";
     img.decoding = "async";

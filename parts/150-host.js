@@ -414,10 +414,9 @@ var PageDraw = class {
     this.grid = ui.el(root, "div", "hp-grid");
     this.drawBar();
     await this.buildGrid(items);
-    // A new day, or a new greeting at 12:00 and 18:00 (Greeting and Banner say "Good morning"): draw the page again.
-    let shownDay = this.core.time.today.toISODate() + this.core.time.greeting(), refreshing = false;
+    let shownDay = this.core.time.today.toISODate(), refreshing = false;
     this.pageLife.interval(async () => {
-      const day = this.core.time.todayNow().toISODate() + this.core.time.greeting();
+      const day = this.core.time.todayNow().toISODate();
       if (day === shownDay || !root.isConnected || refreshing) return;
       refreshing = true;
       try {
