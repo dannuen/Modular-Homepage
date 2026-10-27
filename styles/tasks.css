@@ -45,15 +45,6 @@
 .hp-tk-wrap .hp-tk-ico { display: inline-flex; flex: none; }
 .hp-tk-wrap .hp-tk-ico svg { width: 1.05em; height: 1.05em; }
 
-/* Plain materials, for a note without a theme skin */
-.hp-tk-wrap .hp-tk-card-base { border: 1px solid var(--tk-line); border-radius: 18px; background: var(--background-primary); }
-.hp-tk-wrap .hp-tk-panel-base { border: 1px solid var(--tk-line); border-radius: 14px; background: var(--tk-group-bg); }
-.hp-tk-wrap .hp-tk-pill-base { --btn-bg: var(--background-primary); border: 1px solid var(--tk-line); border-radius: 999px; background: var(--btn-bg); }
-.hp-tk-wrap .hp-tk-knob-base { border: 1.5px solid var(--tk-soft-edge); border-radius: 50%; }
-.hp-tk-wrap .hp-tk-mint-base { --btn-bg: var(--interactive-accent); border-radius: 999px; background: var(--btn-bg); color: var(--text-on-accent); }
-.hp-tk-wrap .hp-tk-kicker-base { font-size: 0.8em; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--tk-accent); }
-.hp-tk-wrap .hp-tk-track-base { border-radius: 4px; background: var(--tk-line); }
-
 /* The panel. One layer above what follows it on the page, so a picker that hangs past its bottom edge covers the next
    card (a glass card is a layer of its own, drawn after this one); the top bar (40) and theme menu (60) stay above. */
 .hp-tk-wrap .hp-tk-box { z-index: 1; position: relative; display: flex; flex-direction: column; gap: 14px; padding: var(--hm-pad, 22px); }
