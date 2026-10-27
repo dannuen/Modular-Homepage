@@ -2,3 +2,6 @@ dist/
 node_modules/
 tools/harness/.cache/
 tools/harness/out*/
+tools/harness/fixtures/
+tools/checks/tmp/
+history.bundle

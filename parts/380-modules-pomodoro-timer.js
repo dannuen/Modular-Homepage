@@ -103,6 +103,7 @@ var PomodoroTimer = class {
   audio = null;
   disposed = false;
   saving = Promise.resolve();
+  text;
   logging = Promise.resolve();
   // ---------- Reading ----------
   get preset() {
@@ -158,9 +159,12 @@ var PomodoroTimer = class {
   skip() {
     this.finish(false, Date.now());
   }
-  // Pick a phase by hand (the tabs).
+  // Pick a phase by hand (the tabs). Leaving a paused focus counts the minutes it ran, as Skip and End do.
   choose(phase) {
-    if (this.timer.status !== "running") this.stopAt(phase);
+    const t = this.timer;
+    if (t.status === "running") return;
+    if (t.phase === "focus" && phase !== "focus") this.addFocus(t.total - t.left, Date.now(), false);
+    this.stopAt(phase);
   }
   stopAt(phase) {
     const t = this.timer;
@@ -320,9 +324,16 @@ var PomodoroTimer = class {
     this.changed();
   }
   // ---------- Saving ----------
-  async load() {
+  // `again` (the window is back): take the file only if a sync of .obsidian changed it and no change here awaits or began saving.
+  async load(again = false) {
     try {
-      if (await this.app.vault.adapter.exists(this.path)) this.data = clean(JSON.parse(await this.app.vault.adapter.read(this.path)));
+      const saving = this.saving;
+      await saving;
+      if (await this.app.vault.adapter.exists(this.path)) {
+        const text = await this.app.vault.adapter.read(this.path);
+        if (again && (text === this.text || this.saveId || this.saving !== saving)) return;
+        this.data = clean(JSON.parse(this.text = text));
+      }
     } catch (err) {
       console.error("Modular Homepage: could not read " + this.path, err);
     }
@@ -355,7 +366,9 @@ var PomodoroTimer = class {
   }
   save() {
     const snapshot = JSON.stringify(this.data, null, "	");
-    this.saving = this.saving.then(() => this.app.vault.adapter.write(this.path, snapshot)).catch((err) => {
+    this.saving = this.saving.then(() => this.app.vault.adapter.write(this.path, snapshot)).then(() => {
+      this.text = snapshot;
+    }).catch((err) => {
       console.error("Modular Homepage: could not save " + this.path, err);
     });
     return this.saving;
@@ -425,6 +438,10 @@ function pomodoroFor(app) {
     plugin?.register(() => {
       made.dispose();
       timers.delete(owner);
+    });
+    plugin?.registerDomEvent(window, "focus", () => void made.load(true));
+    plugin?.registerDomEvent(document, "visibilitychange", () => {
+      if (!document.hidden) void made.load(true);
     });
   }
   return timer;
