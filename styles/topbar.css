@@ -42,7 +42,7 @@
 .hp-tb-nav .hp-tb-value, .hp-tb-nav .hp-tb-value p { display: inline; margin: 0 !important; padding: 0 !important; }
 .hp-tb-nav a { display: inline-flex; align-items: center; padding: 7px 12px; border-radius: 999px; font-size: 0.84em; font-weight: 550; color: var(--text-muted) !important; text-decoration: none !important; transition: color 0.15s ease; }
 .hp-tb-nav a:hover, .hp-tb-nav a:focus-visible { color: var(--text-normal) !important; }
-.hp-tb-nav a:focus-visible { outline: none; }
+.hp-tb-nav a:focus-visible { outline: 2px solid var(--interactive-accent); outline-offset: -2px; }
 .hp-tb-nav .hp-tb-value.is-current a { color: var(--text-accent) !important; background: color-mix(in srgb, var(--interactive-accent) 13%, transparent); }
 /* Iconize adds its link icon twice here; keep the first and cancel its nudge. */
 .hp-tb-nav a > .iconize-icon-in-link ~ .iconize-icon-in-link { display: none; }

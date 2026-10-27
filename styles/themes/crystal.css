@@ -225,6 +225,8 @@
 .theme-dark .hp-home[data-theme="crystal"] .m-greet-daynum { background: linear-gradient(180deg, #fff 30%, rgba(255, 255, 255, 0.55)); -webkit-background-clip: text; background-clip: text; }
 .theme-dark .hp-home[data-theme="crystal"] .m-greet-when { color: var(--cr-blue-ink); background: var(--cr-glass-blue); box-shadow: var(--cr-rim-chip); }
 .theme-dark .hp-home[data-theme="crystal"] .m-greet-stat span { color: #d3d8e0; }
+.hp-home[data-theme="crystal"] .m-greet-glow .m-greet-stat { background: rgba(255, 252, 244, 0.5); }
+.hp-home[data-theme="crystal"] .m-greet-glow .m-greet-stat :is(b, span) { color: var(--gl-ink-dark); }
 .hp-home[data-theme="crystal"] button.m-proj-filter-btn { color: var(--cr-muted); font-weight: 650; }
 .hp-home[data-theme="crystal"] button.m-proj-filter-btn[aria-pressed="true"] { --btn-bg: var(--cr-glass-blue); color: var(--cr-blue-ink); box-shadow: var(--cr-rim-chip), 0 2px 4px -2px var(--cr-blue-glow); }
 .hp-home[data-theme="crystal"] .m-next-photo { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), inset 0 0 0 1px rgba(255, 255, 255, 0.16), 0 30px 34px -30px var(--cr-shadow); }

@@ -58,6 +58,7 @@
 	--fg-track-a: rgba(16, 20, 22, 0.9); --fg-track-b: rgba(36, 42, 46, 0.9);
 	--fg-shine: rgba(255, 255, 255, 0.05); --fg-blush-edge: rgba(200, 150, 148, 0.26); --fg-late: #E7A09C;
 	--hm-bg: #20262A;
+	--hm-soft: color-mix(in srgb, var(--fg-mint-b) 16%, transparent);   /* the light tint left mint text at 2.2:1 */
 }
 
 /* Materials */
@@ -127,3 +128,6 @@
 	.hp-home[data-theme="frosted"] .hp-tk-box { border-radius: 26px; }
 }
 
+
+/* Contrast: the top bar's buttons sit on Obsidian's accent (~3.8:1 under white text), so a step darker. */
+.hp-tb-box:has(~ .hp-home[data-theme="frosted"]) { --interactive-accent: color-mix(in srgb, var(--color-accent) 80%, black); }

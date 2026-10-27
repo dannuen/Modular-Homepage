@@ -14,10 +14,10 @@
 
 /* ---------- Palette: the Pomodoro's ink and paper; pink by default, mint and lavender for every 2nd and 3rd module ---------- */
 .hp-home[data-theme="pixel"], .hp-tb-box:has(~ .hp-home[data-theme="pixel"]), .hp-hs-layer:has(~ .hp-home[data-theme="pixel"]) {
-	--px-ink: #4a2c40; --px-muted: #8b6a7f; --px-faint: #b39aa9; --px-paper: #fffdfb; --px-page: #fdf3f0;
+	--px-ink: #4a2c40; --px-muted: #6e5163; --px-faint: #7a5a6e; --px-paper: #fffdfb; --px-page: #fdf3f0;
 	--px-font: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, monospace;
 	--px-bg: #fff0ee; --px-floor: #ffd6d2; --px-dot: rgba(255, 111, 125, 0.13); --px-accent: #ff7a88; --px-soft: #ffd3d8; --px-shade: #e9a3ab;
-	--px-accent-ink: #c43d5b; --px-h: 354; --px-s: 100%; --px-l: 74%;
+	--px-accent-ink: #a8304b; --px-h: 354; --px-s: 100%; --px-l: 74%;
 	/* The frames: 4px of ink with the corner pixel cut off (cards), 3px (buttons). */
 	--px-frame: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' shape-rendering='crispEdges'%3E%3Cpath fill='%234a2c40' d='M4 0h4v4H4zM0 4h4v4H0zM8 4h4v4H8zM4 8h4v4H4z'/%3E%3C/svg%3E");
 	--px-cut: polygon(3px 0, calc(100% - 3px) 0, calc(100% - 3px) 3px, 100% 3px, 100% calc(100% - 3px), calc(100% - 3px) calc(100% - 3px), calc(100% - 3px) 100%, 3px 100%, 3px calc(100% - 3px), 0 calc(100% - 3px), 0 3px, 3px 3px);
@@ -25,7 +25,7 @@
 .theme-dark .hp-home[data-theme="pixel"] { --px-page: #2a1d29; }
 .hp-home[data-theme="pixel"] .hp-slot:nth-child(3n + 2) {
 	--px-bg: #eafaf2; --px-floor: #c6eedb; --px-dot: rgba(63, 191, 138, 0.15); --px-accent: #4fcf98; --px-soft: #c9f1de; --px-shade: #8fd2b3;
-	--px-accent-ink: #23845c; --px-h: 155; --px-s: 57%; --px-l: 56%;
+	--px-accent-ink: #1b6f4c; --px-h: 155; --px-s: 57%; --px-l: 56%;
 }
 .hp-home[data-theme="pixel"] .hp-slot:nth-child(3n) {
 	--px-bg: #f2eeff; --px-floor: #ddd3ff; --px-dot: rgba(155, 127, 240, 0.15); --px-accent: #b39bf7; --px-soft: #e2d9ff; --px-shade: #a996e0;
