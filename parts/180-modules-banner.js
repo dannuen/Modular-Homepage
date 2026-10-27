@@ -16,13 +16,12 @@ var def2 = /* @__PURE__ */ (() => {
     about: "A photo across the page, from Homepage's properties",
     width: 12,
     variants: [["photo", "Photo"], ["hero", "Hero"]],
-    settings: { property: "banner" },
     async render(body2, ctx) {
-      const { ui, settings, variant, app, self } = ctx;
-      const file = imageFor(ctx, self?.[settings.property]);
+      const { ui, variant, app, self } = ctx;
+      const file = imageFor(ctx, self?.banner);
       if (variant === "hero") return hero(body2, ctx, file);
       if (!file) {
-        ui.el(body2, "div", "hp-empty hp-card m-banner-empty", "No picture yet: set “" + settings.property + "” in Homepage's properties to an image, e.g. ![[photo.jpg]].");
+        ui.el(body2, "div", "hp-empty hp-card m-banner-empty", "No picture yet: set “banner” in Homepage's properties to an image, e.g. ![[photo.jpg]].");
         return;
       }
       const img = ui.el(body2, "img", "m-banner-photo");
@@ -32,7 +31,7 @@ var def2 = /* @__PURE__ */ (() => {
     }
   };
   async function hero(body2, ctx, savedFile) {
-    const { ui, time, data, act, app, self, config, settings, page, life } = ctx;
+    const { ui, time, data, act, app, self, config, page, life } = ctx;
     const { el } = ui;
     const box = el(body2, "div", "m-banner-hero");
     const img = el(box, "img", "m-banner-img");
@@ -132,7 +131,7 @@ var def2 = /* @__PURE__ */ (() => {
       cfg = { ...FADE_DEFAULT, page: "theme", photo: read().photo };
       sync();
     }, async () => {
-      const fields = { banner_fade_color: cfg.color, banner_fade_strength: cfg.strength, banner_fade_reach: cfg.reach, [settings.property]: cfg.photo ? "![[" + cfg.photo + "]]" : "" };
+      const fields = { banner_fade_color: cfg.color, banner_fade_strength: cfg.strength, banner_fade_reach: cfg.reach, banner: cfg.photo ? "![[" + cfg.photo + "]]" : "" };
       if (page.enabled) fields.page_color = cfg.page;
       if (await act.saveProps(fields, "Page & banner")) set.close(false);
     });
