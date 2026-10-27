@@ -54,7 +54,7 @@ var def6 = /* @__PURE__ */ (() => {
     lineOf: lineOf2,
     // for the harness
     async render(body2, ctx) {
-      const { ui, time, act, data, variant, life, store, settings, app, vault, seen, setVariant } = ctx;
+      const { ui, time, act, data, variant, life, store, app, vault, seen, setVariant } = ctx;
       const { el } = ui;
       const { DateTime: DateTime2 } = time;
       const doc = body2.ownerDocument, win = doc.defaultView || window;
@@ -84,9 +84,6 @@ var def6 = /* @__PURE__ */ (() => {
               emoji: m && name !== x.name ? m[1] : "",
               path: p.file.path,
               at,
-              len: 1440,
-              allDay: true,
-              clock: "",
               start: made && made < at ? made : at.minus({ days: 30 })
             });
           }
@@ -95,7 +92,7 @@ var def6 = /* @__PURE__ */ (() => {
       }
       function stateOf(t, now2) {
         const left = t.at.toMillis() - now2.toMillis();
-        const live = left <= 0 && now2.toMillis() < t.at.toMillis() + t.len * 6e4;
+        const live = left <= 0 && now2 < t.at.plus({ days: 1 }); // the whole day, 23 or 25 hours on a DST change
         const total = Math.max(0, Math.ceil(left / 1e3));
         const span = Math.max(1e3, t.at.toMillis() - t.start.toMillis());
         return {
@@ -110,14 +107,12 @@ var def6 = /* @__PURE__ */ (() => {
           progress: live ? 1 : Math.max(0, Math.min(1, 1 - left / span))
         };
       }
-      const liveLabel = (t) => t.allDay ? "Today" : "Happening now";
-      const plural = (n2, one, many) => n2 + " " + (n2 === 1 ? one : many);
       const partsOf = (st) => UNITS2.filter(([k]) => (k !== "s" || !st.d && !st.h) && st[k]).map(([k, one, many]) => [st[k], st[k] === 1 ? one : many]);
       const joined = (list2) => list2.length < 2 ? list2.join("") : list2.slice(0, -1).join(", ") + " and " + list2.at(-1);
       const spoken2 = (st) => joined(partsOf(st).map(([n2, u]) => n2 + " " + u));
       const short = (st) => st.d ? st.d + "d " + st.h + "h " + pad(st.m) + "m" : st.h ? st.h + "h " + pad(st.m) + "m " + pad(st.s) + "s" : st.m + "m " + pad(st.s) + "s";
-      const whenText = (x) => fmt2(x.at, x.at.year === DateTime2.now().year ? "cccc d LLLL" : "cccc d LLLL yyyy") + (x.allDay ? "" : " · " + x.clock);
-      const relText = (x) => time.relLabel(Math.round(x.at.startOf("day").diff(DateTime2.now().startOf("day"), "days").days));
+      const whenText = (x) => fmt2(x.at, x.at.year === DateTime2.now().year ? "cccc d LLLL" : "cccc d LLLL yyyy");
+      const relText = (x) => time.relLabel(time.daysUntil(x.at));
       function caption(parent, t, cls = "") {
         const cap = el(parent, "div", ("m-cd-cap " + cls).trim());
         el(cap, "div", "hp-kicker m-cd-kicker", "Counting down to");
@@ -126,7 +121,6 @@ var def6 = /* @__PURE__ */ (() => {
         if (t.path) ui.link(title, t.path, t.title);
         else title.append(t.title);
         el(cap, "div", "m-cd-when", whenText(t) + " · " + relText(t));
-        if (t.sub) el(cap, "div", "m-cd-sub", t.sub);
         return cap;
       }
       const half = (parent, cls, text) => {
@@ -462,7 +456,7 @@ var def6 = /* @__PURE__ */ (() => {
             const n2 = st.live ? 0 : mode === "hour" ? Math.ceil(st.left / 36e5) : mode === "day" ? Math.ceil(st.left / 864e5) : Math.ceil(st.left / 6048e5);
             const u = mode === "hour" ? ["hour", "hours"] : mode === "day" ? ["day", "days"] : ["week", "weeks"];
             num.textContent = st.live ? "Now" : String(n2);
-            unit.textContent = st.live ? liveLabel(t) : (n2 === 1 ? u[0] : u[1]) + " to go";
+            unit.textContent = st.live ? "Today" : (n2 === 1 ? u[0] : u[1]) + " to go";
             note.textContent = "Each dot is " + (mode === "hour" ? "an hour" : mode === "day" ? "a day" : "a week") + ". Filled ones are gone.";
           };
         },
@@ -481,7 +475,7 @@ var def6 = /* @__PURE__ */ (() => {
           };
           const untilText = (live) => {
             until.replaceChildren();
-            const when = ", " + fmt2(t.at, "cccc d LLLL") + (t.allDay ? "" : " at " + t.clock) + ".";
+            const when = ", " + fmt2(t.at, "cccc d LLLL") + ".";
             if (!live) until.append("until ");
             name(until);
             until.append(live ? " is here." : when);
@@ -501,8 +495,8 @@ var def6 = /* @__PURE__ */ (() => {
               });
               if (liveChanged) untilText(st.live);
             }
-            const nights = Math.round(t.at.startOf("day").diff(DateTime2.now().startOf("day"), "days").days);
-            const foot2 = st.live ? whenText(t) : ui.plural(Math.ceil(st.left / 36e5), "hour", "hours") + " to go · " + (nights > 0 ? plural(nights, "night", "nights") + " of sleep" : "today");
+            const nights = time.daysUntil(t.at);
+            const foot2 = st.live ? whenText(t) : ui.plural(Math.ceil(st.left / 36e5), "hour", "hours") + " to go · " + (nights > 0 ? ui.plural(nights, "night", "nights") + " of sleep" : "today");
             if (foot.textContent !== foot2) foot.textContent = foot2;
           };
         },
@@ -516,7 +510,7 @@ var def6 = /* @__PURE__ */ (() => {
             el(lamp, "i", "");
             flapRow(el(row, "div", "m-cd-bname"), "m-cd-flaps", x.label.toLocaleUpperCase("vi").slice(0, 24));
             el(row, "div", "m-cd-bsub", whenText(x));
-            flapRow(el(row, "div", "m-cd-bwhen"), "m-cd-flaps", (fmt2(x.at, "ccc d LLL") + (x.allDay ? "" : " " + x.clock)).toUpperCase());
+            flapRow(el(row, "div", "m-cd-bwhen"), "m-cd-flaps", fmt2(x.at, "ccc d LLL").toUpperCase());
             const left = flapRow(el(row, "div", "m-cd-bleft"), "m-cd-flaps", "");
             if (x.path) ui.asLink(row, "Open " + x.title, (newTab) => act.openNote(x.path, newTab));
             return { x, row, left };
@@ -613,7 +607,7 @@ var def6 = /* @__PURE__ */ (() => {
       }
       function draw() {
         targets = collect(DateTime2.now());
-        const want = store.target ?? readSaved() ?? settings?.target;
+        const want = store.target ?? readSaved();
         target = targets.find((x) => x.id === want || x.label === want) || targets[0] || null;
         drawDates();
         if (!target) {
@@ -643,10 +637,10 @@ var def6 = /* @__PURE__ */ (() => {
         if (liveShown !== st.live) {
           liveShown = st.live;
           card.classList.toggle("is-live", st.live);
-          for (const k of card.querySelectorAll(".m-cd-kicker")) k.textContent = st.live ? liveLabel(target) : "Counting down to";
+          for (const k of card.querySelectorAll(".m-cd-kicker")) k.textContent = st.live ? "Today" : "Counting down to";
         }
         update(st, now2);
-        const words = st.live ? liveLabel(target) + ": " + target.title : (spoken2({ ...st, s: 0 }) || "Less than a minute") + " until " + target.title;
+        const words = st.live ? "Today: " + target.title : (spoken2({ ...st, s: 0 }) || "Less than a minute") + " until " + target.title;
         if (words !== said) {
           said = words;
           stage.setAttribute("aria-label", words);

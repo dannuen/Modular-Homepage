@@ -65,7 +65,7 @@ var def5 = (() => {
     if (x = s2.match(/^(\d{4})[-/.](\d{1,2})[-/.](\d{1,2})(?!\d)/)) [y, m, d] = [+x[1], +x[2], +x[3]];
     else if (x = s2.match(/^(\d{1,2})[/.-](\d{1,2})(?:[/.-](\d{4}|\d{2}))?(?!\d)/)) {
       [d, m] = [+x[1], +x[2]];
-      if (m > 12 && d <= 12) [d, m] = [m, d];
+      if (m > 12 && d <= 12 && !x[0].includes(".")) [d, m] = [m, d]; // "8.30" is a time, not 30 August
       if (x[3]) y = x[3].length === 2 ? 2e3 + +x[3] : +x[3];
     } else if (x = s2.match(/^(\d{1,2})\s*(?:tháng|th|t)\s*(\d{1,2})(?:\s*(?:năm|,|\/)?\s*(\d{4}))?(?!\d)/iu)) [d, m, y] = [+x[1], +x[2], x[3] ? +x[3] : null];
     else if ((x = s2.match(/^(\d{1,2})(?:st|nd|rd|th)?\s+(?:of\s+)?(\p{L}{3,9})\.?,?(?:\s+(\d{4}))?(?![\p{L}\d])/iu)) && monthOf(x[2])) [d, m, y] = [+x[1], monthOf(x[2]), x[3] ? +x[3] : null];
@@ -124,7 +124,7 @@ var def5 = (() => {
         }
         if (PERIOD.test(title)) {
           const yh = hintOf(title);
-          if (yh.year) Object.assign(hint, { year: yh.year, quarter: yh.quarter || hint.quarter });
+          if (yh.year) Object.assign(hint, { year: yh.year, quarter: yh.quarter || (yh.year === hint.year ? hint.quarter : null) }); // the file's quarter belongs to its own year
           else if (yh.quarter) hint.quarter = yh.quarter;
           if (level <= sectionLevel) {
             section = "";
@@ -184,7 +184,7 @@ var def5 = (() => {
       const textOfLine = (item ? item[1] : line).trim();
       if (!textOfLine) continue;
       const d = dateOf(textOfLine, hint, todayIso);
-      if (d && !d.rest) {
+      if (d && !/[:：]/.test(textOfLine)) {
         dateCtx = { iso: d.iso, level: 7, note: d.rest };
         service = "";
         continue;
@@ -248,7 +248,7 @@ var def5 = (() => {
       const empty = (text) => el(view, "div", "hp-empty m-roster-empty", text);
       const { missing, notes, days } = await readRoster(app, folder, churches, todayIso);
       if (missing) {
-        empty("No “" + folder + "” folder in the vault. Set rosterFolder in registry.js to the folder Church Roster exports to.");
+        empty("No “" + folder + "” folder in the vault. Set the Roster folder in the plugin settings to the folder Church Roster exports to.");
         return;
       }
       if (!days.length) {
@@ -456,6 +456,6 @@ var def5 = (() => {
     }
   };
 })();
-def5.watch = (paths, { config }) => anyUnder(paths, config.rosterFolder);
+def5.watch = (paths, { config }) => anyUnder(paths, config.rosterFolder || "Church Roster");
 var roster_default = def5;
 

@@ -6,10 +6,12 @@ var def = /* @__PURE__ */ (() => {
     about: "The day, and one sentence about the next preaching day",
     width: 12,
     variants: [["sentence", "Sentence"], ["simple", "Simple"], ["desk", "Desk"], ["masthead", "Masthead"], ["glow", "Glow"]],
-    async render(body2, { ui, time, data, config, variant }) {
+    async render(body2, { ui, time, data, config, variant, life, redraw }) {
       const { el } = ui;
       const today = time.today;
       const box = el(body2, "section", "m-greet is-" + (variant || "sentence"));
+      const said = time.greeting();
+      life.interval(() => time.greeting() !== said && redraw(), 6e4); // "Good morning" turns to afternoon at 12:00, evening at 18:00
       const word = (n3) => WORDS[n3] || String(n3);
       if (variant === "desk") {
         const projects = (await data.projects()).filter((p) => p.active), desk = await data.active();
@@ -87,8 +89,7 @@ var def = /* @__PURE__ */ (() => {
         lede.textContent = "Mark a sermon active and give it a date, and it will appear here.";
         return;
       }
-      const count = ["No", "One", "Two", "Three", "Four", "Five", "Six"][sameDay.length] || String(sameDay.length);
-      headline.append(count + " " + (sameDay.length === 1 ? "sermon" : "sermons") + " ");
+      headline.append(word(sameDay.length) + " " + (sameDay.length === 1 ? "sermon" : "sermons") + " ");
       el(headline, "em", "", when);
       headline.append(".");
       const parts = sameDay.map((e) => {
