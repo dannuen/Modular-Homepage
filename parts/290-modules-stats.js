@@ -143,9 +143,9 @@ var def13 = /* @__PURE__ */ (() => {
           if (typeof v === "object" && typeof v.path === "string") {
             const file = app.metadataCache.getFirstLinkpathDest(v.path, p.file.path);
             if (file && file.path.startsWith(config.bibleFolder + "/")) return bookFromPath(file.path);
-            return String(v.display || "").replace(/\s*\d.*$/, "").trim();
+            return String(v.display || "").replace(/\s+\d.*$/, "").trim();
           }
-          return String(v).replace(/\[\[[^|\]]*\|?/, "").replace(/\s*\d.*$/, "").trim();
+          return String(v).replace(/\[\[[^|\]]*\|?/, "").replace(/\s+\d.*$/, "").trim();
         };
         const byBook = /* @__PURE__ */ new Map();
         for (const p of all) {

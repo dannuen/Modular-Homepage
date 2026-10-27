@@ -41,6 +41,13 @@ var ModularHomepage = class extends import_obsidian10.Plugin {
       pomodoroFor(this.app); // the timer ends a phase and chimes even when no homepage is open
       const other = (f) => !(f instanceof import_obsidian10.TFile) || f.extension !== "md";
       this.registerEvent(this.app.vault.on("rename", (file, oldPath) => {
+        // A renamed or moved homepage note keeps its picked layout, and its open views draw from the new path.
+        const id = this.layouts.chosen[oldPath];
+        if (id) this.commit(() => {
+          this.layouts.chosen[file.path] = id;
+          delete this.layouts.chosen[oldPath];
+        }).catch(console.error);
+        for (const b of this.blocks) if (b.sourcePath === oldPath) b.sourcePath = file.path;
         this.noteChanged(oldPath);
         this.noteChanged(file.path);
       }));

@@ -40,7 +40,7 @@ All themes follow light and dark mode and the note's width.
 
 ## Layouts
 
-A layout is a named list of modules with their width (1 to 12 columns) and look. Layouts are yours: you create and name them, and any layout works with any theme. A homepage note shows the layout picked in its layout menu, or the default layout.
+A layout is a named list of modules with their width (1 to 12 columns) and look. Layouts are yours: you create and name them, and any layout works with any theme. A homepage note shows the layout picked in its layout menu, or the default layout, and keeps it when the note is renamed or moved.
 
 The **Layout** button in the top bar opens a menu to pick a layout, **Arrange** it (move, resize, add or hide modules, change a module's look), create a new one, duplicate, rename, make default or delete. The settings tab has the same actions. The last layout can't be deleted.
 
@@ -123,7 +123,7 @@ node build.mjs --out main.js      # writes elsewhere
 node build.mjs --check main.js    # also compares with an existing build
 ```
 
-`tools/harness` runs the real bundle in headless Chromium against a made-up vault and writes screenshots and a DOM report for every theme, light and dark, at desktop and phone widths (see its README). `tools/checks` tests the button rows, `writes.js` tests what the homepage writes to notes and `data.json`, `dates.js` tests date and time parsing, word counts, colour reading and the preaching dial, `host.js` tests how a page follows changes (a theme pick, Arrange in a second view, an open ⚙ panel, a root folder), and `pomodoro.js` tests the Pomodoro's reload of a synced `pomodoro.json` and its focus log.
+`tools/harness` runs the real bundle in headless Chromium against a made-up vault and writes screenshots and a DOM report for every theme, light and dark, at desktop and phone widths (see its README). `tools/checks` tests the button rows, `writes.js` tests what the homepage writes to notes and `data.json`, `dates.js` tests date, time and duration parsing, word counts, colour reading, the preaching dial, the roster and countdown parsers and the Bible books in Stats, `host.js` tests how a page follows changes (a theme pick, Arrange in a second view, an open ⚙ panel, a root folder, a rename of the note), and `pomodoro.js` tests the Pomodoro's reload of a synced `pomodoro.json` and its focus log.
 
 Read [GUIDELINES.md](GUIDELINES.md) before changing a module. It sets the card rules (one card per module, buttons in the top-right corner, spacing from theme tokens), the check to run, and how to install a fix safely.
 

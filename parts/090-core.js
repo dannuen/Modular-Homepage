@@ -364,7 +364,9 @@ function makeCore(env) {
     if (raw === null || raw === void 0 || raw === "") return null;
     let minutes = null;
     if (typeof raw === "number") {
-      if (raw >= 0 && raw < 1440) minutes = raw;
+      // Unquoted YAML: 9 or 19.30 is an hour (19.3), 19:30 can arrive as minutes (1170).
+      if (raw >= 0 && raw < 24) return parseTime(raw.toFixed(2));
+      if (Number.isInteger(raw) && raw < 1440) minutes = raw;
     } else if (typeof raw === "object" && typeof raw.as === "function") minutes = Math.round(raw.as("minutes"));
     else {
       const s2 = String(raw).normalize("NFC").trim().toLowerCase().replace(/^buổi\s+/, "");
