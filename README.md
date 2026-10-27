@@ -84,7 +84,9 @@ A module switched off in the settings is left out of every page and of **Arrange
 
 ### Pomodoro
 
-Presets are Classic (25/5/15 ×4), Quick (15/3/10 ×4) and Deep work (50/10/30 ×2). The ⚙ button edits presets (focus, short and long break, cycles), the chime and auto-start. The timer ignores themes, survives restarts, and is saved in the plugin's `pomodoro.json`.
+Presets are Classic (25/5/15 ×4), Quick (15/3/10 ×4) and Deep work (50/10/30 ×2). The ⚙ button edits presets (focus, short and long break, cycles), the chime and auto-start. The timer ignores themes, survives restarts, and is saved in the plugin's `pomodoro.json`, which is read again when Obsidian's window comes back, so a copy synced from another device (Syncthing, iCloud, git) is picked up.
+
+Each session is logged under `# Focus` in the day's daily note, which is created (with its folders) if missing: its name, cycles, focus minutes and times. A focus stopped part-way by Skip, End or a phase tab counts the minutes it ran; Reset starts the phase again without counting them.
 
 ## Settings
 
@@ -121,7 +123,7 @@ node build.mjs --out main.js      # writes elsewhere
 node build.mjs --check main.js    # also compares with an existing build
 ```
 
-`tools/harness` runs the real bundle in headless Chromium against a made-up vault and writes screenshots and a DOM report for every theme, light and dark, at desktop and phone widths (see its README). `tools/checks` tests the button rows, and `writes.js` tests what the homepage writes to notes and `data.json`.
+`tools/harness` runs the real bundle in headless Chromium against a made-up vault and writes screenshots and a DOM report for every theme, light and dark, at desktop and phone widths (see its README). `tools/checks` tests the button rows, `writes.js` tests what the homepage writes to notes and `data.json`, and `pomodoro.js` tests the Pomodoro's reload of a synced `pomodoro.json` and its focus log.
 
 Read [GUIDELINES.md](GUIDELINES.md) before changing a module. It sets the card rules (one card per module, buttons in the top-right corner, spacing from theme tokens), the check to run, and how to install a fix safely.
 

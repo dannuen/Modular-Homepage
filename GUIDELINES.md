@@ -44,6 +44,7 @@ Read this before changing the plugin. These rules come from the unified card wor
    - `summary.txt` must show no errors, no sideways scrolling, nothing poking out, and no controls outside a card. Banner hero, Greeting desk and Next sermon photo are allowed to have controls outside a card, because they have no card by design.
    - If you touched the button row, also run `node tools/checks/geom.js dist/main.js /tmp/g.json`, then `node tools/checks/geom-summary.js /tmp/g.json`.
    - If you touched the Tasks panel, a note write or the settings, also run `node tools/checks/writes.js dist/main.js`. It must print `writes: ok`.
+   - If you touched the Pomodoro timer, also run `node tools/checks/pomodoro.js dist/main.js`. It must print `pomodoro: ok`.
    - Look at the slot screenshots (`--slots`) of the modules you changed.
 
    Fix what this check finds, then install. Don't run more review rounds: Dan wants the result quickly.
