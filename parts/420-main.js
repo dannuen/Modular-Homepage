@@ -111,11 +111,12 @@ var ModularHomepage = class extends import_obsidian10.Plugin {
     if (!this.layouts.list.length) {
       const aurora = Array.isArray(saved?.themes?.aurora) ? saved.themes.aurora : FIRST_LAYOUT;
       this.layouts = { version: 2, list: [{ id: "aurora", name: "Aurora", items: structuredClone(aurora) }], defaultId: "aurora", chosen: {} };
-      await this.saveAll();
     }
   }
   // data.json changed outside Obsidian (a sync from another device): read it again and redraw.
   async onExternalSettingsChange() {
+    // A missing or half-synced data.json keeps what is in memory, so a sync can't reset every layout.
+    if (!(await this.loadData())) return;
     await this.loadAll();
     this.redrawAll();
   }

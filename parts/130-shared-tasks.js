@@ -235,7 +235,7 @@ async function renderTasks(env, input) {
   } };
   store.view = view;
   function isMounted() {
-    return !disposed && store.view === view && wrap.isConnected;
+    return !disposed && wrap.isConnected;
   }
   function later(callback, delay) {
     if (!isMounted()) return null;
@@ -267,6 +267,7 @@ async function renderTasks(env, input) {
   async function transact(message, change) {
     if (!isMounted() || store.busy) return;
     store.busy = true;
+    store.view = view;
     let focusKey;
     try {
       focusKey = await change();
@@ -309,7 +310,7 @@ async function renderTasks(env, input) {
   }
   function lineBody(d, words, old) {
     const ev = isEvent(d);
-    const withTime = d.at !== null && d.at !== void 0 && (ev || !!d.sched);
+    const withTime = d.at !== null && d.at !== void 0;
     return [
       words,
       ...d.tags.map((g) => "#" + g),
@@ -327,6 +328,23 @@ async function renderTasks(env, input) {
     const m = LIST.exec(line);
     const body2 = lineBody(d, words, parseTask(m[3]));
     return { line: m[1] + (isEvent(d) ? "" : "[" + (m[2] ?? " ") + "] ") + body2, body: body2 };
+  }
+  // A move swaps only the date and time tokens it changes, so the rest of the line stays as the user wrote it.
+  const MOVE_TOKENS = {
+    due: [/(\s*)(?:📅|🗓)\uFE0F?\s*\d{4}-\d{2}-\d{2}/u, (v) => "📅 " + v],
+    sched: [/(\s*)⏳\uFE0F?\s*\d{4}-\d{2}-\d{2}/u, (v) => "⏳ " + v],
+    at: [/(\s*)\[time::[^\]]*\]/iu, (v) => "[time:: " + fmtClock(v) + "]"],
+    minutes: [/(\s*)\[duration::[^\]]*\]/iu, (v) => "[duration:: " + fmtMinutes(v) + "]"]
+  };
+  function moved(line, d, changes) {
+    let s2 = line.trimEnd();
+    for (const [k, [re, fmt]] of Object.entries(MOVE_TOKENS)) {
+      if (!(k in changes)) continue;
+      const token = d[k] === null || d[k] === void 0 ? "" : fmt(d[k]);
+      if (re.test(s2)) s2 = s2.replace(re, (_, space) => token && space + token);
+      else if (token) s2 = s2.replace(/(?:\s*✅\uFE0F?\s*\d{4}-\d{2}-\d{2})?(?:\s+\^[\w-]+)?$/u, (tail) => " " + token + tail);
+    }
+    return s2;
   }
   function blockEnd(lines, i) {
     const indent = (s2) => s2.match(/^[\s>]*/u)[0].replace(/\t/g, "    ").length;
@@ -543,9 +561,8 @@ async function renderTasks(env, input) {
       try {
         let body2 = null;
         const result = await editTask(t, (lines, i) => {
-          const r = rebuilt(lines[i], d, d.text);
-          lines[i] = r.line;
-          body2 = r.body;
+          lines[i] = moved(lines[i], d, changes);
+          body2 = LIST.exec(lines[i])[3];
         });
         if (result) {
           updateTask(t, { ...parseTask(body2), raw: body2 });
