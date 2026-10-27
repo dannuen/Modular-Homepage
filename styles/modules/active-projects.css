@@ -73,7 +73,7 @@
 .hp-home .m-proj-recent { display: flex; flex-direction: column; gap: 2px; padding-top: 12px; border-top: 1px solid var(--hm-line); font-size: 0.9em; }
 .hp-home .m-proj-recent-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 2px 0; }
 .hp-home .m-proj-recent-row a { min-width: 0; color: var(--hm-text) !important; }
-.hp-home .m-proj-recent-row span { flex: none; font-size: 0.82em; color: var(--hm-faint); }
+.hp-home .m-proj-recent-row span { flex: none; font-size: max(11px, 0.82em); color: var(--hm-faint); }
 
 /* Panel (Dashboard) */
 .hp-home .m-proj-panel { display: flex; flex-direction: column; gap: 4px; height: 450px; min-height: 0; padding: var(--hm-pad); }

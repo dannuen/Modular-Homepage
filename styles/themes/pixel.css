@@ -68,7 +68,6 @@
 	--hm-pad: 18px;                                    /* inside a card: from its frame to its content */
 	--hm-font: var(--px-font); --hm-font-display: var(--px-font);
 	--hm-display-weight: 800; --hm-display-spacing: 0;
-	font-size: 0.88em;
 }
 .theme-dark .hp-home[data-theme="pixel"] {
 	--hm-text: #fbe9f0; --hm-muted: #d0b3c3; --hm-faint: #9a8091; --hm-accent-ink: #ff9fab;
