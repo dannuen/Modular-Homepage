@@ -98,6 +98,12 @@ var THEMES = [
     classes: [],
     variants: { "next-sermon": "event" }
     // Next sermon as the event card while Dune shows
+  },
+  {
+    id: "tamdan10",
+    name: "TamDan10",
+    about: "Ivory and gold: double gold frames, Garamond type, square corners",
+    classes: []
   }
 ];
 var DEFAULT_THEME = "aurora";

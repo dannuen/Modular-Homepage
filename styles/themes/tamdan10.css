@@ -1,0 +1,95 @@
+/* THEME · TamDan10 — Dan's "Tam Dân 10 Năm" design system: ivory paper with a faint vignette, diagonal hairlines and
+   rings in gold; every card in the double gold frame (outer 60 %, inner 30 %), square corners, no shadows. Gold is
+   line, not fill: the only solid gold is the main action. Type: Cormorant Garamond for titles, EB Garamond for text,
+   Be Vietnam Pro for capital labels (lining figures). One gold-leaf line on the page: the greeting's highlight.
+   Dark ("tối"): the same layout on warm charcoal with ivory text and brighter gold.
+   Small text uses darker steps of the system's gold and grey, since vang-dam (4.2:1) and xam-am (3.5:1) fail 4.5:1. */
+
+/* ---------- The page: ivory vignette, -45° hairlines and rings centred on the page ---------- */
+.markdown-preview-view:has(.hp-home[data-theme="tamdan10"]), .markdown-source-view:has(.hp-home[data-theme="tamdan10"]) .cm-scroller {
+	background:
+		repeating-radial-gradient(circle at 50% 44%, transparent 0 calc(9vmin - 1px), rgb(184 147 74 / 0.1) calc(9vmin - 1px) 9vmin),
+		repeating-linear-gradient(-45deg, rgb(184 147 74 / 0.08) 0 0.6px, transparent 0.6px 14px),
+		radial-gradient(72% 72% at 50% 44%, #fdf8ec 0%, #fbf8f2 50%, #efe4cd 100%);
+}
+.theme-dark .markdown-preview-view:has(.hp-home[data-theme="tamdan10"]), .theme-dark .markdown-source-view:has(.hp-home[data-theme="tamdan10"]) .cm-scroller {
+	background:
+		repeating-radial-gradient(circle at 50% 44%, transparent 0 calc(9vmin - 1px), rgb(198 164 94 / 0.08) calc(9vmin - 1px) 9vmin),
+		repeating-linear-gradient(-45deg, rgb(198 164 94 / 0.06) 0 0.6px, transparent 0.6px 14px),
+		radial-gradient(72% 72% at 50% 44%, #292219 0%, #1e1a16 50%, #15110d 100%);
+}
+
+/* ---------- Palette (shared with the top bar and the menus) ---------- */
+.hp-home[data-theme="tamdan10"], .hp-tb-box:has(~ .hp-home[data-theme="tamdan10"]), .hp-hs-layer:has(~ .hp-home[data-theme="tamdan10"]) {
+	--td-nga: #fbf8f2; --td-nga-dam: #f3ecdf;                       /* nen-nga, nen-nga-dam */
+	--td-than: #2a2723; --td-muted: #6b645a; --td-faint: #756d62;   /* than; xam-am and a step down for small text */
+	--td-kim: #b8934a; --td-gold-ink: #7d5f22; --td-gold-fill: #7d5f22; --td-gold-hover: #94722c; /* vang-kim; vang-dam a step down */
+	--td-frame-out: rgb(184 147 74 / 0.6); --td-frame-in: rgb(184 147 74 / 0.3);
+	--td-foil: linear-gradient(100deg, #9a7830, #d6b96e 30%, #a9853b 60%, #d2b572 85%, #94722c);
+	--td-serif: "Cormorant Garamond", "EB Garamond", Georgia, serif;
+	--td-text: "EB Garamond", "Cormorant Garamond", Georgia, serif;
+	--td-label: "Be Vietnam Pro", "Segoe UI", Arial, sans-serif;
+	--accent-h: 40; --accent-s: 43%; --accent-l: 50%;
+}
+.theme-dark .hp-home[data-theme="tamdan10"], .theme-dark .hp-tb-box:has(~ .hp-home[data-theme="tamdan10"]), .theme-dark .hp-hs-layer:has(~ .hp-home[data-theme="tamdan10"]) {
+	--td-nga: #1e1a16; --td-nga-dam: #2a241f;
+	--td-than: #f3ecdf; --td-muted: #a89e90; --td-faint: #9c9284;
+	--td-kim: #c6a45e; --td-gold-ink: #d6b96e; --td-gold-fill: #d6b96e; --td-gold-hover: #e8d39a;
+	--td-frame-out: rgb(198 164 94 / 0.6); --td-frame-in: rgb(198 164 94 / 0.3);
+	--td-foil: linear-gradient(100deg, #b8964f, #e8d39a 30%, #c9a75c 60%, #e2cb8c 85%, #b08e45);
+}
+
+/* ---------- Tokens ---------- */
+.hp-home[data-theme="tamdan10"], .hp-tb-box:has(~ .hp-home[data-theme="tamdan10"]), .hp-hs-layer:has(~ .hp-home[data-theme="tamdan10"]) {
+	--hm-text: var(--td-than); --hm-muted: var(--td-muted); --hm-faint: var(--td-faint);
+	--hm-accent: var(--td-gold-fill); --hm-accent-ink: var(--td-gold-ink); --hm-on-accent: var(--td-nga);
+	--hm-soft: rgb(184 147 74 / 0.16); --hm-fill: var(--td-kim);
+	--hm-line: var(--td-frame-in); --hm-track: rgb(184 147 74 / 0.18); --hm-hover: rgb(184 147 74 / 0.1);
+	--hm-bg: var(--td-nga); --hm-surface: var(--td-nga); --hm-surface-2: var(--td-nga-dam); --hm-pop: var(--td-nga);
+	--hm-shadow: none;
+	--hm-radius: 0px; --hm-radius-sm: 0px;
+	--hm-gap: 22px; --hm-pad: 24px;
+	--hm-font: var(--td-text);
+	--hm-font-display: var(--td-serif);
+	--hm-display-weight: 600; --hm-display-spacing: 0.01em;
+	--hm-title-weight: 600; --hm-row-weight: 500;
+	--text-normal: var(--td-than); --text-muted: var(--td-muted); --text-faint: var(--td-faint);
+	--text-accent: var(--td-gold-ink); --text-accent-hover: var(--td-gold-ink); --text-on-accent: var(--td-nga);
+	--interactive-accent: var(--td-gold-fill); --interactive-accent-hover: var(--td-gold-hover);
+	--background-primary: var(--td-nga); --background-primary-alt: var(--td-nga-dam); --background-secondary: var(--td-nga-dam);
+	--background-modifier-border: var(--td-frame-in); --background-modifier-hover: rgb(184 147 74 / 0.1);
+	--link-color: var(--td-than); --link-color-hover: var(--td-gold-ink); --link-external-color: var(--td-than); --link-unresolved-color: var(--td-muted);
+}
+
+/* ---------- Materials: the double frame; square everything ---------- */
+/* Outer line 60 % as the border; the inner 30 % line drawn 5px inside it (ivory ring, then the gold hairline). */
+.hp-home[data-theme="tamdan10"] .hp-card { background: var(--td-nga); border: 1.5px solid var(--td-frame-out); box-shadow: inset 0 0 0 4px var(--td-nga), inset 0 0 0 5px var(--td-frame-in); }
+.hp-home[data-theme="tamdan10"] .hp-panel { background: var(--td-nga-dam); border: 1px solid var(--td-frame-in); }
+.hp-home[data-theme="tamdan10"] :is(.hp-pill, .hp-knob, .hp-accent, .hp-track, .hp-meter, .hp-chip, .hp-set-chip, .hp-seg, .hp-seg-btn, .m-proj-filter, .m-up-seg),
+.hp-home[data-theme="tamdan10"] :is(a, button, [tabindex]):focus-visible { border-radius: 0 !important; }
+.hp-home[data-theme="tamdan10"] :is(.hp-pill, .hp-knob) { --btn-bg: var(--td-nga); --btn-shadow: inset 0 0 0 1px var(--td-frame-out); color: var(--hm-text); }
+.hp-home[data-theme="tamdan10"] button:is(.hp-pill, .hp-knob):hover:not(:disabled) { --btn-bg: var(--td-nga-dam); }
+.hp-home[data-theme="tamdan10"] button.hp-accent:hover:not(:disabled) { --btn-bg: var(--td-gold-hover); }
+.hp-home[data-theme="tamdan10"] .hp-btn:hover:not(:disabled) { transform: none; }
+.hp-home[data-theme="tamdan10"] :is(.hp-tip, .hp-set) { background: var(--td-nga); border: 1px solid var(--td-frame-out); box-shadow: 0 16px 24px -20px rgb(42 39 35 / 0.35); }
+
+/* ---------- Type ---------- */
+/* Lining figures everywhere (EB Garamond's default figures are old-style); a feature setting, so modules' tabular-nums still apply. */
+.hp-home[data-theme="tamdan10"] *, .hp-tb-box:has(~ .hp-home[data-theme="tamdan10"]) * { font-feature-settings: "lnum" 1; }
+.hp-home[data-theme="tamdan10"] :is(.hp-kicker, .hp-label, .hp-btn, .hp-bar-label) { font-family: var(--td-label); }
+.hp-home[data-theme="tamdan10"] .hp-kicker { font-size: max(11px, 0.72em); font-weight: 500; letter-spacing: 0.3em; color: var(--td-gold-ink); }
+.hp-home[data-theme="tamdan10"] .hp-label { letter-spacing: 0.2em; font-weight: 500; }
+.hp-home[data-theme="tamdan10"] .hp-btn { font-weight: 500; letter-spacing: 0.04em; }
+.hp-home[data-theme="tamdan10"] .hp-sec-title { font-size: 1.5em; }
+/* The one gold-leaf line: the greeting's highlighted words, in EB Garamond italic. */
+.hp-home[data-theme="tamdan10"] .m-greet-title em {
+	font-family: var(--td-text); font-style: italic; font-weight: 400; padding: 0 0.12em;
+	background: var(--td-foil); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
+}
+
+/* ---------- Top bar and menus: ivory with a gold hairline ---------- */
+.hp-tb-box:has(~ .hp-home[data-theme="tamdan10"]) { font-family: var(--td-text); }
+.hp-tb-box:has(~ .hp-home[data-theme="tamdan10"]) :is(.hp-tb-bar, .hp-tb-brand, .hp-tb-nav, .hp-tb-create, .hp-tb-extra, .hp-tb-nav a, .hp-tb-glide, button) { border-radius: 0; }
+.hp-tb-box:has(~ .hp-home[data-theme="tamdan10"]) .hp-tb-bar { box-shadow: inset 0 0 0 1px var(--td-frame-out); }
+.hp-tb-box:has(~ .hp-home[data-theme="tamdan10"]) .hp-tb-brand { font-family: var(--td-serif); font-weight: 600; }
+.hp-hs-layer:has(~ .hp-home[data-theme="tamdan10"]) { font-family: var(--td-text); }

@@ -35,6 +35,7 @@ A theme only changes how modules are drawn. Each homepage note keeps its theme i
 | Pixel | Pastel pixel art: ink frames, pink, mint and lavender |
 | Crystal | Clear glass pills and slabs on soft grey |
 | Dune | Warm frosted glass on sand, black pills, a glowing orange orb |
+| TamDan10 | Ivory and gold from the Tam Dân 10 Năm design system: double gold frames, Garamond type, square corners |
 
 All themes follow light and dark mode and the note's width.
 

@@ -12,7 +12,7 @@ const { buildVault, binaryFor } = require("./fixture");
 
 const ROOT = __dirname;
 const ORIGIN = "http://obsidian.local";
-const THEMES = ["aurora", "prism", "frosted", "pulpit", "pixel", "crystal", "dune"];
+const THEMES = ["aurora", "prism", "frosted", "pulpit", "pixel", "crystal", "dune", "tamdan10"];
 const DEFAULTS = {
 	theme: "aurora", dark: false, width: 1230, height: 900, scale: 1,
 	today: "2026-10-14", now: "2026-10-14T10:00:00+07:00", timezone: "Asia/Ho_Chi_Minh", tz: "+07:00",
