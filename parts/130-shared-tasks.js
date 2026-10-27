@@ -67,9 +67,11 @@ function parseTask(raw) {
   const keep = [...s2.matchAll(/[⏫🔼🔽⏬🔺]|(?:➕|❌)\s*\d{4}-\d{2}-\d{2}/gu)].map((m) => m[0]);
   const doneMark = (s2.match(/✅\s*\d{4}-\d{2}-\d{2}/u) || [""])[0];
   const blockId = (s2.match(/\s(\^[\w-]+)\s*$/u) || [])[1] || "";
-  const at = time ? parseClock(time[1]) : null;
-  if (time && at === null) keep.push(time[0]); // a time it can't read ("tối", "19:00-20:30") stays on the line through an edit
-  return { text, tags, due: pick2(DUE), start: pick2(START), sched: pick2(SCHED), done: pick2(DONE), at, minutes: dur ? parseMinutes(dur[1]) : null, keep, doneMark, blockId };
+  const at = time ? parseClock(time[1]) : null, minutes = dur ? parseMinutes(dur[1]) : null;
+  // A [time::] or [duration::] it can't read ("tối", "1 tiếng"), or a second one, stays on the line through an edit.
+  const oddTime = time && at === null ? time[0] : "", oddDur = dur && minutes === null ? dur[0] : "";
+  keep.push(...[...s2.matchAll(/\[(?:time|duration)::[^\]]*\]/giu)].filter((m) => m.index !== time?.index && m.index !== dur?.index || m[0] === oddTime || m[0] === oddDur).map((m) => m[0]));
+  return { text, tags, due: pick2(DUE), start: pick2(START), sched: pick2(SCHED), done: pick2(DONE), at, minutes, keep, oddTime, oddDur, doneMark, blockId };
 }
 var LIST = /^([\s>]*(?:\d+\.|\d+\)|\*|-|\+)\s+)(?:\[(.?)\]\s*)?(.*)$/u;
 var eolOf = (data) => data.includes("\r\n") ? "\r\n" : "\n";
@@ -95,7 +97,7 @@ function lineBody(d, words, old) {
     ...d.tags.map((g) => "#" + g),
     withTime ? "[time:: " + fmtClock(d.at) + "]" : "",
     d.minutes ? "[duration:: " + fmtMinutes(d.minutes) + "]" : "",
-    ...(old?.keep || []).filter((k) => !(withTime && TIME.test(k))),
+    ...(old?.keep || []).filter((k) => !(withTime && k === old.oddTime || d.minutes && k === old.oddDur)),
     !ev && d.sched ? "⏳ " + d.sched : "",
     !ev && d.start ? "🛫 " + d.start : "",
     d.due ? "📅 " + d.due : "",
@@ -119,8 +121,9 @@ function moved(line, d, changes) {
   let s2 = line.trimEnd();
   for (const [k, [re, fmt]] of Object.entries(MOVE_TOKENS)) {
     if (!(k in changes)) continue;
-    // A time it can't read ("tối") was never shown as one, so clearing the time leaves it.
-    if (k === "at" && d.at == null && parseTask(s2).keep.some((x) => TIME.test(x))) continue;
+    // A time or length it can't read ("tối") was never shown as one, so clearing it leaves it.
+    const odd = { at: "oddTime", minutes: "oddDur" }[k];
+    if (odd && d[k] == null && parseTask(s2)[odd]) continue;
     const token = d[k] === null || d[k] === void 0 ? "" : fmt(d[k]);
     if (re.test(s2)) s2 = s2.replace(re, (_, space) => token && space + token);
     else if (token) s2 = s2.replace(/(?:\s*✅\uFE0F?\s*\d{4}-\d{2}-\d{2})?(?:\s+\^[\w-]+)?$/u, (tail) => " " + token + tail);
@@ -163,7 +166,7 @@ function intoSection(data, head, newLines) {
   }
   let last = -1;
   for (let i = at + 1; i < end; i++)
-    if (/^[\s>]*([-*+]|\d+[.)])\s/u.test(lines[i]) || last === i - 1 && /^\s+\S/u.test(lines[i])) last = i;
+    if (/^[\s>]*([-*+]|\d+[.)])\s/u.test(lines[i]) || last === i - 1 && (/^\s+\S/u.test(lines[i]) || /^\s*>/u.test(lines[last]) && /^\s*>/u.test(lines[i]))) last = i;
   if (last >= 0) lines.splice(last + 1, 0, ...newLines);
   else {
     let i = at + 1;

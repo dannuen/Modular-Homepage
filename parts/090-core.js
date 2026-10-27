@@ -84,10 +84,21 @@ var renderWith = (app, doc, sourcePath, component) => (parent, md, cls = "hp-val
 };
 // The one way Calendar, the top bar, Tasks and the focus log find or make a day's note: Templater is optional (empty note).
 var dailyNotePath = (cfg, d) => cfg.dailyFolder.replace(/\/+$/, "") + "/" + d.setLocale("en").toFormat("yyyy/MM-LLLL/yyyy-MM-dd") + ".md";
-async function dailyNote(app, cfg, d) {
-  const path = dailyNotePath(cfg, d), folder = path.slice(0, path.lastIndexOf("/"));
-  let file = app.vault.getAbstractFileByPath(path);
-  if (file) return file;
+// A note being made is handed to every caller once it is done: Templater fills a note after creating it, which would
+// overwrite a task or focus entry written in between.
+var makingDaily = /* @__PURE__ */ new Map();
+function dailyNote(app, cfg, d) {
+  const path = dailyNotePath(cfg, d);
+  if (makingDaily.has(path)) return makingDaily.get(path);
+  const file = app.vault.getAbstractFileByPath(path);
+  if (file) return Promise.resolve(file);
+  const making = makeDailyNote(app, cfg, path, d).finally(() => makingDaily.delete(path));
+  makingDaily.set(path, making);
+  return making;
+}
+async function makeDailyNote(app, cfg, path, d) {
+  const folder = path.slice(0, path.lastIndexOf("/"));
+  let file;
   if (!app.vault.getAbstractFileByPath(folder)) await app.vault.createFolder(folder);
   const templater = app.plugins?.plugins?.["templater-obsidian"]?.templater;
   const template = app.vault.getAbstractFileByPath(cfg.dailyTemplate);

@@ -19,7 +19,7 @@ const draftOf = (line) => {
   const p = L.parseTask(line.replace(/^[\s>]*(?:\d+[.)]|[-*+])\s+(?:\[.\]\s*)?/u, "")), iso = (d) => d?.toISODate() ?? null;
   return { kind: /^[\s>]*(?:\d+[.)]|[-*+])\s+\[.\]/u.test(line) ? "todo" : "event", text: p.text, due: iso(p.due), start: iso(p.start), sched: iso(p.sched), at: p.at, minutes: p.minutes, tags: p.tags };
 };
-const canonical = ["- [ ] Write intro #sermon 📅 2026-10-18", "- Elders meeting [time:: 19:00] [duration:: 1h] 📅 2026-10-20", "- [x] Gọi nhà in ⏫ ⏳ 2026-10-13 📅 2026-10-15 ✅ 2026-10-14 ^in-1", "  - [ ] Soạn dàn ý [duration:: 1h 30m] 🛫 2026-10-12", "> 1. [ ] Đọc Rô-ma 8 #kinh-thanh", "- Tập hát [time:: tối] 📅 2026-10-21", "- Họp [time:: 19:00-20:30] 📅 2026-10-21"];
+const canonical = ["- [ ] Write intro #sermon 📅 2026-10-18", "- Elders meeting [time:: 19:00] [duration:: 1h] 📅 2026-10-20", "- [x] Gọi nhà in ⏫ ⏳ 2026-10-13 📅 2026-10-15 ✅ 2026-10-14 ^in-1", "  - [ ] Soạn dàn ý [duration:: 1h 30m] 🛫 2026-10-12", "> 1. [ ] Đọc Rô-ma 8 #kinh-thanh", "- Tập hát [time:: tối] 📅 2026-10-21", "- Họp [time:: 19:00-20:30] 📅 2026-10-21", "- [ ] Viết [duration:: 1 tiếng] 📅 2026-10-21", "- Họp [time:: 19:00] [time:: tối] 📅 2026-10-21"];
 for (const l of [...canonical, "- [ ] Gọi anh Phúc ☎️ #📬 về [[Sách|Tập #2]]  [time:: 09:00] [duration:: 30m] ⏳ 2026-10-14 📅 2026-10-30"]) expect("a move that changes nothing", L.moved(l, draftOf(l), draftOf(l)), l);
 for (const l of canonical) expect("a save that changes nothing", L.rebuilt(l, draftOf(l), draftOf(l).text).line, l);
 const done = canonical[2], add = (data) => L.intoSection(data, "## Tasks", ["- [ ] New"]);
@@ -42,6 +42,7 @@ for (const [what, got, want] of [
   ["focus log after an entry's indented note", withEntry("# Focus\n- **A** ^pomo-a\n    note on A\n## Next\n", entry), "# Focus\n- **A** ^pomo-a\n    note on A\n" + log + "\n## Next\n"],
   ["focus log with a sub-heading after # Focus", withEntry("# Focus\n\n### Notes\ntext\n", entry), "# Focus\n\n" + log + "\n\n### Notes\ntext\n"],
   ["focus log with only a fenced ## Focus", withEntry("```\n## Focus\n```\n", entry), "```\n## Focus\n```\n\n# Focus\n\n" + log + "\n"],
+  ["focus log after a callout", withEntry("# Focus\n> [!quote]\n> - một\n> hai\n", entry), "# Focus\n> [!quote]\n> - một\n> hai\n" + log + "\n"],
   ["focus log in a CRLF note", withEntry("# Focus\r\n- **A** ^pomo-a\r\n", entry), "# Focus\r\n- **A** ^pomo-a\r\n" + log + "\r\n"]
 ]) expect(what, got, want);
 
@@ -106,12 +107,13 @@ expect("Next actions link text", link.textContent, "Gọi nhà thầu xác nhậ
 
 // Calendar reads the Tasks section as Tasks does: 🗓 or 📅 with U+FE0F, a to-do under a plain bullet, and a time in words.
 // A time range, which Tasks can't place, still shows in Calendar.
-await H.app.vault.process(H.file(day), (t) => t.replace("## Tasks\n", "## Tasks\n- Nhóm nhỏ\n  - [ ] Gọi nhà in 🗓 2026-10-21\n- Họp ban chấp sự 📅️ 2026-10-20 [time:: 7:30 tối]\n- Tập hát [time:: 19:00-20:30] 📅 2026-10-21\n"));
+await H.app.vault.process(H.file(day), (t) => t.replace("## Tasks\n", "## Tasks\n- Nhóm nhỏ\n  - [ ] Gọi nhà in 🗓 2026-10-21\n- Họp ban chấp sự 📅️ 2026-10-20 [time:: 7:30 tối]\n- Tập hát [time:: 19:00-20:30] 📅 2026-10-21\n- Cầu nguyện [time:: 00:15] 📅 2026-10-21\n"));
 await H.settleAfterAction();
 const tip = (date, words) => (H.$$(".m-cal-day", H.slot("calendar")).find((b) => b.title.startsWith(date))?.title ?? "").split("\n").find((l) => l.includes(words));
 expect("Calendar on 20 Oct", tip("Tuesday 20 Oct", "Họp ban chấp sự"), "● 19:30 · Họp ban chấp sự");
 expect("Calendar on 21 Oct", tip("Wednesday 21 Oct", "Gọi nhà in"), "☐ Gọi nhà in");
 expect("Calendar's time range", tip("Wednesday 21 Oct", "Tập hát"), "● 19:00–20:30 · Tập hát");
+expect("Calendar just after midnight", tip("Wednesday 21 Oct", "Cầu nguyện"), "● 00:15 · Cầu nguyện");
 
 // The top bar's New note uses the Name from Settings → New notes.
 const [template, noteFolder] = H.plugin.config.templates.note;
@@ -184,4 +186,24 @@ input.dispatchEvent(new Event("input"));
 H.click(H.$(".hp-tk-add .hp-tk-go", H.slot("tasks")));
 await H.settleAfterAction();
 expect("today's note made by Tasks without Templater", H.text(day), "## Tasks\n\n- [ ] Viết thư\n");
+
+// Templater fills a note after creating it: a task added while the top bar's Today's note is still being made is kept.
+H.app.plugins.plugins["templater-obsidian"] = { templater: { create_new_note_from_template: async (template, folder, name) => {
+  const f = await H.app.vault.create(folder.path + "/" + name + ".md", "");
+  const text = await H.app.vault.read(template);
+  await H.sleep(200);
+  await H.app.vault.modify(f, text.replace(/<%[\s\S]*?%>/g, ""));
+  return f;
+} } };
+await H.app.vault.delete(H.file(day));
+await H.settleAfterAction();
+H.click('button[aria-label="Today\'s note"]');
+await H.sleep(50);
+const racing = H.$(".hp-tk-add .hp-tk-input", H.slot("tasks"));
+racing.value = "Gửi thư";
+racing.dispatchEvent(new Event("input"));
+H.click(H.$(".hp-tk-add .hp-tk-go", H.slot("tasks")));
+await H.sleep(500);
+await H.settleAfterAction();
+expect("a task added while Templater makes today's note", /- \[ \] Gửi thư/.test(H.text(day)), true);
 return "ok";
