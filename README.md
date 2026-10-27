@@ -75,7 +75,7 @@ A module switched off in the settings is left out of every page and of **Arrange
 
 - **Sermons** are notes with `type: sermon` in the sermons folder. `is_active: true` marks one as in preparation; its `date` and `time` properties feed Next sermon, Coming up, Tasks and Calendar. Church photos in the attachments folder are named after the church (`<Church name>.png`).
 - **Projects** are folders whose `Home.md` has `document_type: project-dashboard`, with a `Tasks.md` and a `Meetings/` folder.
-- **Daily notes** live in `Daily Notes/yyyy/MM-MMMM/yyyy-MM-dd.md`. The Tasks module reads and writes their `## Tasks` section:
+- **Daily notes** live in `Daily Notes/yyyy/MM-MMMM/yyyy-MM-dd.md`. The Tasks module reads and writes their `## Tasks` section, and Calendar reads it the same way:
   - a to-do: `- [ ] Write intro #sermon 📅 2026-10-18`
   - an event (no checkbox): `- Elders meeting [time:: 19:00] [duration:: 1h] 📅 2026-10-20`
 - **Countdown** dates come only from note lines like `- Christmas #countdown [[2026-12-24]]`. There are no presets.
@@ -123,7 +123,7 @@ node build.mjs --out main.js      # writes elsewhere
 node build.mjs --check main.js    # also compares with an existing build
 ```
 
-`tools/harness` runs the real bundle in headless Chromium against a made-up vault and writes screenshots and a DOM report for every theme, light and dark, at desktop and phone widths (see its README). `tools/checks` tests the button rows, `writes.js` tests what the homepage writes to notes and `data.json`, `dates.js` tests date and time parsing, word counts, colour reading and the preaching dial, `host.js` tests how a page follows changes (a theme pick, Arrange in a second view, an open ⚙ panel, a root folder), and `pomodoro.js` tests the Pomodoro's reload of a synced `pomodoro.json` and its focus log.
+`tools/harness` runs the real bundle in headless Chromium against a made-up vault and writes screenshots and a DOM report for every theme, light and dark, at desktop and phone widths (see its README). `tools/checks` tests the button rows, `writes.js` tests how task lines are read and what the homepage writes to notes and `data.json`, `dates.js` tests date and time parsing, word counts, colour reading and the preaching dial, `host.js` tests how a page follows changes (a theme pick, Arrange in a second view, an open ⚙ panel, a root folder), and `pomodoro.js` tests the Pomodoro's reload of a synced `pomodoro.json` and its focus log.
 
 Read [GUIDELINES.md](GUIDELINES.md) before changing a module. It sets the card rules (one card per module, buttons in the top-right corner, spacing from theme tokens), the check to run, and how to install a fix safely.
 

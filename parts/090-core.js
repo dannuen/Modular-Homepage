@@ -653,7 +653,7 @@ function makeCore(env) {
     const source = taskFile ? [taskFile] : inFolder;
     const tasks = (await Promise.all(source.map((q) => vault.tasks(q)))).flat().filter((t) => t.text && String(t.text).trim() !== "" && t.status !== "-");
     const dueOf = (t) => toDate(t.due) || toDate(String(t.text).match(/📅\s*(\d{4}-\d{2}-\d{2})/u)?.[1]);
-    const open = tasks.filter((t) => !t.completed).map((t) => ({ text: String(t.text).split("\n")[0].replace(/\s*[📅🛫⏳➕✅]\s*\d{4}-\d{2}-\d{2}/gu, "").trim(), due: dueOf(t), line: t.line ?? 0, path: t.path })).sort((a, b) => (a.due?.toMillis() ?? Infinity) - (b.due?.toMillis() ?? Infinity) || a.line - b.line);
+    const open = tasks.filter((t) => !t.completed).map((t) => ({ text: String(t.text).split("\n")[0].replace(/\s*[📅🛫⏳➕✅]\s*\d{4}-\d{2}-\d{2}/gu, "").replace(/\[\[([^\]|]*\|)?([^\]]*)\]\]/g, "$2").trim(), due: dueOf(t), line: t.line ?? 0, path: t.path })).sort((a, b) => (a.due?.toMillis() ?? Infinity) - (b.due?.toMillis() ?? Infinity) || a.line - b.line);
     return {
       page: p,
       folder,

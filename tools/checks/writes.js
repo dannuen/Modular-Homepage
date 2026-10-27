@@ -7,7 +7,7 @@ const { renderHomepage, launch } = require(path.join(H, "render.js"));
   const rep = await renderHomepage(browser, {
     main: path.resolve(process.argv[2]),
     theme: "aurora",
-    layout: [{ module: "tasks", w: 12 }, { module: "next-actions", w: 12 }],
+    layout: [{ module: "tasks", w: 12 }, { module: "next-actions", w: 12 }, { module: "calendar", w: 12 }],
     action: fs.readFileSync(path.join(__dirname, "writes-action.js"), "utf8"),
     out: path.join(require("os").tmpdir(), "hp-writes.png"),
     quiet: true

@@ -1,9 +1,226 @@
 // src/shared/tasks.ts
+var SECTION2 = "Tasks";
+var isEvent = (x) => x?.kind === "event";
+var iso = (d) => d.toFormat("yyyy-MM-dd");
+var fromIso = (s2) => {
+  const d = DateTime.fromISO(String(s2 || ""));
+  return d.isValid ? d.startOf("day") : null;
+};
+var stamp2 = () => iso(DateTime.now());
+function parseMinutes(input2) {
+  const s2 = String(input2 ?? "").toLowerCase().replace(/,/g, ".").trim();
+  if (!s2) return null;
+  if (/^\d+(\.\d+)?$/.test(s2)) return Math.round(parseFloat(s2)) || null;
+  const hm = s2.match(/^(\d+)\s*(?:h|giờ|g)\s*(\d{1,2})$/u);
+  if (hm) return Number(hm[1]) * 60 + Number(hm[2]) || null;
+  let total = 0, found = false;
+  for (const [, n2, unit] of s2.matchAll(/(\d+(?:\.\d+)?)\s*([a-zà-ỹđ]+)/gu)) {
+    if (/^(h|hr|hrs|hour|hours|giờ|g)$/u.test(unit)) total += parseFloat(n2) * 60;
+    else if (/^(m|min|mins|minute|minutes|phút|p)$/u.test(unit)) total += parseFloat(n2);
+    else return null;
+    found = true;
+  }
+  return found && total > 0 ? Math.round(total) : null;
+}
+var fmtMinutes = (m) => {
+  const h = Math.floor(m / 60), r = m % 60;
+  return (h ? h + "h" : "") + (h && r ? " " : "") + (r || !h ? r + "m" : "");
+};
+var minutesNow = () => {
+  const n2 = DateTime.now();
+  return n2.hour * 60 + n2.minute;
+};
+var fmtClock = (m) => String(Math.floor(m / 60) % 24).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0");
+function parseClock(input2) {
+  const m = String(input2 ?? "").normalize("NFC").toLowerCase().trim().match(/^(\d{1,2})(?:\s*[:h.]\s*(\d{2})?|(\d{2}))?\s*(am|pm|sáng|trưa|chiều|tối)?$/u);
+  if (!m) return null;
+  let h = Number(m[1]);
+  const min = Number(m[2] ?? m[3] ?? 0);
+  if (/^(pm|chiều|tối)$/u.test(m[4] || "") && h < 12) h += 12;
+  else if (m[4] === "trưa" && h < 6) h += 12;
+  else if (/^(am|sáng)$/u.test(m[4] || "") && h === 12) h = 0;
+  return h <= 23 && min <= 59 ? h * 60 + min : null;
+}
+function lengthOf(input2, at) {
+  const s2 = String(input2 ?? "").trim();
+  const end = s2.match(/^(?:[-–—]|to|until|till|ends?|đến|tới)\s*(.+)$/iu);
+  if (!end && !s2.includes(":")) return parseMinutes(s2);
+  const e = parseClock(end ? end[1] : s2);
+  return e === null || at === null || at === void 0 || e <= at ? null : e - at;
+}
+var VS = String.fromCodePoint(65039);
+var DUE = /(?:📅|🗓)\s*(\d{4}-\d{2}-\d{2})/u;
+var START = /🛫\s*(\d{4}-\d{2}-\d{2})/u;
+var SCHED = /⏳\s*(\d{4}-\d{2}-\d{2})/u;
+var DONE = /✅\s*(\d{4}-\d{2}-\d{2})/u;
+var DURATION2 = /\[duration::\s*([^\]]*)\]/iu;
+var TIME = /\[time::\s*([^\]]*)\]/iu;
+function parseTask(raw) {
+  const s2 = String(raw).split("\n")[0].split(VS).join("");
+  const pick2 = (re) => {
+    const m = s2.match(re);
+    return m ? fromIso(m[1]) : null;
+  };
+  const dur = s2.match(DURATION2), time = s2.match(TIME);
+  const tags = [...s2.matchAll(/(?:^|\s)#([^\s#]+)/gu)].map((m) => m[1].replace(/[.,;:!?)]+$/u, "")).filter(Boolean);
+  const text = s2.replace(/\[(?:duration|time)::[^\]]*\]/giu, " ").replace(/(?:📅|🗓|🛫|✅|⏳|➕|❌)\s*\d{4}-\d{2}-\d{2}/gu, " ").replace(/[⏫🔼🔽⏬🔺]/gu, " ").replace(/(?:^|\s)#[^\s#]+/gu, " ").replace(/\s\^[\w-]+\s*$/u, " ").replace(/\s+/g, " ").trim();
+  const keep = [...s2.matchAll(/[⏫🔼🔽⏬🔺]|(?:➕|❌)\s*\d{4}-\d{2}-\d{2}/gu)].map((m) => m[0]);
+  const doneMark = (s2.match(/✅\s*\d{4}-\d{2}-\d{2}/u) || [""])[0];
+  const blockId = (s2.match(/\s(\^[\w-]+)\s*$/u) || [])[1] || "";
+  const at = time ? parseClock(time[1]) : null;
+  return { text, tags, due: pick2(DUE), start: pick2(START), sched: pick2(SCHED), done: pick2(DONE), at, minutes: dur ? parseMinutes(dur[1]) : null, keep, doneMark, blockId };
+}
+var LIST = /^([\s>]*(?:\d+\.|\d+\)|\*|-|\+)\s+)(?:\[(.?)\]\s*)?(.*)$/u;
+var eolOf = (data) => data.includes("\r\n") ? "\r\n" : "\n";
+function findLine(lines, t) {
+  const same = (i) => {
+    const m = LIST.exec(lines[i] ?? "");
+    return !!m && m[2] === void 0 === isEvent(t) && m[3].trim() === t.raw.trim();
+  };
+  if (same(t.line)) return t.line;
+  const hits = lines.map((_, i) => i).filter(same);
+  return hits.length === 1 ? hits[0] : -1;
+}
+function toggled(line, done) {
+  const m = line.match(/^(.*?)(\s+\^[\w-]+)?\s*$/u);
+  const body2 = m[1].replace(/\s*✅\s*\d{4}-\d{2}-\d{2}/gu, "").replace(/^([\s>]*(?:\d+\.|\d+\)|\*|-|\+)\s*)\[.?\]/u, "$1[" + (done ? "x" : " ") + "]");
+  return body2 + (done ? " ✅ " + stamp2() : "") + (m[2] || "");
+}
+function lineBody(d, words, old) {
+  const ev = isEvent(d);
+  const withTime = d.at !== null && d.at !== void 0;
+  return [
+    words,
+    ...d.tags.map((g) => "#" + g),
+    withTime ? "[time:: " + fmtClock(d.at) + "]" : "",
+    d.minutes ? "[duration:: " + fmtMinutes(d.minutes) + "]" : "",
+    ...old?.keep || [],
+    !ev && d.sched ? "⏳ " + d.sched : "",
+    !ev && d.start ? "🛫 " + d.start : "",
+    d.due ? "📅 " + d.due : "",
+    ev ? "" : old?.doneMark,
+    old?.blockId
+  ].filter(Boolean).join(" ");
+}
+function rebuilt(line, d, words) {
+  const m = LIST.exec(line);
+  const body2 = lineBody(d, words, parseTask(m[3]));
+  return { line: m[1] + (isEvent(d) ? "" : "[" + (m[2] ?? " ") + "] ") + body2, body: body2 };
+}
+// A move swaps only the date and time tokens it changes, so the rest of the line stays as the user wrote it.
+var MOVE_TOKENS = {
+  due: [/(\s*)(?:📅|🗓)\uFE0F?\s*\d{4}-\d{2}-\d{2}/u, (v) => "📅 " + v],
+  sched: [/(\s*)⏳\uFE0F?\s*\d{4}-\d{2}-\d{2}/u, (v) => "⏳ " + v],
+  at: [/(\s*)\[time::[^\]]*\]/iu, (v) => "[time:: " + fmtClock(v) + "]"],
+  minutes: [/(\s*)\[duration::[^\]]*\]/iu, (v) => "[duration:: " + fmtMinutes(v) + "]"]
+};
+function moved(line, d, changes) {
+  let s2 = line.trimEnd();
+  for (const [k, [re, fmt]] of Object.entries(MOVE_TOKENS)) {
+    if (!(k in changes)) continue;
+    const token = d[k] === null || d[k] === void 0 ? "" : fmt(d[k]);
+    if (re.test(s2)) s2 = s2.replace(re, (_, space) => token && space + token);
+    else if (token) s2 = s2.replace(/(?:\s*✅\uFE0F?\s*\d{4}-\d{2}-\d{2})?(?:\s+\^[\w-]+)?$/u, (tail) => " " + token + tail);
+  }
+  return s2;
+}
+function blockEnd(lines, i) {
+  const indent = (s2) => s2.match(/^[\s>]*/u)[0].replace(/\t/g, "    ").length;
+  const base = indent(lines[i]);
+  let j = i + 1;
+  while (j < lines.length && lines[j].trim() && indent(lines[j]) > base) j++;
+  return j;
+}
+// Headings match and end the way the reader files items (nearest heading of any level), so a new line shows where it lands.
+function intoSection(data, head, newLines) {
+  const lines = data.split(/\r?\n/), name = head.replace(/^#+\s+/u, "").toLowerCase();
+  const heading = (l2, fence2) => !fence2 && l2.match(/^(#{1,6})\s+(.*?)\s*#*\s*$/u);
+  let at = -1, fence = false;
+  for (let i = 0; i < lines.length; i++) {
+    if (/^\s*(```|~~~)/u.test(lines[i])) fence = !fence;
+    const m = heading(lines[i], fence);
+    if (m && linkableHeading(m[2]).toLowerCase() === name) {
+      at = i;
+      break;
+    }
+  }
+  if (at < 0) {
+    while (lines.length && !lines[lines.length - 1].trim()) lines.pop();
+    lines.push(...lines.length ? [""] : [], head, "", ...newLines, "");
+    return lines.join(eolOf(data));
+  }
+  let end = lines.length;
+  fence = false;
+  for (let i = at + 1; i < lines.length; i++) {
+    if (/^\s*(```|~~~)/u.test(lines[i])) fence = !fence;
+    if (heading(lines[i], fence)) {
+      end = i;
+      break;
+    }
+  }
+  let last = -1;
+  for (let i = at + 1; i < end; i++)
+    if (/^[\s>]*([-*+]|\d+[.)])\s/u.test(lines[i]) || last === i - 1 && /^\s+\S/u.test(lines[i])) last = i;
+  if (last >= 0) lines.splice(last + 1, 0, ...newLines);
+  else {
+    let i = at + 1;
+    const block = [...newLines];
+    if (lines[i] !== void 0 && !lines[i].trim()) i++;
+    else block.unshift("");
+    if (lines[i] !== void 0 && lines[i].trim()) block.push("");
+    lines.splice(i, 0, ...block);
+  }
+  return lines.join(eolOf(data));
+}
+// The to-dos and events in the daily notes' Tasks sections, read one way for Tasks and Calendar.
+async function dailyItems(vault, folder) {
+  const tasks = [];
+  const tagUses = /* @__PURE__ */ new Map();
+  const useTags = (x) => {
+    for (const g of x.tags) tagUses.set(g, (tagUses.get(g) || 0) + 1);
+  };
+  const dailyPages = vault.pages(folder).filter((page) => fromIso(page.file.name));
+  const dailyLists = await Promise.all(dailyPages.map((page) => vault.lists(page)));
+  for (const [k, page] of dailyPages.entries()) {
+    const day = fromIso(page.file.name);
+    if (!day) continue;
+    const items = dailyLists[k];
+    const mine = [], todoLines = /* @__PURE__ */ new Set(), children = /* @__PURE__ */ new Map();
+    for (const t of items) {
+      const parsed = t.task ? (t.parsed ??= parseTask(t.text)) : null; // items are cached per note version, so their parse is too
+      if (parsed) useTags(parsed);
+      if (String(t.section?.subpath ?? "").trim().toLowerCase() !== SECTION2.toLowerCase()) continue;
+      mine.push({ item: t, parsed });
+      if (t.task) {
+        todoLines.add(t.line);
+        const count = children.get(t.parent) || { kids: 0, kidsDone: 0 };
+        count.kids++;
+        if (t.completed) count.kidsDone++;
+        children.set(t.parent, count);
+      }
+    }
+    for (const { item: t, parsed } of mine) {
+      const raw = String(t.text).split("\n")[0], where = { raw, path: page.file.path, line: t.line, day };
+      if (!t.task) {
+        if (t.parent !== void 0 && t.parent !== null) continue;
+        const e = t.parsed ??= parseTask(raw);
+        if (e.due) {
+          tasks.push({ ...e, ...where, kind: "event", closed: false, kids: 0, kidsDone: 0 });
+          useTags(e);
+        }
+        continue;
+      }
+      if (t.parent !== void 0 && t.parent !== null && todoLines.has(t.parent)) continue;
+      if (t.status === "-") continue;
+      tasks.push({ ...parsed, ...where, kind: "todo", closed: !!t.completed, ...children.get(t.line) || { kids: 0, kidsDone: 0 } });
+    }
+  }
+  return { tasks, tagUses };
+}
 async function renderTasks(env, input) {
   const DAILY_FOLDER = env.config.dailyFolder;
   const DAILY_TEMPLATE = env.config.dailyTemplate;
   const dailyPath = (d) => DAILY_FOLDER + "/" + d.setLocale("en").toFormat("yyyy/MM-LLLL/yyyy-MM-dd") + ".md";
-  const SECTION2 = "Tasks";
   const TIMES = [15, 30, 45, 60, 90, 120];
   const EVENT_TIMES = ["08:00", "09:00", "14:00", "17:00", "19:00", "19:30"];
   const EVENT_LENGTHS = [30, 60, 90, 120, 180];
@@ -14,7 +231,6 @@ async function renderTasks(env, input) {
   const win = doc.defaultView;
   const SKIN2 = options.skin;
   const emptyDraft = (kind = "todo") => ({ kind, text: "", due: null, start: null, sched: null, at: null, minutes: null, tags: [] });
-  const isEvent = (x) => x?.kind === "event";
   const store = options.state;
   store.draft ??= emptyDraft();
   const cls = (...names) => names.filter(Boolean).join(" ");
@@ -53,12 +269,6 @@ async function renderTasks(env, input) {
   }
   const dayNow = () => DateTime.now().startOf("day");
   const today = dayNow();
-  const iso = (d) => d.toFormat("yyyy-MM-dd");
-  const fromIso = (s2) => {
-    const d = DateTime.fromISO(String(s2 || ""));
-    return d.isValid ? d.startOf("day") : null;
-  };
-  const stamp2 = () => iso(DateTime.now());
   function dayLabel(d) {
     const n2 = Math.round(d.diff(today, "days").days);
     if (n2 === 0) return "Today";
@@ -75,110 +285,7 @@ async function renderTasks(env, input) {
     if (n2 === -1) return "Yesterday";
     return d.setLocale("en").toFormat(d.year === today.year ? "d LLL" : "d LLL yyyy");
   }
-  function parseMinutes(input2) {
-    const s2 = String(input2 ?? "").toLowerCase().replace(/,/g, ".").trim();
-    if (!s2) return null;
-    if (/^\d+(\.\d+)?$/.test(s2)) return Math.round(parseFloat(s2)) || null;
-    const hm = s2.match(/^(\d+)\s*(?:h|giờ|g)\s*(\d{1,2})$/u);
-    if (hm) return Number(hm[1]) * 60 + Number(hm[2]) || null;
-    let total = 0, found = false;
-    for (const [, n2, unit] of s2.matchAll(/(\d+(?:\.\d+)?)\s*([a-zà-ỹđ]+)/gu)) {
-      if (/^(h|hr|hrs|hour|hours|giờ|g)$/u.test(unit)) total += parseFloat(n2) * 60;
-      else if (/^(m|min|mins|minute|minutes|phút|p)$/u.test(unit)) total += parseFloat(n2);
-      else return null;
-      found = true;
-    }
-    return found && total > 0 ? Math.round(total) : null;
-  }
-  const fmtMinutes = (m) => {
-    const h = Math.floor(m / 60), r = m % 60;
-    return (h ? h + "h" : "") + (h && r ? " " : "") + (r || !h ? r + "m" : "");
-  };
-  const minutesNow = () => {
-    const n2 = DateTime.now();
-    return n2.hour * 60 + n2.minute;
-  };
-  const fmtClock = (m) => String(Math.floor(m / 60) % 24).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0");
-  function parseClock(input2) {
-    const m = String(input2 ?? "").normalize("NFC").toLowerCase().trim().match(/^(\d{1,2})(?:\s*[:h.]\s*(\d{2})?|(\d{2}))?\s*(am|pm|sáng|trưa|chiều|tối)?$/u);
-    if (!m) return null;
-    let h = Number(m[1]);
-    const min = Number(m[2] ?? m[3] ?? 0);
-    if (/^(pm|chiều|tối)$/u.test(m[4] || "") && h < 12) h += 12;
-    else if (m[4] === "trưa" && h < 6) h += 12;
-    else if (/^(am|sáng)$/u.test(m[4] || "") && h === 12) h = 0;
-    return h <= 23 && min <= 59 ? h * 60 + min : null;
-  }
-  function lengthOf(input2, at) {
-    const s2 = String(input2 ?? "").trim();
-    const end = s2.match(/^(?:[-–—]|to|until|till|ends?|đến|tới)\s*(.+)$/iu);
-    if (!end && !s2.includes(":")) return parseMinutes(s2);
-    const e = parseClock(end ? end[1] : s2);
-    return e === null || at === null || at === void 0 || e <= at ? null : e - at;
-  }
-  const VS = String.fromCodePoint(65039);
-  const DUE = /(?:📅|🗓)\s*(\d{4}-\d{2}-\d{2})/u;
-  const START = /🛫\s*(\d{4}-\d{2}-\d{2})/u;
-  const SCHED = /⏳\s*(\d{4}-\d{2}-\d{2})/u;
-  const DONE = /✅\s*(\d{4}-\d{2}-\d{2})/u;
-  const DURATION2 = /\[duration::\s*([^\]]*)\]/iu;
-  const TIME = /\[time::\s*([^\]]*)\]/iu;
-  function parseTask(raw) {
-    const s2 = String(raw).split("\n")[0].split(VS).join("");
-    const pick2 = (re) => {
-      const m = s2.match(re);
-      return m ? fromIso(m[1]) : null;
-    };
-    const dur = s2.match(DURATION2), time = s2.match(TIME);
-    const tags = [...s2.matchAll(/(?:^|\s)#([^\s#]+)/gu)].map((m) => m[1].replace(/[.,;:!?)]+$/u, "")).filter(Boolean);
-    const text = s2.replace(/\[(?:duration|time)::[^\]]*\]/giu, " ").replace(/(?:📅|🗓|🛫|✅|⏳|➕|❌)\s*\d{4}-\d{2}-\d{2}/gu, " ").replace(/[⏫🔼🔽⏬🔺]/gu, " ").replace(/(?:^|\s)#[^\s#]+/gu, " ").replace(/\s\^[\w-]+\s*$/u, " ").replace(/\s+/g, " ").trim();
-    const keep = [...s2.matchAll(/[⏫🔼🔽⏬🔺]|(?:➕|❌)\s*\d{4}-\d{2}-\d{2}/gu)].map((m) => m[0]);
-    const doneMark = (s2.match(/✅\s*\d{4}-\d{2}-\d{2}/u) || [""])[0];
-    const blockId = (s2.match(/\s(\^[\w-]+)\s*$/u) || [])[1] || "";
-    const at = time ? parseClock(time[1]) : null;
-    return { text, tags, due: pick2(DUE), start: pick2(START), sched: pick2(SCHED), done: pick2(DONE), at, minutes: dur ? parseMinutes(dur[1]) : null, keep, doneMark, blockId };
-  }
-  const tasks = [];
-  const tagUses = /* @__PURE__ */ new Map();
-  const useTags = (x) => {
-    for (const g of x.tags) tagUses.set(g, (tagUses.get(g) || 0) + 1);
-  };
-  const dailyPages = env.vault.pages(DAILY_FOLDER).filter((page) => fromIso(page.file.name));
-  const dailyLists = await Promise.all(dailyPages.map((page) => env.vault.lists(page)));
-  for (const [k, page] of dailyPages.entries()) {
-    const day = fromIso(page.file.name);
-    if (!day) continue;
-    const items = dailyLists[k];
-    const mine = [], todoLines = /* @__PURE__ */ new Set(), children = /* @__PURE__ */ new Map();
-    for (const t of items) {
-      const parsed = t.task ? (t.parsed ??= parseTask(t.text)) : null; // items are cached per note version, so their parse is too
-      if (parsed) useTags(parsed);
-      if (String(t.section?.subpath ?? "").trim().toLowerCase() !== SECTION2.toLowerCase()) continue;
-      mine.push({ item: t, parsed });
-      if (t.task) {
-        todoLines.add(t.line);
-        const count = children.get(t.parent) || { kids: 0, kidsDone: 0 };
-        count.kids++;
-        if (t.completed) count.kidsDone++;
-        children.set(t.parent, count);
-      }
-    }
-    for (const { item: t, parsed } of mine) {
-      const raw = String(t.text).split("\n")[0], where = { raw, path: page.file.path, line: t.line, day };
-      if (!t.task) {
-        if (t.parent !== void 0 && t.parent !== null) continue;
-        const e = t.parsed ??= parseTask(raw);
-        if (e.due) {
-          tasks.push({ ...e, ...where, kind: "event", closed: false, kids: 0, kidsDone: 0 });
-          useTags(e);
-        }
-        continue;
-      }
-      if (t.parent !== void 0 && t.parent !== null && todoLines.has(t.parent)) continue;
-      if (t.status === "-") continue;
-      tasks.push({ ...parsed, ...where, kind: "todo", closed: !!t.completed, ...children.get(t.line) || { kids: 0, kidsDone: 0 } });
-    }
-  }
+  const { tasks, tagUses } = await dailyItems(env.vault, DAILY_FOLDER);
   for (const s2 of options.sermons || []) {
     const due = fromIso(s2.date);
     if (!due || !s2.path) continue;
@@ -259,17 +366,6 @@ async function renderTasks(env, input) {
       store.view?.refresh(store.view === view ? focusKey : void 0);
     }
   }
-  const LIST = /^([\s>]*(?:\d+\.|\d+\)|\*|-|\+)\s+)(?:\[(.?)\]\s*)?(.*)$/u;
-  const eolOf = (data) => data.includes("\r\n") ? "\r\n" : "\n";
-  function findLine(lines, t) {
-    const same = (i) => {
-      const m = LIST.exec(lines[i] ?? "");
-      return !!m && m[2] === void 0 === isEvent(t) && m[3].trim() === t.raw.trim();
-    };
-    if (same(t.line)) return t.line;
-    const hits = lines.map((_, i) => i).filter(same);
-    return hits.length === 1 ? hits[0] : -1;
-  }
   async function editTask(t, change) {
     const file = app.vault.getAbstractFileByPath(t.path);
     let result = null;
@@ -282,98 +378,6 @@ async function renderTasks(env, input) {
     });
     if (!result) notify("That task was changed in its note, so nothing was saved. Open the note to edit it.");
     return result;
-  }
-  function toggled(line, done) {
-    const m = line.match(/^(.*?)(\s+\^[\w-]+)?\s*$/u);
-    const body2 = m[1].replace(/\s*✅\s*\d{4}-\d{2}-\d{2}/gu, "").replace(/^([\s>]*(?:\d+\.|\d+\)|\*|-|\+)\s*)\[.?\]/u, "$1[" + (done ? "x" : " ") + "]");
-    return body2 + (done ? " ✅ " + stamp2() : "") + (m[2] || "");
-  }
-  function lineBody(d, words, old) {
-    const ev = isEvent(d);
-    const withTime = d.at !== null && d.at !== void 0;
-    return [
-      words,
-      ...d.tags.map((g) => "#" + g),
-      withTime ? "[time:: " + fmtClock(d.at) + "]" : "",
-      d.minutes ? "[duration:: " + fmtMinutes(d.minutes) + "]" : "",
-      ...old?.keep || [],
-      !ev && d.sched ? "⏳ " + d.sched : "",
-      !ev && d.start ? "🛫 " + d.start : "",
-      d.due ? "📅 " + d.due : "",
-      ev ? "" : old?.doneMark,
-      old?.blockId
-    ].filter(Boolean).join(" ");
-  }
-  function rebuilt(line, d, words) {
-    const m = LIST.exec(line);
-    const body2 = lineBody(d, words, parseTask(m[3]));
-    return { line: m[1] + (isEvent(d) ? "" : "[" + (m[2] ?? " ") + "] ") + body2, body: body2 };
-  }
-  // A move swaps only the date and time tokens it changes, so the rest of the line stays as the user wrote it.
-  const MOVE_TOKENS = {
-    due: [/(\s*)(?:📅|🗓)\uFE0F?\s*\d{4}-\d{2}-\d{2}/u, (v) => "📅 " + v],
-    sched: [/(\s*)⏳\uFE0F?\s*\d{4}-\d{2}-\d{2}/u, (v) => "⏳ " + v],
-    at: [/(\s*)\[time::[^\]]*\]/iu, (v) => "[time:: " + fmtClock(v) + "]"],
-    minutes: [/(\s*)\[duration::[^\]]*\]/iu, (v) => "[duration:: " + fmtMinutes(v) + "]"]
-  };
-  function moved(line, d, changes) {
-    let s2 = line.trimEnd();
-    for (const [k, [re, fmt]] of Object.entries(MOVE_TOKENS)) {
-      if (!(k in changes)) continue;
-      const token = d[k] === null || d[k] === void 0 ? "" : fmt(d[k]);
-      if (re.test(s2)) s2 = s2.replace(re, (_, space) => token && space + token);
-      else if (token) s2 = s2.replace(/(?:\s*✅\uFE0F?\s*\d{4}-\d{2}-\d{2})?(?:\s+\^[\w-]+)?$/u, (tail) => " " + token + tail);
-    }
-    return s2;
-  }
-  function blockEnd(lines, i) {
-    const indent = (s2) => s2.match(/^[\s>]*/u)[0].replace(/\t/g, "    ").length;
-    const base = indent(lines[i]);
-    let j = i + 1;
-    while (j < lines.length && lines[j].trim() && indent(lines[j]) > base) j++;
-    return j;
-  }
-  function intoSection(data, newLines) {
-    const lines = data.split(/\r?\n/);
-    const heading = (l2, fence2) => !fence2 && l2.match(/^(#{1,6})\s+(.*?)\s*#*\s*$/u);
-    let at = -1, level = 7, fence = false;
-    for (let i = 0; i < lines.length; i++) {
-      if (/^\s*(```|~~~)/u.test(lines[i])) fence = !fence;
-      const m = heading(lines[i], fence);
-      if (m && m[2].toLowerCase() === SECTION2.toLowerCase()) {
-        at = i;
-        level = m[1].length;
-        break;
-      }
-    }
-    if (at < 0) {
-      while (lines.length && !lines[lines.length - 1].trim()) lines.pop();
-      lines.push(...lines.length ? [""] : [], "## " + SECTION2, "", ...newLines, "");
-      return lines.join(eolOf(data));
-    }
-    let end = lines.length;
-    fence = false;
-    for (let i = at + 1; i < lines.length; i++) {
-      if (/^\s*(```|~~~)/u.test(lines[i])) fence = !fence;
-      const m = heading(lines[i], fence);
-      if (m && m[1].length <= level) {
-        end = i;
-        break;
-      }
-    }
-    let last = -1;
-    for (let i = at + 1; i < end; i++)
-      if (/^[\s>]*([-*+]|\d+[.)])\s/u.test(lines[i]) || last === i - 1 && /^\s+\S/u.test(lines[i])) last = i;
-    if (last >= 0) lines.splice(last + 1, 0, ...newLines);
-    else {
-      let i = at + 1;
-      const block = [...newLines];
-      if (lines[i] !== void 0 && !lines[i].trim()) i++;
-      else block.unshift("");
-      if (lines[i] !== void 0 && lines[i].trim()) block.push("");
-      lines.splice(i, 0, ...block);
-    }
-    return lines.join(eolOf(data));
   }
   async function todayNote() {
     const day = DateTime.now().startOf("day");
@@ -405,7 +409,7 @@ async function renderTasks(env, input) {
     return transact("Could not add the task", async () => {
       draw();
       const file = await todayNote();
-      await app.vault.process(file, (data) => intoSection(data, [(isEvent(d) ? "- " : "- [ ] ") + body2]));
+      await app.vault.process(file, (data) => intoSection(data, "## " + SECTION2, [(isEvent(d) ? "- " : "- [ ] ") + body2]));
       const unchanged = store.draft === original && sameDraft(original, d);
       if (unchanged) {
         store.draft = emptyDraft(d.kind);
@@ -518,7 +522,7 @@ async function renderTasks(env, input) {
             const hits = lines.map((l2, i) => l2 === u.before ? i + 1 : -1).filter((i) => i > 0);
             if (hits.length === 1) at = hits[0];
           }
-          if (at < 0) return intoSection(data, u.lines);
+          if (at < 0) return intoSection(data, "## " + SECTION2, u.lines);
           lines.splice(at, 0, ...u.lines);
           return lines.join(eolOf(data));
         });
