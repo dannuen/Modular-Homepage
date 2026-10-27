@@ -100,8 +100,8 @@ var THEMES = [
     // Next sermon as the event card while Dune shows
   },
   {
-    id: "tamdan10",
-    name: "TamDan10",
+    id: "golden",
+    name: "Golden",
     about: "Ivory and gold: double gold frames, Garamond type, square corners",
     classes: []
   }

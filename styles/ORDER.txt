@@ -7,7 +7,7 @@ themes/pulpit.css
 themes/pixel.css
 themes/crystal.css
 themes/dune.css
-themes/tamdan10.css
+themes/golden.css
 modules/greeting.css
 modules/banner.css
 modules/next-sermon.css
