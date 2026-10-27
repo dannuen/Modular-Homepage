@@ -69,7 +69,7 @@ var def7 = /* @__PURE__ */ (() => {
         const center = el(dial, "div", "m-dial-center hp-panel");
         const centre = (label, big, sub) => {
           el(center, "div", "hp-label", label);
-          el(center, "div", "m-dial-big hp-num", big);
+          el(center, "div", "m-dial-big hp-num" + (big.length > 5 ? " is-word" : ""), big); // a period ("Afternoon") is wider than a clock
           el(center, "div", "m-dial-sub", sub);
         };
         if (!dayEntries.length) centre("Next", "—", "nothing scheduled");

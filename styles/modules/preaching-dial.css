@@ -12,6 +12,7 @@
 .hp-home .m-dial-now { fill: var(--hm-bg); stroke: var(--hm-accent); stroke-width: 3; }
 .hp-home .m-dial-center { position: absolute; inset: 25%; display: grid; place-content: center; justify-items: center; gap: 2px; border-radius: 50%; text-align: center !important; }
 .hp-home .m-dial-big { font-size: clamp(1.6em, 7cqi, 2.3em); }
+.hp-home .m-dial-big.is-word { font-size: clamp(1.3em, 5.5cqi, 1.7em); }
 .hp-home .m-dial-sub { font-size: 0.8em; color: var(--hm-muted); }
 .hp-home .m-dial-title { margin: 8px 0 18px; font-family: var(--hm-font-display); font-size: clamp(1.8em, 4.6cqi, 2.7em); font-weight: var(--hm-display-weight); letter-spacing: var(--hm-display-spacing); line-height: 1.04; }
 .hp-home .m-dial-title em { font-style: normal; color: var(--hm-accent-ink); }
