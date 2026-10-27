@@ -637,7 +637,20 @@ async function renderTasks(env, input) {
       b.setAttribute("aria-pressed", String(mode === k));
       b.dataset.tkFocus = "mode-" + k;
     }
-    if (tags.length) {
+    if (tags.length > 3) {
+      const pick2 = el(head, "select", "hp-tk-tagsel");
+      pick2.setAttribute("aria-label", "Show tasks with a tag");
+      for (const g of [null, ...tags]) {
+        const o = el(pick2, "option", "", g ? "#" + g : "All tags");
+        o.value = g || "";
+        o.selected = (store.filter || null) === g;
+      }
+      pick2.addEventListener("change", () => {
+        if (!isMounted() || !pick2.isConnected) return;
+        store.filter = pick2.value || null;
+        draw();
+      });
+    } else if (tags.length) {
       const filter = el(head, "nav", cls("hp-tk-filter", SKIN2.pill));
       filter.setAttribute("aria-label", "Show tasks with a tag");
       for (const g of [null, ...tags]) {

@@ -16,7 +16,7 @@
 .hp-home {
 	--hm-text: var(--text-normal);
 	--hm-muted: var(--text-muted);
-	--hm-faint: var(--text-faint);
+	--hm-faint: color-mix(in srgb, var(--text-muted) 88%, transparent);   /* Obsidian's faint is ~2.3:1, too light for text */
 	--hm-accent: var(--interactive-accent);          /* fills: buttons, bars, chosen states */
 	--hm-accent-ink: var(--text-accent);             /* accent text */
 	--hm-on-accent: var(--text-on-accent);
@@ -145,7 +145,7 @@
 	.hp-home .hp-back .hp-ico { display: inline-flex; }
 	.hp-home .hp-back > :not(.hp-ico) { display: none; }
 }
-.hp-home .hp-label { font-size: 0.72em; font-weight: 750; letter-spacing: 0.08em; text-transform: uppercase; color: var(--hm-muted); }
+.hp-home .hp-label { font-size: max(11px, 0.72em); font-weight: 750; letter-spacing: 0.08em; text-transform: uppercase; color: var(--hm-muted); }
 .hp-home .hp-muted { color: var(--hm-muted); }
 .hp-home .hp-empty { color: var(--hm-faint); font-style: italic; }
 .hp-home .hp-error { padding: 14px 18px; color: var(--hm-late); font-size: 0.9em; }
@@ -175,7 +175,7 @@
 .hp-home .hp-ring.is-past .hp-ring-fill { stroke: var(--hm-faint); }
 .hp-home .hp-ring-label { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center !important; line-height: 1.05; }
 .hp-home .hp-ring-label b { font-size: 0.74em; font-weight: 750; font-variant-numeric: tabular-nums; }
-.hp-home .hp-ring-label span { margin-top: 2px; font-size: 0.64em; color: var(--hm-muted); }
+.hp-home .hp-ring-label span { margin-top: 2px; font-size: max(11px, 0.64em); color: var(--hm-muted); }
 .hp-home img.hp-cover, .hp-home .hp-cover { width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 0 !important; }
 .hp-home .hp-meter.is-soon .hp-meter-fill { background: var(--hm-soon); }
 .hp-home .hp-meter.is-urgent .hp-meter-fill { background: var(--hm-late); }
@@ -344,7 +344,7 @@
 /* ---------- 9. Task panel (_data_/views/home/shared/tasks): its colours from the tokens. Its stylesheet loads later, so every
    rule here starts with .hp-home to win. The module draws its own "Tasks" title, so the panel's kicker is hidden. ---------- */
 .hp-home .hp-tk-wrap {
-	--tk-text: var(--hm-text); --tk-muted: var(--hm-muted); --tk-accent: var(--hm-accent-ink); --tk-late: var(--hm-late);
+	--tk-text: var(--hm-text); --tk-muted: var(--hm-muted); --tk-accent: var(--hm-accent-ink); --tk-late: color-mix(in srgb, var(--hm-late) 80%, var(--hm-text));
 	--tk-line: var(--hm-line); --tk-hover: var(--hm-hover);
 	--tk-soft: var(--hm-soft); --tk-soft-edge: color-mix(in srgb, var(--hm-accent) 45%, transparent);
 	--tk-on-bg: var(--hm-accent); --tk-on-ink: var(--hm-on-accent); --tk-fill-bg: var(--hm-fill);

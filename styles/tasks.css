@@ -41,7 +41,7 @@
 /* Obsidian on iPad pads every button with ".is-tablet button:not(.clickable-icon)", which outranks the per-button
    padding rules and stretches round buttons (the check) into ellipses. Same specificity, loaded later: --btn-pad wins. */
 .hp-tk-wrap button:not(.clickable-icon) { padding: var(--btn-pad); }
-.hp-tk-wrap :is(button, input, a, [tabindex]):focus-visible { outline: 2px solid var(--tk-accent); outline-offset: 2px; }
+.hp-tk-wrap :is(button, input, select, a, [tabindex]):focus-visible { outline: 2px solid var(--tk-accent); outline-offset: 2px; }
 .hp-tk-wrap .hp-tk-ico { display: inline-flex; flex: none; }
 .hp-tk-wrap .hp-tk-ico svg { width: 1.05em; height: 1.05em; }
 
@@ -65,6 +65,11 @@
 .hp-tk-wrap .hp-tk-filter { display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 3px; }
 .hp-tk-wrap .hp-tk-filter button { display: inline-flex; align-items: center; min-height: 34px; --btn-pad: 0 14px; padding: var(--btn-pad); border-radius: 999px; font-size: 0.9em; font-weight: 650; color: var(--tk-muted); }
 .hp-tk-wrap .hp-tk-filter button:hover { color: var(--tk-text); }
+.hp-tk-wrap select.hp-tk-tagsel {
+	appearance: none; -webkit-appearance: none; height: 40px; max-width: 12em; margin: 0; padding: 0 30px 0 16px; border: none; border-radius: 999px;
+	font: inherit; font-size: 0.9em; font-weight: 650; color: var(--tk-text); cursor: pointer; box-shadow: inset 0 0 0 1px var(--tk-line);
+	background: var(--tk-hover) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 11px center / 11px;
+}
 .hp-tk-wrap .hp-tk-filter button.is-on { color: var(--tk-on-ink); background: var(--tk-on-bg); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3); }
 
 /* Add: one long pill — To do | Event, the text, then the options (Due / Start / Time / Tag, or Date / At / Length /
@@ -83,8 +88,10 @@
 	all: unset; box-sizing: border-box; flex: 1 1 auto; min-width: 0; height: 40px; font: inherit; font-weight: 600; color: var(--tk-text);
 }
 .hp-tk-wrap input.hp-tk-input::placeholder { color: var(--tk-muted); opacity: 1; }
-.hp-tk-wrap input.hp-tk-input:focus { box-shadow: none; outline: none; }
+.hp-tk-wrap input.hp-tk-input:focus { box-shadow: none; }
 .hp-tk-wrap .hp-tk-opts { display: flex; gap: 4px; flex: none; }
+/* Due, Start, Time, Tag show once there is something to add (or one is already set), so the empty bar stays short. */
+.hp-tk-wrap .hp-tk-add:not(:has(input.hp-tk-input:not(:placeholder-shown), .hp-tk-opt.is-set, .hp-tk-pop)) > .hp-tk-opts { display: none; }
 .hp-tk-wrap .hp-tk-opt { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; --btn-pad: 0 12px; padding: var(--btn-pad); border-radius: 999px; font-size: 0.88em; font-weight: 650; color: var(--tk-muted); white-space: nowrap; transition: background 0.15s ease, color 0.15s ease; }
 .hp-tk-wrap .hp-tk-opt:hover, .hp-tk-wrap .hp-tk-opt.is-active { background: var(--tk-hover); box-shadow: inset 0 0 0 1px var(--tk-line); color: var(--tk-text); }
 .hp-tk-wrap .hp-tk-opt.is-set { color: var(--tk-accent); background: var(--tk-soft); box-shadow: inset 0 0 0 1px var(--tk-soft-edge); }
@@ -167,7 +174,7 @@
 	font-size: 0.8em; font-weight: 750; line-height: 1.1; text-align: center; font-variant-numeric: tabular-nums;
 	color: var(--tk-accent); background: var(--tk-soft); box-shadow: inset 0 0 0 1px var(--tk-soft-edge);
 }
-.hp-tk-wrap .hp-tk-when.is-allday { font-size: 0.66em; letter-spacing: 0.02em; text-transform: uppercase; }
+.hp-tk-wrap .hp-tk-when.is-allday { font-size: max(11px, 0.66em); letter-spacing: 0.02em; text-transform: uppercase; }
 .hp-tk-wrap .hp-tk-group.has-event .hp-tk-row { grid-template-columns: 46px minmax(0, 1fr) auto auto; }
 .hp-tk-wrap .hp-tk-group.has-event .hp-tk-check { justify-self: center; }
 .hp-tk-wrap .hp-tk-row.is-past :is(.hp-tk-when, .hp-tk-main) { opacity: 0.5; }
