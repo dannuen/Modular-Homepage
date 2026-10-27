@@ -438,7 +438,7 @@ function makeCore(env) {
     card?.classList.toggle("is-inactive", !active2);
     try {
       await app.fileManager.processFrontMatter(file, (fm) => {
-        fm.is_active = active2;
+        fm[fmKey(fm, "is_active")] = active2;
       });
     } catch (err) {
       console.error("Modular Homepage: could not update is_active", err);
@@ -483,8 +483,7 @@ function makeCore(env) {
     if (!(file instanceof import_obsidian2.TFile)) return false;
     try {
       await app.fileManager.processFrontMatter(file, (fm) => {
-        // Overwrite the key the page reads (the first with the same canonical form, e.g. "Banner"), not add a second one.
-        for (const [k, v] of Object.entries(fields)) fm[Object.keys(fm).find((x) => canonical(x) === canonical(k)) ?? k] = v;
+        for (const [k, v] of Object.entries(fields)) fm[fmKey(fm, k)] = v;
       });
       notify(what + " saved");
       return true;
@@ -555,7 +554,7 @@ function makeCore(env) {
   }
   function countWords(s2) {
     const clean2 = s2.replace(/%%[\s\S]*?%%/g, "").replace(/<!--[\s\S]*?-->/g, "").replace(/!\[\[[^\]]*\]\]/g, "").replace(/\[\[(?:[^\]|]*\|)?([^\]]*)\]\]/g, "$1").replace(/\[([^\]]*)\]\([^)]*\)/g, "$1");
-    return (clean2.match(/[\p{L}\p{M}\p{N}]+/gu) || []).length; // \p{M}: decomposed (NFD) accents stay in their word
+    return (clean2.normalize("NFC").match(/[\p{L}\p{N}]+/gu) || []).length; // NFC: decomposed (NFD) accents would split a word
   }
   function analyse(body2) {
     let fence = false;

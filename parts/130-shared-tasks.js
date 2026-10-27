@@ -120,7 +120,7 @@ async function renderTasks(env, input) {
   };
   const fmtClock = (m) => String(Math.floor(m / 60) % 24).padStart(2, "0") + ":" + String(m % 60).padStart(2, "0");
   function parseClock(input2) {
-    const m = String(input2 ?? "").toLowerCase().trim().match(/^(\d{1,2})(?:\s*[:h.]\s*(\d{2})?|(\d{2}))?\s*(am|pm|sáng|trưa|chiều|tối)?$/u);
+    const m = String(input2 ?? "").normalize("NFC").toLowerCase().trim().match(/^(\d{1,2})(?:\s*[:h.]\s*(\d{2})?|(\d{2}))?\s*(am|pm|sáng|trưa|chiều|tối)?$/u);
     if (!m) return null;
     let h = Number(m[1]);
     const min = Number(m[2] ?? m[3] ?? 0);

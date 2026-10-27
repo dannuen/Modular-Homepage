@@ -151,6 +151,8 @@ function toDateTime(input) {
   return parseIsoDate(s2);
 }
 var canonical = (key) => key.trim().toLowerCase().replace(/\s+/g, "-").replace(/[^\p{L}\p{N}_-]/gu, "");
+// The frontmatter key a property is read from (the first with its canonical form, e.g. "Banner"), so a write replaces it.
+var fmKey = (fm, key) => Object.keys(fm).find((k) => canonical(k) === canonical(key)) ?? key;
 var LIST_ITEM = /^[\s>]*(\d+\.|\d+\)|\*|-|\+)\s*(\[.{0,1}\])?\s*(.*)$/mu;
 var TAG = /(?:^|\s)#([^\s#,.;:!?()[\]{}"'`]+)/gu;
 var linkableHeading = (h) => h.replace(/[^\p{L}\p{N}_\-\p{Extended_Pictographic}\p{Variation_Selector}‍]/gu, " ").split(/\s+/).join(" ").trim();

@@ -10,7 +10,7 @@ const expect = (what, got, want) => {
 const core = [...H.plugin.blocks][0].draw.core;
 expect("Linter date_created", core.time.toDate("2026-10-02 09:00 AM")?.toISODate(), "2026-10-02");
 expect("NFD period word", core.time.parseTime("buổi chiều".normalize("NFD"))?.period, "afternoon");
-expect("NFD word count", core.data.countWords("Ánh sáng đến thế gian".normalize("NFD")), 5);
+expect("NFD word count", core.data.countWords("Ánh sáng ✝️ đến thế gian".normalize("NFD")), 5);
 expect("isDark of a near-white oklch()", core.data.isDark("oklch(0.95 0.02 90)"), false);
 const dial = () => H.slot("preaching-dial");
 const centre = () => [...H.$(".m-dial-center", dial()).children].map((c) => c.textContent).join(" | ");
