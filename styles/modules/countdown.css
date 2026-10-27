@@ -39,7 +39,6 @@
 .hp-home .m-cd-title a:hover, .hp-home .m-cd-name a:hover { color: var(--hm-accent-ink) !important; }
 .hp-home .m-cd-emoji { margin-right: 0.3em; }
 .hp-home .m-cd-when { font-size: 0.88em; color: var(--hm-muted); }
-.hp-home .m-cd-sub { font-size: 0.84em; font-weight: 600; color: var(--hm-accent-ink); }
 .hp-home .m-cd-side { flex: 1 1 14em; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
 .hp-home .m-cd-big { margin-top: 10px; font-size: 2.3em; }
 .hp-home .m-cd-prog { display: flex; flex-direction: column; gap: 6px; max-width: 22em; margin-top: 6px; }

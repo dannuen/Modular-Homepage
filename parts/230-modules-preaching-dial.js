@@ -14,11 +14,12 @@ var def7 = /* @__PURE__ */ (() => {
       const dayEntries = upcoming.length ? upcoming.filter((e) => e.date.toMillis() === upcoming[0].date.toMillis()) : [];
       const dayN = upcoming.length ? time.daysUntil(upcoming[0].date) : null;
       const lengthOf = (e) => e.time?.length ?? time.minutesOf(byPath.get(e.page.file.path)?.ms.total || 0);
+      const busyOf = (e) => e.time.length ?? Math.max(lengthOf(e), 20); // the arc and "Now" use the same length
       const clockOf = (t) => t?.clock || time.timeText(t);
       const lengthText = (e) => (e.time?.length ? "" : "≈ ") + lengthOf(e) + " min";
       const statusOf = (e, now2) => {
         if (dayN !== 0 || !e.time) return "later";
-        if (now2 >= e.time.minutes + (e.time.length ?? Math.max(lengthOf(e), 15))) return "past";
+        if (now2 >= e.time.minutes + busyOf(e)) return "past";
         return now2 >= e.time.minutes ? "now" : "later";
       };
       const hero = el(body2, "section", "m-dial hp-card hp-grow");
@@ -54,7 +55,7 @@ var def7 = /* @__PURE__ */ (() => {
         }
         dayEntries.forEach((e, i) => {
           if (!e.time) return;
-          const d0 = deg(e.time.minutes), d1 = d0 + span(e.time.length ?? Math.max(lengthOf(e), 20));
+          const d0 = deg(e.time.minutes), d1 = d0 + span(busyOf(e));
           const path = svg(face2, "path", { d: arc(R, d0, d1), fill: "none", "stroke-width": W }, "m-dial-svc" + (statuses[i] === "past" ? " is-past" : ""));
           ui.tip(path, e.page.file.name + "\n" + time.timeText(e.time) + " · " + lengthText(e) + (data.churchesOf(e.page)[0] ? " · " + data.churchesOf(e.page)[0] : ""));
           const [lx, ly] = polar(R + W / 2 + 16, d0);

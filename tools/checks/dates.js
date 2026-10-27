@@ -19,6 +19,14 @@ if (width(".m-dial-big") > width(".m-dial-center")) throw new Error("Afternoon i
 await sermon("chiều", "\\n");
 await H.settleAfterAction();
 expect("dial centre before a sermon with no time", centre(), "Today | — | any time");
+// Roster dates: a heading's year with the file's quarter, a list date with a note, a dotted time as a service name.
+const roster = (text, file) => new Map(H.plugin.modules).get("roster").parse(text, file, "2026-10-27").map((e) => e.date + " " + e.service + " " + e.roles.length).join(", ");
+const table = (day) => "| Ngày | Giảng |\\n|---|---|\\n| " + day + " | A |\\n";
+expect("Q1 2027 file, ## Tháng 12 - 2026", roster("## Tháng 12 - 2026\\n" + table("27/12") + "## Tháng 1 - 2027\\n" + table("03/01"), "Lịch HDCT Quý 1 - 2027"), "2026-12-27  1, 2027-01-03  1");
+expect("Q4 2026 file, ## Tháng 1 - 2027", roster("## Tháng 1 - 2027\\n" + table("03/01"), "Lịch HDCT Quý 4 - 2026"), "2027-01-03  1");
+expect("Q1 2027 file, ## Lịch năm 2027", roster("## Lịch năm 2027\\n" + table("27/12"), "Lịch HDCT Quý 1 - 2027"), "2026-12-27  1");
+expect("list date with a note", roster("- **01/11**\\n  - Giảng: A\\n- **08/11** (Tiệc thánh)\\n  - Giảng: B\\n", "Lịch Quý 4 - 2026"), "2026-11-01  1, 2026-11-08  1");
+expect("dotted times as services", roster("## 01/11\\n### 8.30 Lễ sáng\\n- Giảng: A\\n### 10.30 Lễ trưa\\n- Giảng: B\\n", "Lịch Quý 4 - 2026"), "2026-11-01 8.30 Lễ sáng 1, 2026-11-01 10.30 Lễ trưa 1");
 `;
 (async () => {
   const browser = await launch();

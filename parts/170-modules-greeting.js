@@ -87,8 +87,7 @@ var def = /* @__PURE__ */ (() => {
         lede.textContent = "Mark a sermon active and give it a date, and it will appear here.";
         return;
       }
-      const count = ["No", "One", "Two", "Three", "Four", "Five", "Six"][sameDay.length] || String(sameDay.length);
-      headline.append(count + " " + (sameDay.length === 1 ? "sermon" : "sermons") + " ");
+      headline.append(word(sameDay.length) + " " + (sameDay.length === 1 ? "sermon" : "sermons") + " ");
       el(headline, "em", "", when);
       headline.append(".");
       const parts = sameDay.map((e) => {
