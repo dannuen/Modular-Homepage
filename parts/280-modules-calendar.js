@@ -19,20 +19,11 @@ var def12 = /* @__PURE__ */ (() => {
         return byDay.get(k);
       };
       for (const e of data.entries()) dayOf2(e.date.toISODate()).services.push(e);
-      const DUE = /📅\s*(\d{4}-\d{2}-\d{2})/u, AT = /\[time::\s*([^\]]+)\]/u;
-      const clean2 = (t) => t.replace(/\[[a-z]+::[^\]]*\]/giu, "").replace(/[📅🛫⏳➕✅❌]\s*\d{4}-\d{2}-\d{2}/gu, "").replace(/\^[\w-]+\s*$/u, "").replace(/\s+/g, " ").trim();
-      const dailyPages = vault.pages(config.dailyFolder);
-      const dailyLists = await Promise.all(dailyPages.map((page) => vault.lists(page)));
-      for (const [k, page] of dailyPages.entries()) {
-        for (const t of dailyLists[k]) {
-          if (String(t.section?.subpath ?? "").trim().toLowerCase() !== "tasks") continue;
-          const raw = String(t.text).split("\n")[0];
-          const due = raw.match(DUE)?.[1];
-          if (!due) continue;
-          if (t.task) {
-            if (!t.completed && t.status !== "-" && (t.parent === void 0 || t.parent === null)) dayOf2(due).todos.push({ text: clean2(raw), path: page.file.path });
-          } else if (t.parent === void 0 || t.parent === null) dayOf2(due).events.push({ text: clean2(raw), at: time.parseTime(raw.match(AT)?.[1]?.trim()), path: page.file.path });
-        }
+      for (const t of (await dailyItems(vault, config.dailyFolder)).tasks) {
+        if (!t.due || t.closed) continue;
+        if (t.kind === "todo") dayOf2(t.due.toISODate()).todos.push(t);
+        // A range or a part of the day ("19:00-20:30", "tối") has no clock time in Tasks, but Calendar still shows it.
+        else dayOf2(t.due.toISODate()).events.push({ text: t.text, at: time.parseTime(t.at) ?? time.parseTime(t.raw.match(TIME)?.[1].trim()), path: t.path });
       }
       for (const d of byDay.values()) d.events.sort((a, b) => (a.at?.minutes ?? -1) - (b.at?.minutes ?? -1));
       ui.section(body2, isWeek ? "This week" : "Calendar", isPlanner ? "Click a date to open or create its daily note" : "");

@@ -425,6 +425,8 @@ var def19 = {
   about: "A focus timer as pixel art: a tomato, an avocado or a clock, with your own presets",
   width: 4,
   variants: [],
+  withEntry,
+  // for the harness's line checks
   render: (body2, ctx) => render(body2, ctx)
 };
 def19.watch = () => false;

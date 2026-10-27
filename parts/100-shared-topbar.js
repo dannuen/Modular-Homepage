@@ -2,7 +2,7 @@
 function renderTopbar(env, input) {
   const NAME = env.config.name;
   const NAV = env.config.nav;
-  const TEMPLATES = { ...env.config.templates, daily: env.config.dailyTemplate };
+  const TEMPLATES = env.config.templates;
   const options = input || {};
   const app = env.app;
   const doc = env.container.ownerDocument;
@@ -35,7 +35,6 @@ function renderTopbar(env, input) {
   function notify(message) {
     new import_obsidian2.Notice(message);
   }
-  const dailyFolder = (d) => env.config.dailyFolder + "/" + d.setLocale("en").toFormat("yyyy/MM-LLLL");
   async function createFromTemplate(templatePath, folderPath, name, open) {
     const templater = app.plugins.plugins["templater-obsidian"]?.templater;
     const template = app.vault.getAbstractFileByPath(templatePath);
@@ -49,10 +48,7 @@ function renderTopbar(env, input) {
   async function openToday(newTab) {
     if (!newTab && app.commands.executeCommandById("periodic-notes:open-daily-note")) return;
     try {
-      const today = DateTime.now().startOf("day");
-      let file = app.vault.getAbstractFileByPath(dailyFolder(today) + "/" + today.toFormat("yyyy-MM-dd") + ".md");
-      if (!file) file = await createFromTemplate(TEMPLATES.daily, dailyFolder(today), today.toFormat("yyyy-MM-dd"), false);
-      if (file) await app.workspace.getLeaf(newTab ? "tab" : false).openFile(file);
+      await app.workspace.getLeaf(newTab ? "tab" : false).openFile(await dailyNote(app, env.config, DateTime.now().startOf("day")));
     } catch (err) {
       console.error(err);
       notify("Could not open today's note");

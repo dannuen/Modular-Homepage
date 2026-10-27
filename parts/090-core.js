@@ -82,6 +82,18 @@ var renderWith = (app, doc, sourcePath, component) => (parent, md, cls = "hp-val
   if (parent) parent.append(node);
   return node;
 };
+// The one way Calendar, the top bar, Tasks and the focus log find or make a day's note: Templater is optional (empty note).
+var dailyNotePath = (cfg, d) => cfg.dailyFolder.replace(/\/+$/, "") + "/" + d.setLocale("en").toFormat("yyyy/MM-LLLL/yyyy-MM-dd") + ".md";
+async function dailyNote(app, cfg, d) {
+  const path = dailyNotePath(cfg, d), folder = path.slice(0, path.lastIndexOf("/"));
+  let file = app.vault.getAbstractFileByPath(path);
+  if (file) return file;
+  if (!app.vault.getAbstractFileByPath(folder)) await app.vault.createFolder(folder);
+  const templater = app.plugins?.plugins?.["templater-obsidian"]?.templater;
+  const template = app.vault.getAbstractFileByPath(cfg.dailyTemplate);
+  if (templater && template instanceof import_obsidian2.TFile) file = await templater.create_new_note_from_template(template, app.vault.getAbstractFileByPath(folder), d.toFormat("yyyy-MM-dd"), false);
+  return app.vault.getAbstractFileByPath(path) || file || await app.vault.create(path, "");
+}
 function makeCore(env) {
   const { app, vault } = env;
   const doc = env.doc;
@@ -400,8 +412,7 @@ function makeCore(env) {
     const h = (/* @__PURE__ */ new Date()).getHours();
     return h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
   };
-  const dailyFolder = (d) => C.dailyFolder + "/" + d.setLocale("en").toFormat("yyyy/MM-LLLL");
-  const dailyPath = (d) => dailyFolder(d) + "/" + d.toFormat("yyyy-MM-dd") + ".md";
+  const dailyPath = (d) => dailyNotePath(C, d);
   const minutesOf = (words) => Math.max(1, Math.round(words / C.spokenWpm));
   function notify(message) {
     new import_obsidian2.Notice(message);
@@ -430,9 +441,7 @@ function makeCore(env) {
   }
   async function openDaily(d, newTab) {
     try {
-      let file = app.vault.getAbstractFileByPath(dailyPath(d));
-      if (!file) file = await createFromTemplate(C.dailyTemplate, dailyFolder(d), d.toFormat("yyyy-MM-dd"), false);
-      if (file instanceof import_obsidian2.TFile) await app.workspace.getLeaf(newTab ? "tab" : false).openFile(file);
+      await app.workspace.getLeaf(newTab ? "tab" : false).openFile(await dailyNote(app, C, d));
     } catch (err) {
       console.error(err);
       notify("Could not open the daily note for " + d.toFormat("yyyy-MM-dd"));
@@ -654,7 +663,7 @@ function makeCore(env) {
     const source = taskFile ? [taskFile] : inFolder;
     const tasks = (await Promise.all(source.map((q) => vault.tasks(q)))).flat().filter((t) => t.text && String(t.text).trim() !== "" && t.status !== "-");
     const dueOf = (t) => toDate(t.due) || toDate(String(t.text).match(/📅\s*(\d{4}-\d{2}-\d{2})/u)?.[1]);
-    const open = tasks.filter((t) => !t.completed).map((t) => ({ text: String(t.text).split("\n")[0].replace(/\s*[📅🛫⏳➕✅]\s*\d{4}-\d{2}-\d{2}/gu, "").trim(), due: dueOf(t), line: t.line ?? 0, path: t.path })).sort((a, b) => (a.due?.toMillis() ?? Infinity) - (b.due?.toMillis() ?? Infinity) || a.line - b.line);
+    const open = tasks.filter((t) => !t.completed).map((t) => ({ text: String(t.text).split("\n")[0].replace(/\s*[📅🛫⏳➕✅]\s*\d{4}-\d{2}-\d{2}/gu, "").replace(/\[\[([^\]|]*\|)?([^\]]*)\]\]/g, "$2").trim(), due: dueOf(t), line: t.line ?? 0, path: t.path })).sort((a, b) => (a.due?.toMillis() ?? Infinity) - (b.due?.toMillis() ?? Infinity) || a.line - b.line);
     return {
       page: p,
       folder,
