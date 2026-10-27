@@ -32,13 +32,7 @@ var BarBlock = class extends import_obsidian3.MarkdownRenderChild {
         container: this.containerEl,
         sourcePath: this.sourcePath,
         homeNote: this.plugin.settings.homeNote,
-        render: (parent, md, cls) => {
-          const node = this.containerEl.ownerDocument.createElement("span");
-          node.classList.add(...String(cls || "").split(/\s+/).filter(Boolean));
-          renderValue(app, md, node, this.sourcePath, life).catch((err) => console.error("Modular Homepage: could not draw a link", err));
-          parent?.append(node);
-          return node;
-        }
+        render: renderWith(app, this.containerEl.ownerDocument, this.sourcePath, life)
       }, {});
     } catch (err) {
       console.error("Modular Homepage: could not draw the top bar", err);

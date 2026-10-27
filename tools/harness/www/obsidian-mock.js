@@ -417,7 +417,6 @@
 	}
 
 	// ---------- Markdown → HTML (what MarkdownRenderer.render produces, for the inline things a homepage uses) ----------
-	const METABIND_LABELS = { newnote: "New note", newothersermon: "Other sermon", "newsermon-s": "New sermon", "newproject-s": "New project" };
 	function renderInline(app, parent, text, sourcePath) {
 		const doc = docOf(parent);
 		const RE = /(\\[\\`*_{}\[\]()#+\-.!|~=])|(`+)([\s\S]*?[^`])\2(?!`)|(!?)\[\[([^\]]+)\]\]|\[([^\]]+)\]\(([^)\s]+)\)|(\*\*|__)([\s\S]+?)\8|(\*|_)([^\s*_][^*_]*?)\10(?![\w])|==([^=]+)==|~~([^~]+)~~|(^|\s)#([^\s -⁯⸀-⹿'!"#$%&()*+,.:;<=>?@^`{|}~\[\]\\]+)|(https?:\/\/[^\s<]+)|(\n)/gu;
@@ -428,25 +427,9 @@
 			last = m.index + m[0].length;
 			if (m[1]) textNode(m[1].slice(1));
 			else if (m[2]) {
-				const code = m[3].trim();
-				const mb = code.match(/^BUTTON\[([^\]]+)\]$/);
-				if (mb) {
-					// Meta Bind's inline button (as the plugin draws it in reading view).
-					const wrap = doc.createElement("div");
-					wrap.className = "mb-button mb-button-inline";
-					for (const id of mb[1].split(",").map((s) => s.trim())) {
-						const b = doc.createElement("button");
-						b.className = "mb-button-inner"; // Meta Bind's "default" button style (mod-cta for primary, mod-warning for destructive, mod-plain for plain)
-						b.textContent = METABIND_LABELS[id] || id;
-						b.addEventListener("click", () => note("commands", "meta-bind-button:" + id));
-						wrap.appendChild(b);
-					}
-					parent.appendChild(wrap);
-				} else {
-					const c = doc.createElement("code");
-					c.textContent = code;
-					parent.appendChild(c);
-				}
+				const c = doc.createElement("code");
+				c.textContent = m[3].trim();
+				parent.appendChild(c);
 			} else if (m[5] !== undefined) {
 				const [targetRaw, ...aliasParts] = m[5].split("|");
 				const target = targetRaw.replace(/\\$/, "");
@@ -999,7 +982,7 @@
 			return t[k];
 		}
 	});
-	window.Notice = Notice; // Obsidian exposes it globally too (the top bar and task panel use globalThis.Notice)
+	window.Notice = Notice; // Obsidian exposes it globally too
 	H.obsidian = obsidian;
 	H.mock = { createApp, parseMetadata, parseYaml, stringifyYaml, getAllTags, renderBlocks, TFile, TFolder, Component, Events };
 })();

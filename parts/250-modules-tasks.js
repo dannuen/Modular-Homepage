@@ -5,6 +5,8 @@ var def9 = /* @__PURE__ */ (() => {
     about: "To-dos and events from the daily notes' Tasks section, with the active sermons' dates",
     width: 12,
     variants: [],
+    lines: { parseTask, moved, rebuilt, toggled, findLine, blockEnd, intoSection },
+    // for the harness's line checks
     async render(body2, { ui, renderTasks: renderTasks2, skin, store, data, time }) {
       ui.section(body2, "Tasks");
       const slot = ui.el(body2, "div", "m-tasks hp-grow");

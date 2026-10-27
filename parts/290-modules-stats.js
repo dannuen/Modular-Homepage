@@ -38,7 +38,7 @@ var def13 = /* @__PURE__ */ (() => {
         [all.length, "sermons written"],
         [past.length, "times preached"],
         [past.filter((e) => e.date.year === today.year).length, "preached in " + today.year],
-        [new Set(past.map(firstChurch)).size, "churches & groups"]
+        [new Set(past.map((e) => data.churchesOf(e.page)[0]).filter(Boolean)).size, "churches & groups"]
       ]) {
         const s2 = el(big, "div", "m-stats-num");
         el(s2, "b", "hp-num", ui.fmtNum(n2));
@@ -137,15 +137,16 @@ var def13 = /* @__PURE__ */ (() => {
         if (rest) keep.push(["Other places", rest]);
         barsTile("Where you preach", "Past preaching dates", keep.map(([k, n2]) => [k, n2, k + "\n" + ui.plural(n2, "preaching date", "preaching dates")]), 6);
         const bookFromPath = (path) => path.split("/").slice(-2, -1)[0].replace(/^\d+\s*/, "");
+        // The chapter is cut at the first number after the name, so "1 Cô-rinh-tô 13:4" keeps its 1 and "Giăng3:16" gives Giăng.
         const bookOf = (p) => {
           const v = Array.isArray(p.bible) ? p.bible[0] : p.bible;
           if (!v) return "";
           if (typeof v === "object" && typeof v.path === "string") {
             const file = app.metadataCache.getFirstLinkpathDest(v.path, p.file.path);
             if (file && file.path.startsWith(config.bibleFolder + "/")) return bookFromPath(file.path);
-            return String(v.display || "").replace(/\s*\d.*$/, "").trim();
+            return String(v.display || "").replace(/(\D)\s*\d.*$/, "$1").trim();
           }
-          return String(v).replace(/\[\[[^|\]]*\|?/, "").replace(/\s*\d.*$/, "").trim();
+          return String(v).replace(/\[\[[^|\]]*\|?/, "").replace(/(\D)\s*\d.*$/, "$1").trim();
         };
         const byBook = /* @__PURE__ */ new Map();
         for (const p of all) {

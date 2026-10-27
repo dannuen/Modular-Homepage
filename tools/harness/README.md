@@ -4,7 +4,7 @@ Runs the **real** plugin bundle (`main.js`, CommonJS with `require("obsidian")`)
 Obsidian. A mock of the Obsidian API stands in for Obsidian, and a made-up vault supplies the notes. The harness
 renders `Homepage.md` in Reading view the way Obsidian does, then writes screenshots and a DOM report.
 
-Note: `fixtures/` (copies of the author's `data.json`, `manifest.json` and a real Church Roster export) is not in this repository. Put a `data.json` in the plugin's format and a roster export there before running.
+Note: `fixtures/` (copies of the author's `data.json`, `manifest.json` and a real Church Roster export) is not in this repository. Put a `data.json` in the plugin's format, a `manifest.json`, and a roster export named `Lịch HDCT Quý 4 - 2026.md` (with `## LỄ 1` and `## LỄ 2` tables whose rows start `| **dd/mm** |` as Church Roster writes them, at least 12 rows under LỄ 1 and one under LỄ 2; `fixture.js` builds the Q3 roster note from it) there before running. The folder is in `.gitignore`: never commit it.
 
 Requirements: Node 22 and Playwright 1.56 with Chromium. Both are already installed here
 (`PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers`), so do not run `playwright install`. Nothing else needs installing,
@@ -149,8 +149,7 @@ follow "Homepage Function Context.md".
 - **Projects**: 3 active and 2 inactive.
   - Each has `Home.md` (`document_type: project-dashboard`), `Tasks.md` (overdue, due, nested and cancelled tasks),
     `Meetings/` and `Notes/`.
-  - Meeting notes use an ISO `date_created` (`2026-09-05`), so "Project numbers" has data. The Linter's
-    `2026-09-05 09:00 AM` format is not parsed by that module's `toDate` (see the baseline notes).
+  - Meeting notes use an ISO `date_created` (`2026-09-05`); sermons use the Linter's `2026-09-05 09:00 AM`. Both parse.
 - **Daily notes** (`Daily Notes/YYYY/MM-Month/YYYY-MM-DD.md`): `## Tasks` holds to-dos, sub-tasks, events with
   `[time::]`/`[duration::]`, tags, ⏫, 🛫/📅/✅, and cancelled tasks.
 - **Countdowns**: `#countdown` lines, one of them already past.
@@ -184,8 +183,6 @@ follow "Homepage Function Context.md".
   - Paragraphs, headings, lists and task lists, tables, and code.
   - Inline formatting, `[[links]]` (`a.internal-link` with `data-href`, unresolved links marked), image embeds
     (`span.internal-embed.image-embed > img`), tags, and external links.
-  - Meta Bind's inline `` `BUTTON[id]` `` is drawn as `div.mb-button > button.mb-button-inner`, and clicking it is
-    logged.
 - **Workspace:** `onLayoutReady`, `getLeaf().openFile`, and `openLinkText`. Opening a note is logged; nothing
   navigates.
 - **UI classes:** `Notice` (shown and logged), `Modal`, `Menu`, `Setting` with every component, `PluginSettingTab`,
@@ -210,8 +207,6 @@ warning. The baseline asks for none.
   Primary-dannuen's `button:not(button.clickable-icon)` rules and the justify snippet, which the plugin has to
   survive.
   - Fonts are Inter, Noto Color Emoji and DejaVu, not Dan's fonts. Glyph widths, and so line breaks, differ a little.
-  - Meta Bind's own stylesheet is not loaded. The Shortcuts buttons look the way the plugin's
-    `.hp-home button {all: unset}` + `--btn-pad: 0` leave them: plain text.
 - **Markdown and YAML:** the renderer covers a subset (no callouts, math, footnotes, Dataview, or embeds other than
   images). The frontmatter parser is a YAML subset: block lists, flow lists, quoted strings, numbers and booleans.
   Like Obsidian, it keeps dates as strings.

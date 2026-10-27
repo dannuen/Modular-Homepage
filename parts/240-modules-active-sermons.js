@@ -344,7 +344,7 @@ var def8 = (() => {
     }
   };
   async function upNext(body2, ctx, active) {
-    const { ui, time, data, act, config, variant, store, self, page, life, app } = ctx;
+    const { ui, time, data, act, config, variant, store, self, life, app } = ctx;
     const { el } = ui;
     ui.section(body2, "Up next");
     const sec = el(body2, "div", "m-up hp-card hp-grow");
@@ -391,8 +391,7 @@ var def8 = (() => {
         fade: data.clampPct(self?.upnext_fade, UP_DEFAULT.fade),
         motion: onOff(self?.upnext_motion, UP_DEFAULT.motion),
         effectOn: onOff(self?.upnext_effect_on, UP_DEFAULT.effectOn),
-        effect: IMAGE_EFFECTS.some(([k]) => k === fx) ? fx : UP_DEFAULT.effect,
-        page: page.read()
+        effect: IMAGE_EFFECTS.some(([k]) => k === fx) ? fx : UP_DEFAULT.effect
       };
     };
     let cfg = read();
@@ -401,18 +400,6 @@ var def8 = (() => {
       sync();
     });
     const shows = [];
-    if (page.enabled) {
-      const ctl = set.row("Page colour");
-      shows.push(set.chips(ctl, [["theme", "Theme", "Obsidian's own background"], ["accent", "Accent", "A soft tint of the accent colour"]], () => cfg.page, (v) => {
-        cfg.page = v;
-        sync();
-      }));
-      const show = set.color(ctl, "Pick a page colour", page.themeHex(), (v) => {
-        cfg.page = v;
-        sync();
-      });
-      shows.push(() => show(cfg.page));
-    }
     const onOffRow = (label, key, hint) => shows.push(set.chips(set.row(label, hint), [[true, "On", label + ": on"], [false, "Off", label + ": off"]], () => cfg[key], (v) => {
       cfg[key] = v;
       sync();
@@ -441,11 +428,10 @@ var def8 = (() => {
     }, filter)]);
     onOffRow("Animation", "motion", "Carousel slide, cards rising in, glow and the gliding highlight");
     set.actions(() => {
-      cfg = { ...UP_DEFAULT, page: "theme" };
+      cfg = { ...UP_DEFAULT };
       sync();
     }, async () => {
       const fields = { upnext_reveal: cfg.reveal, upnext_color: cfg.color, upnext_fade: cfg.fade, upnext_motion: cfg.motion, upnext_effect_on: cfg.effectOn, upnext_effect: cfg.effect };
-      if (page.enabled) fields.page_color = cfg.page;
       if (await act.saveProps(fields, "Up next settings")) set.close(false);
     });
     const revealOf = (c) => !cfg.reveal ? 1 : c.pct === null ? 0.3 : Math.max(0, Math.min(1, c.pct / 100));
@@ -460,7 +446,6 @@ var def8 = (() => {
       sec.style.setProperty("--m-up-fade", String(cfg.fade / 100));
       sec.style.setProperty("--m-up-filter", cfg.effectOn ? (IMAGE_EFFECTS.find(([k]) => k === cfg.effect) || IMAGE_EFFECTS[0])[2] : "none");
       sec.classList.toggle("is-still", !cfg.motion);
-      if (page.enabled) page.apply(cfg.page);
       for (const card of sec.querySelectorAll("[data-reveal]")) card.style.setProperty("--m-reveal", String(revealOf(cards[Number(card.dataset.reveal)])));
       fxGrid.classList.toggle("is-off", !cfg.effectOn);
       for (const [key, t] of fxTiles) t.classList.toggle("is-on", cfg.effectOn && key === cfg.effect);
@@ -579,7 +564,7 @@ var def8 = (() => {
       const foot = el(wrap, "div", "m-up-c1-foot");
       ui.button(foot, "hp-btn m-up-ink", "", "Explore all sermons", "Open the sermon archive", () => act.openNote(config.sermonArchive, false));
       function draw(dir = 0) {
-        const i = Math.min(store.index ?? 0, cards.length - 1), c = cards[i];
+        const i = store.index = Math.min(store.index ?? 0, cards.length - 1), c = cards[i];
         stage.replaceChildren();
         dots.replaceChildren();
         if (cards.length > 1) {
