@@ -53,7 +53,9 @@ await H.app.vault.process(H.file(day), (t) => t.replace("## Tasks\n", "## Tasks\
 await H.settleAfterAction();
 await press(first, "ArrowUp", "Trực đêm");
 expect("late event after ArrowUp", H.text(day).split("\n").find((l) => l.includes("Trực đêm")), "- Trực đêm [time:: 22:45] [duration:: 2h] 📅 2026-10-14");
-H.click(H.$$("button", first).find((b) => b.textContent === "#📬"));
+const tagPick = H.$(".hp-tk-tagsel", first); // more than 3 tags: the filter is a select
+tagPick.value = "📬";
+tagPick.dispatchEvent(new Event("change"));
 await H.settleAfterAction();
 await press(first, "Enter", "Gọi anh Phúc", ".hp-tk-tray-item");
 expect("time planned by Enter with #📬 on (10:00 is taken)", line().match(/\[time:: ([^\]]*)\]/u)?.[1], "11:00");

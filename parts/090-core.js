@@ -679,7 +679,7 @@ function makeCore(env) {
     page,
     time: { DateTime, today, todayNow, toDate, parseTime, timeText, entriesFor, daysUntil, nowMinutes, relLabel, urgency, inLabel, greeting, dailyPath, minutesOf, PERIODS },
     act: { present, openNote, openDaily, newFrom, setActive, saveProps },
-    data: { isActive, sermons, entries, upcoming, past, active, projects, churchesOf, photoOf, images, preparation, clampPct, isDark, EMOJI: EMOJI2, norm }
+    data: { isActive, sermons, entries, upcoming, past, active, projects, churchesOf, photoOf, images, preparation, countWords, clampPct, isDark, EMOJI: EMOJI2, norm }
   };
 }
 
