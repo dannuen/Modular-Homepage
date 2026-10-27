@@ -999,7 +999,7 @@
 			return t[k];
 		}
 	});
-	window.Notice = Notice; // Obsidian exposes it globally too (the top bar and task panel use globalThis.Notice)
+	window.Notice = Notice; // Obsidian exposes it globally too
 	H.obsidian = obsidian;
 	H.mock = { createApp, parseMetadata, parseYaml, stringifyYaml, getAllTags, renderBlocks, TFile, TFolder, Component, Events };
 })();

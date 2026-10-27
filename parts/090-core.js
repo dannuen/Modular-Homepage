@@ -6,14 +6,12 @@ var ICONS = {
   left: '<path d="m15 18-6-6 6-6"/>',
   right: '<path d="m9 18 6-6-6-6"/>',
   down: '<path d="m6 9 6 6 6-6"/>',
-  up: '<path d="m18 15-6-6-6 6"/>',
   chevron: '<path d="m9 18 6-6-6-6"/>',
   book: '<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>',
   church: '<path d="M10 9h4"/><path d="M12 7v5"/><path d="M14 22v-4a2 2 0 0 0-4 0v4"/><path d="M18 22V5.618a1 1 0 0 0-.553-.894l-4.553-2.277a2 2 0 0 0-1.788 0L6.553 4.724A1 1 0 0 0 6 5.618V22"/><path d="m18 7 3.447 1.724a1 1 0 0 1 .553.894V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-10.382a1 1 0 0 1 .553-.894L6 7"/>',
   calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/>',
   clock: '<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
   note: '<path d="M16 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8Z"/><path d="M15 3v4a2 2 0 0 0 2 2h4"/>',
-  folder: '<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z"/>',
   sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>',
   sunset: '<path d="M12 10V2"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m16 6-4 4-4-4"/><path d="M16 18a4 4 0 0 0-8 0"/>',
   moon: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>',
@@ -31,7 +29,14 @@ var ICONS = {
   star: '<path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/>',
   sliders: '<path d="M21 4h-7"/><path d="M10 4H3"/><path d="M21 12h-9"/><path d="M8 12H3"/><path d="M21 20h-5"/><path d="M12 20H3"/><path d="M14 2v4"/><path d="M8 10v4"/><path d="M16 18v4"/>',
   burst: '<path d="M15.00 12.00L23.00 12.00M14.85 12.93L22.46 15.40M14.43 13.76L20.90 18.47M13.76 14.43L18.47 20.90M12.93 14.85L15.40 22.46M12.00 15.00L12.00 23.00M11.07 14.85L8.60 22.46M10.24 14.43L5.53 20.90M9.57 13.76L3.10 18.47M9.15 12.93L1.54 15.40M9.00 12.00L1.00 12.00M9.15 11.07L1.54 8.60M9.57 10.24L3.10 5.53M10.24 9.57L5.53 3.10M11.07 9.15L8.60 1.54M12.00 9.00L12.00 1.00M12.93 9.15L15.40 1.54M13.76 9.57L18.47 3.10M14.43 10.24L20.90 5.53M14.85 11.07L22.46 8.60"/>',
-  lighthouse: '<path d="m9 5 3-2.5L15 5"/><rect x="9" y="5" width="6" height="4" rx="0.5"/><path d="M9.6 9 8.2 21h7.6L14.4 9"/><path d="M8.9 15h6.2"/><path d="M5 21h14"/><path d="M6 6 3 5"/><path d="M6 8 3 9"/><path d="m18 6 3-1"/><path d="m18 8 3 1"/>'
+  lighthouse: '<path d="m9 5 3-2.5L15 5"/><rect x="9" y="5" width="6" height="4" rx="0.5"/><path d="M9.6 9 8.2 21h7.6L14.4 9"/><path d="M8.9 15h6.2"/><path d="M5 21h14"/><path d="M6 6 3 5"/><path d="M6 8 3 9"/><path d="m18 6 3-1"/><path d="m18 8 3 1"/>',
+  start: '<path d="M3 5v14"/><path d="M21 12H7"/><path d="m15 18 6-6-6-6"/>',
+  timer: '<path d="M10 2h4"/><path d="m12 14 3-3"/><circle cx="12" cy="14" r="8"/>',
+  hash: '<path d="M4 9h16"/><path d="M4 15h16"/><path d="M10 3 8 21"/><path d="m16 3-2 18"/>',
+  undo: '<path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/>',
+  list: '<path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/>',
+  todo: '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="m9 12 2 2 4-4"/>',
+  event: '<path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h5"/><path d="M17.5 17.5 16 16.3V14"/><circle cx="16" cy="16" r="6"/>'
 };
 var svgOf = (name, w = 2) => '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="' + w + '" stroke-linecap="round" stroke-linejoin="round">' + (ICONS[name] || "") + "</svg>";
 var DATE_FORMAT = "MMMM dd, yyyy";
@@ -69,6 +74,14 @@ async function renderValue(app, value, container, sourcePath, component, context
     }
   } else container.appendText(String(value));
 }
+// render(parent, md, cls) tied to one component, so the markdown it draws is released with it (core and the top bar).
+var renderWith = (app, doc, sourcePath, component) => (parent, md, cls = "hp-value") => {
+  const node = doc.createElement("span");
+  node.classList.add(...cls.split(/\s+/).filter(Boolean));
+  renderValue(app, md, node, sourcePath, component).catch((err) => console.error("Modular Homepage: could not draw a value", err));
+  if (parent) parent.append(node);
+  return node;
+};
 function makeCore(env) {
   const { app, vault } = env;
   const doc = env.doc;
@@ -106,13 +119,6 @@ function makeCore(env) {
     if (onClick) b.addEventListener("click", onClick);
     return b;
   }
-  const renderWith = (component) => (parent, md, cls = "hp-value") => {
-    const node = doc.createElement("span");
-    node.classList.add(...cls.split(/\s+/).filter(Boolean));
-    renderValue(app, md, node, env.sourcePath, component).catch((err) => console.error("Modular Homepage: could not draw a value", err));
-    if (parent) parent.append(node);
-    return node;
-  };
   const linkWith = (render2) => (parent, target, label, cls = "hp-link") => render2(parent, Link.file(target, false, label), cls);
   function heading(parent, level, cls, text) {
     const h = el(parent, "div", cls, text);
@@ -684,17 +690,17 @@ function makeCore(env) {
       links: PROJECT_LINKS.map(([suffix, label]) => [folder + "/" + suffix, label]).filter(([path]) => present(path))
     };
   })));
-  const ui = { el, svg, svgOf, icon, button, heading, section, bar, textOf, asLink, toggle, meter, ring, mesh, cover, tip, avatar, settings, fmtNum, plural, ICONS };
+  const ui = { el, svg, icon, button, heading, section, bar, textOf, asLink, toggle, meter, ring, mesh, cover, tip, avatar, settings, fmtNum, plural };
   return {
     // The ui with render() and link() tied to one module's life, so its markdown is released with it.
     uiFor(component) {
-      const render2 = renderWith(component);
+      const render2 = renderWith(app, doc, env.sourcePath, component);
       return { ...ui, render: render2, link: linkWith(render2) };
     },
     page,
-    time: { DateTime, today, todayNow, toDate, parseTime, timeText, entriesFor, sortKey, byTime, daysUntil, nowMinutes, relLabel, urgency, inLabel, greeting, dailyFolder, dailyPath, minutesOf, PERIODS },
-    act: { notify, present, openNote, openDaily, newFrom, setActive, createFromTemplate, saveProps },
-    data: { isActive, sermons, entries, upcoming, past, active, projects, churchesOf, photoOf, images, analyse, countWords, preparation, clampPct, isDark, hexOf, EMOJI: EMOJI2, norm }
+    time: { DateTime, today, todayNow, toDate, parseTime, timeText, entriesFor, daysUntil, nowMinutes, relLabel, urgency, inLabel, greeting, dailyPath, minutesOf, PERIODS },
+    act: { present, openNote, openDaily, newFrom, setActive, saveProps },
+    data: { isActive, sermons, entries, upcoming, past, active, projects, churchesOf, photoOf, images, preparation, clampPct, isDark, EMOJI: EMOJI2, norm }
   };
 }
 
