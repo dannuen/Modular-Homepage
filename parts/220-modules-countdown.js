@@ -54,7 +54,7 @@ var def6 = /* @__PURE__ */ (() => {
     lineOf: lineOf2,
     // for the harness
     async render(body2, ctx) {
-      const { ui, time, act, data, variant, life, store, settings, app, vault, seen, setVariant } = ctx;
+      const { ui, time, act, data, variant, life, store, app, vault, seen, setVariant } = ctx;
       const { el } = ui;
       const { DateTime: DateTime2 } = time;
       const doc = body2.ownerDocument, win = doc.defaultView || window;
@@ -613,7 +613,7 @@ var def6 = /* @__PURE__ */ (() => {
       }
       function draw() {
         targets = collect(DateTime2.now());
-        const want = store.target ?? readSaved() ?? settings?.target;
+        const want = store.target ?? readSaved();
         target = targets.find((x) => x.id === want || x.label === want) || targets[0] || null;
         drawDates();
         if (!target) {
