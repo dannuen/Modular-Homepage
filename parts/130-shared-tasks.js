@@ -12,10 +12,10 @@ async function renderTasks(env, input) {
   const app = env.app;
   const doc = env.container.ownerDocument;
   const win = doc.defaultView;
-  const SKIN2 = { card: "hp-tk-card-base", panel: "hp-tk-panel-base", pill: "hp-tk-pill-base", knob: "hp-tk-knob-base", mint: "hp-tk-mint-base", kicker: "hp-tk-kicker-base", track: "hp-tk-track-base", ...options.skin || {} };
+  const SKIN2 = options.skin;
   const emptyDraft = (kind = "todo") => ({ kind, text: "", due: null, start: null, sched: null, at: null, minutes: null, tags: [] });
   const isEvent = (x) => x?.kind === "event";
-  const store = options.state ?? (win.__homeTasks ??= {});
+  const store = options.state;
   store.draft ??= emptyDraft();
   const ICONS2 = {
     calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/>',
@@ -72,7 +72,7 @@ async function renderTasks(env, input) {
     else console.warn("Tasks:", message);
   }
   const dayNow = () => DateTime.now().startOf("day");
-  let today = dayNow();
+  const today = dayNow();
   const iso = (d) => d.toFormat("yyyy-MM-dd");
   const fromIso = (s2) => {
     const d = DateTime.fromISO(String(s2 || ""));
@@ -131,7 +131,7 @@ async function renderTasks(env, input) {
   }
   function lengthOf(input2, at) {
     const s2 = String(input2 ?? "").trim();
-    const end = s2.match(/^(?:[-–—]|to|until|till|đến|tới)\s*(.+)$/iu);
+    const end = s2.match(/^(?:[-–—]|to|until|till|ends?|đến|tới)\s*(.+)$/iu);
     if (!end && !s2.includes(":")) return parseMinutes(s2);
     const e = parseClock(end ? end[1] : s2);
     return e === null || at === null || at === void 0 || e <= at ? null : e - at;
@@ -171,7 +171,7 @@ async function renderTasks(env, input) {
     const items = dailyLists[k];
     const mine = [], todoLines = /* @__PURE__ */ new Set(), children = /* @__PURE__ */ new Map();
     for (const t of items) {
-      const parsed = t.task ? parseTask(t.text) : null;
+      const parsed = t.task ? (t.parsed ??= parseTask(t.text)) : null; // items are cached per note version, so their parse is too
       if (parsed) useTags(parsed);
       if (String(t.section?.subpath ?? "").trim().toLowerCase() !== SECTION2.toLowerCase()) continue;
       mine.push({ item: t, parsed });
@@ -187,7 +187,7 @@ async function renderTasks(env, input) {
       const raw = String(t.text).split("\n")[0], where = { raw, path: page.file.path, line: t.line, day };
       if (!t.task) {
         if (t.parent !== void 0 && t.parent !== null) continue;
-        const e = parseTask(raw);
+        const e = t.parsed ??= parseTask(raw);
         if (e.due) {
           tasks.push({ ...e, ...where, kind: "event", closed: false, kids: 0, kidsDone: 0 });
           useTags(e);
@@ -1202,7 +1202,7 @@ async function renderTasks(env, input) {
       it.addEventListener("keydown", (e) => {
         if (!isMounted() || !it.isConnected || e.key !== "Enter") return;
         e.preventDefault();
-        planNext(t, items);
+        planNext(t);
       });
     }
     const cal = el(layout, "div", cls("hp-tk-wcal", SKIN2.panel));
@@ -1295,12 +1295,13 @@ async function renderTasks(env, input) {
     }
     if (e.key === "ArrowUp" || e.key === "ArrowDown") {
       const step = e.key === "ArrowUp" ? -SNAP : SNAP;
+      const end = Math.max(24 * 60, t.at + len); // a block already past midnight may still move or shrink back
       if (e.shiftKey) {
         const m = len + step;
-        if (m >= SNAP && t.at + m <= 24 * 60) change = { minutes: m };
+        if (m >= SNAP && t.at + m <= end) change = { minutes: m };
       } else {
         const at = t.at + step;
-        if (at >= 0 && at + len <= 24 * 60) change = { at };
+        if (at >= 0 && at + len <= end) change = { at };
       }
     } else if (e.key === "ArrowLeft" || e.key === "ArrowRight") change = dayChange(t, blockDay(t).plus({ days: e.key === "ArrowLeft" ? -1 : 1 }));
     else if ((e.key === "Delete" || e.key === "Backspace") && !isEvent(t)) change = { sched: null, at: null };
@@ -1308,9 +1309,9 @@ async function renderTasks(env, input) {
     e.preventDefault();
     reschedule(t, change, blockKey(t));
   }
-  function planNext(t, items) {
+  function planNext(t) {
     const len = blockLen(t);
-    const taken = items.filter((x) => x !== t && timed(x) && sameDay(blockDay(x), today)).map((x) => [x.at, x.at + blockLen(x)]);
+    const taken = tasks.filter((x) => x !== t && !x.hidden && timed(x) && sameDay(blockDay(x), today)).map((x) => [x.at, x.at + blockLen(x)]);
     let at = Math.max(DAY_START, Math.ceil(minutesNow() / SNAP) * SNAP);
     for (let moved = true; moved; ) {
       moved = false;
@@ -1450,11 +1451,7 @@ async function renderTasks(env, input) {
     }
     if (drag) return;
     placeNow();
-    const now2 = dayNow();
-    if (!now2.hasSame(today, "day")) {
-      today = now2;
-      draw();
-    } else if (tasks.filter(ended).length !== endedCount) draw();
+    if (tasks.filter(ended).length !== endedCount) draw();
   }, 6e4);
 }
 

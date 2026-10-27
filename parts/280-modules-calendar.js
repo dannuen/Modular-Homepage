@@ -37,7 +37,6 @@ var def12 = /* @__PURE__ */ (() => {
       for (const d of byDay.values()) d.events.sort((a, b) => (a.at?.minutes ?? -1) - (b.at?.minutes ?? -1));
       ui.section(body2, isWeek ? "This week" : "Calendar", isPlanner ? "Click a date to open or create its daily note" : "");
       const fmt2 = (d, f) => d.setLocale("en").toFormat(f);
-      const label = (d) => isWeek ? fmt2(d, "d LLL") + " – " + fmt2(d, "d LLL") : fmt2(d, "LLLL yyyy");
       const card = el(body2, "div", "m-cal hp-card hp-grow is-" + variant);
       const bar = ui.bar(card), aside = bar.tools;
       const caption = bar.label;
@@ -106,7 +105,7 @@ var def12 = /* @__PURE__ */ (() => {
           return;
         }
         const first = today.startOf("month").plus({ months: off });
-        caption.textContent = label(first);
+        caption.textContent = fmt2(first, "LLLL yyyy");
         if (isPlanner) {
           const end2 = first.endOf("month").endOf("week").startOf("day");
           for (let d = first.startOf("week"); d <= end2; d = d.plus({ days: 1 })) {
