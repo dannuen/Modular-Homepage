@@ -22,7 +22,7 @@ var def11 = /* @__PURE__ */ (() => {
       for (const t of open.slice(0, COUNT)) {
         const row = el(list2, "div", "m-actions-row hp-panel");
         const copy = el(row, "div", "m-actions-copy");
-        ui.link(copy, t.p.taskPath, t.text);
+        ui.link(copy, t.path, t.text);
         el(copy, "div", "m-actions-meta", t.p.name);
         if (t.due) {
           const n2 = time.daysUntil(t.due);

@@ -77,7 +77,7 @@ A module switched off in the settings is left out of every page and of **Arrange
 - **Projects** are folders whose `Home.md` has `document_type: project-dashboard`, with a `Tasks.md` and a `Meetings/` folder.
 - **Daily notes** live in `Daily Notes/yyyy/MM-MMMM/yyyy-MM-dd.md`. The Tasks module reads and writes their `## Tasks` section:
   - a to-do: `- [ ] Write intro #sermon 📅 2026-10-18`
-  - an event: `- [ ] Elders meeting [time:: 19:00] [duration:: 1h] 📅 2026-10-20`
+  - an event (no checkbox): `- Elders meeting [time:: 19:00] [duration:: 1h] 📅 2026-10-20`
 - **Countdown** dates come only from note lines like `- Christmas #countdown [[2026-12-24]]`. There are no presets.
 - **Sunday roster** reads the Church Roster plugin's quarterly exports from the roster folder (one note per quarter). The Table look shows the week the way the note does: a table per service, a column per role and a row per day, leaving out roles nobody fills that week; in a narrow slot each role gets its own line. Names set in **Your names on the roster** are marked as yours.
 - **Banner** reads the `banner` property of the home note, for example `![[photo.jpg]]`. The ⚙ button on the banner sets the photo, page colour and fade (`banner_fade_color`, `banner_fade_strength`, `banner_fade_reach`).
@@ -121,7 +121,7 @@ node build.mjs --out main.js      # writes elsewhere
 node build.mjs --check main.js    # also compares with an existing build
 ```
 
-`tools/harness` runs the real bundle in headless Chromium against a made-up vault and writes screenshots and a DOM report for every theme, light and dark, at desktop and phone widths (see its README). `tools/checks` tests the button rows.
+`tools/harness` runs the real bundle in headless Chromium against a made-up vault and writes screenshots and a DOM report for every theme, light and dark, at desktop and phone widths (see its README). `tools/checks` tests the button rows, and `writes.js` tests what the homepage writes to notes and `data.json`.
 
 Read [GUIDELINES.md](GUIDELINES.md) before changing a module. It sets the card rules (one card per module, buttons in the top-right corner, spacing from theme tokens), the check to run, and how to install a fix safely.
 

@@ -91,7 +91,7 @@ var def10 = /* @__PURE__ */ (() => {
           el(prog, "span", "", p.total ? p.done + " of " + p.total + " actions done" : "No tracked actions yet");
           const step = el(card, "div", "m-proj-step");
           el(step, "span", "hp-label", "Next step");
-          if (ctx.act.present(p.taskPath)) ui.link(step, p.taskPath, p.open[0]?.text || (p.total ? "All tracked actions complete. Plan what comes next →" : "Give this project its first action →"));
+          if (p.open[0] || ctx.act.present(p.taskPath)) ui.link(step, p.open[0]?.path ?? p.taskPath, p.open[0]?.text || (p.total ? "All tracked actions complete. Plan what comes next →" : "Give this project its first action →"));
           else ui.link(step, p.page.file.path, "Open the project to plan its next step →");
           if (recent?.length) {
             const box2 = el(card, "div", "m-proj-recent");
