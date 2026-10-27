@@ -37,6 +37,7 @@ var ModularHomepage = class extends import_obsidian10.Plugin {
       for (const b of this.blocks) b.redraw();
     }));
     this.app.workspace.onLayoutReady(() => {
+      pomodoroFor(this.app); // the timer ends a phase and chimes even when no homepage is open
       const other = (f) => !(f instanceof import_obsidian10.TFile) || f.extension !== "md";
       this.registerEvent(this.app.vault.on("rename", (file, oldPath) => {
         this.noteChanged(oldPath);

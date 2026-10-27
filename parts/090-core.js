@@ -326,6 +326,7 @@ function makeCore(env) {
       else if (typeof field === "string") {
         const wiki = field.match(/^\[\[([^|\]]+)(?:\|[^\]]*)?\]\]$/);
         if (wiki) input = wiki[1].split("/").pop().replace(/\.md$/i, "");
+        else if (/^\d{4}-\d{2}-\d{2}\s/.test(field)) input = field.slice(0, 10); // the Linter's "2026-10-02 09:00 AM"
       }
       const parsed = DateTime.isDateTime(input) ? input : toDateTime(input);
       return parsed && parsed.isValid ? parsed.toLocal().startOf("day") : null;

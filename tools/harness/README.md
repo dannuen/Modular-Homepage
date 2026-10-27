@@ -149,8 +149,7 @@ follow "Homepage Function Context.md".
 - **Projects**: 3 active and 2 inactive.
   - Each has `Home.md` (`document_type: project-dashboard`), `Tasks.md` (overdue, due, nested and cancelled tasks),
     `Meetings/` and `Notes/`.
-  - Meeting notes use an ISO `date_created` (`2026-09-05`), so "Project numbers" has data. The Linter's
-    `2026-09-05 09:00 AM` format is not parsed by that module's `toDate` (see the baseline notes).
+  - Meeting notes use an ISO `date_created` (`2026-09-05`); sermons use the Linter's `2026-09-05 09:00 AM`. Both parse.
 - **Daily notes** (`Daily Notes/YYYY/MM-Month/YYYY-MM-DD.md`): `## Tasks` holds to-dos, sub-tasks, events with
   `[time::]`/`[duration::]`, tags, ⏫, 🛫/📅/✅, and cancelled tasks.
 - **Countdowns**: `#countdown` lines, one of them already past.
