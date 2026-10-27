@@ -76,4 +76,9 @@ expect("layout name after Enter", layoutName(), "Renamed");
 await rename("Escape", "Not saved");
 expect("layout name after Escape", layoutName(), "Renamed");
 expect("prompts left open", H.$$(".modal-container").length, 0);
+
+// A ⚙ panel's Save overwrites a hand-typed capitalised property instead of adding a second, lower-case one.
+await H.app.vault.process(H.file(H.homePath), (t) => t.replace(/^---\n/, "---\nCheck_Key: 10\n"));
+await [...H.plugin.blocks][0].draw.core.act.saveProps({ check_key: 40 }, "Check");
+expect("home note keys after a save", H.text(H.homePath).match(/^check_key:.*$/gim)?.join(), "Check_Key: 40");
 return "ok";
