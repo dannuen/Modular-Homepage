@@ -58,3 +58,7 @@
 .hp-home[data-theme="aurora"] .hp-tk-wrap { --tk-glow-today: hsl(var(--accent-h) 85% 62% / 0.16); --tk-glow-late: color-mix(in srgb, var(--text-error) 14%, transparent); --tk-late-edge: color-mix(in srgb, var(--text-error) 30%, var(--hm-line)); }
 .hp-home[data-theme="aurora"] .hp-tk-wrap .hp-tk-toast { -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
 
+
+/* Contrast: Obsidian's accent is ~3.8:1 under white text and as small text, so fills and accent text go a step darker. */
+.hp-home[data-theme="aurora"], .hp-tb-box:has(~ .hp-home[data-theme="aurora"]) { --interactive-accent: color-mix(in srgb, var(--color-accent) 80%, black); }
+body:not(.theme-dark) :is(.hp-home[data-theme="aurora"], .hp-tb-box:has(~ .hp-home[data-theme="aurora"])) { --text-accent: color-mix(in srgb, var(--color-accent) 72%, black); --link-color: var(--text-accent); --hm-accent-ink: var(--text-accent); }

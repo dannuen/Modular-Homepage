@@ -83,7 +83,7 @@
 	all: unset; box-sizing: border-box; flex: 1 1 auto; min-width: 0; height: 40px; font: inherit; font-weight: 600; color: var(--tk-text);
 }
 .hp-tk-wrap input.hp-tk-input::placeholder { color: var(--tk-muted); opacity: 1; }
-.hp-tk-wrap input.hp-tk-input:focus { box-shadow: none; outline: none; }
+.hp-tk-wrap input.hp-tk-input:focus { box-shadow: none; }
 .hp-tk-wrap .hp-tk-opts { display: flex; gap: 4px; flex: none; }
 .hp-tk-wrap .hp-tk-opt { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; --btn-pad: 0 12px; padding: var(--btn-pad); border-radius: 999px; font-size: 0.88em; font-weight: 650; color: var(--tk-muted); white-space: nowrap; transition: background 0.15s ease, color 0.15s ease; }
 .hp-tk-wrap .hp-tk-opt:hover, .hp-tk-wrap .hp-tk-opt.is-active { background: var(--tk-hover); box-shadow: inset 0 0 0 1px var(--tk-line); color: var(--tk-text); }

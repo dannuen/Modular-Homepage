@@ -7,6 +7,6 @@
 .hp-home .m-actions-meta { margin-top: 2px; font-size: 0.84em; color: var(--hm-muted); }
 .hp-home .m-actions-more { grid-column: 1 / -1; }
 .hp-home .m-actions-badge { flex: none; padding: 3px 10px; border-radius: 999px; font-size: 0.78em; font-weight: 700; white-space: nowrap; color: var(--hm-muted); background: var(--hm-track); }
-.hp-home .m-actions-badge.is-warning { color: var(--hm-soon); background: color-mix(in srgb, var(--hm-soon) 14%, transparent); }
+.hp-home .m-actions-badge.is-warning { color: color-mix(in srgb, var(--hm-soon) 60%, var(--hm-text)); background: color-mix(in srgb, var(--hm-soon) 14%, transparent); }
 @container slot (max-width: 600px) { .hp-home .m-actions-row { flex-wrap: wrap; } }
 

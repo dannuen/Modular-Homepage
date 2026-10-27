@@ -103,3 +103,7 @@
 	.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-group .hp-tk-count { font-size: 2em; }
 }
 
+
+/* Contrast: Obsidian's accent is ~3.8:1 under white text and as small text, so fills and accent text go a step darker. */
+.hp-home[data-theme="pulpit"], .hp-tb-box:has(~ .hp-home[data-theme="pulpit"]) { --interactive-accent: color-mix(in srgb, var(--color-accent) 80%, black); }
+body:not(.theme-dark) :is(.hp-home[data-theme="pulpit"], .hp-tb-box:has(~ .hp-home[data-theme="pulpit"])) { --text-accent: color-mix(in srgb, var(--color-accent) 72%, black); --link-color: var(--text-accent); --hm-accent-ink: var(--text-accent); }

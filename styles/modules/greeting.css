@@ -86,7 +86,7 @@
 .hp-home .m-greet-glow .m-greet-when { background: rgba(255, 248, 232, 0.92); color: #8a3d12; font-weight: 750; }
 .hp-home .m-greet-glow .m-greet-stats { justify-content: center; margin-top: 26px; }
 .hp-home .m-greet-glow .m-greet-stat { color: var(--gl-ink-dark); background: rgba(255, 252, 244, 0.5); border-color: rgba(255, 255, 255, 0.7); backdrop-filter: blur(6px); }
-.hp-home .m-greet-glow .m-greet-stat span { opacity: 0.7; }
+.hp-home .m-greet-glow .m-greet-stat span { opacity: 1; }
 @container slot (max-width: 600px) {
 	.hp-home .m-greet-glow { padding: 36px 20px 24px; min-height: 300px; }
 }

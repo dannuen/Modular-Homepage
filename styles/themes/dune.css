@@ -237,7 +237,7 @@
 .hp-home[data-theme="dune"] .m-pstats-dot.is-track { background: var(--du-faint); }
 .hp-home[data-theme="dune"] .m-pstats-track { stroke: var(--du-faint); }
 /* Titles at the reference's regular weight (500: Regular on static Segoe UI); times and dates a step above. */
-.hp-home[data-theme="dune"] :is(.m-sermons-title, .m-sermons-btitle, .m-proj-title, .m-soon-title, .m-glance-name, .m-pstats-title, .m-dial-svc-title, .m-cal-caption, .m-recent-title, .m-actions-copy a, .m-roster-names, .m-next-ev-mark) { font-weight: 500; }
+.hp-home[data-theme="dune"] :is(.m-sermons-title, .m-sermons-btitle, .m-proj-title, .m-soon-title, .m-glance-name, .m-pstats-title, .m-dial-svc-title, .m-recent-title, .m-actions-copy a, .m-roster-names, .m-next-ev-mark) { font-weight: 500; }
 .hp-home[data-theme="dune"] .hp-tk-wrap .hp-tk-text { font-weight: 500; }
 .hp-home[data-theme="dune"] :is(.m-soon-day, .m-soon-time, .m-sermons-open, .m-actions-badge, .hp-tk-wrap .hp-tk-when) { font-weight: 600; }
 /* The task groups' heads (Overdue, Today), in sentence case above: a touch larger, at the labels' weight. */
