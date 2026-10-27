@@ -1,17 +1,17 @@
 // src/modules/recently-edited.ts
 var def16 = /* @__PURE__ */ (() => {
-  const FOLDERS = ["Notes", "Spaces", "Projects", "Cards", "Daily Notes"];
+  const folders = (config) => ["Notes", "Spaces", config.projectsFolder, "Cards", config.dailyFolder];
   const COUNT = 8;
   return {
     name: "Recently edited",
     about: "The notes you changed last",
     width: 6,
-    folders: FOLDERS,
+    folders,
     variants: [],
-    async render(body2, { ui, vault }) {
+    async render(body2, { ui, vault, config }) {
       const { el } = ui;
       ui.section(body2, "Recently edited");
-      const recent = [...new Map(FOLDERS.flatMap((f) => vault.pages(f)).map((p) => [p.file.path, p])).values()].sort((a, b) => b.file.mtime.toMillis() - a.file.mtime.toMillis()).slice(0, COUNT);
+      const recent = [...new Map(folders(config).flatMap((f) => vault.pages(f)).map((p) => [p.file.path, p])).values()].sort((a, b) => b.file.mtime.toMillis() - a.file.mtime.toMillis()).slice(0, COUNT);
       const list2 = el(body2, "div", "m-recent hp-card hp-grow");
       if (!recent.length) {
         el(list2, "div", "hp-empty", "No notes found.");
@@ -27,6 +27,6 @@ var def16 = /* @__PURE__ */ (() => {
     }
   };
 })();
-def16.watch = (paths) => anyUnder(paths, ...def16.folders);
+def16.watch = (paths, { config }) => anyUnder(paths, ...def16.folders(config));
 var recently_edited_default = def16;
 

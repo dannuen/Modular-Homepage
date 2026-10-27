@@ -3,11 +3,10 @@ var PROPERTY = "home_theme";
 var WIDTHS = [[4, "⅓", "One third"], [6, "½", "Half"], [8, "⅔", "Two thirds"], [12, "Full", "Full width"]];
 var SKIN = { card: "hp-card", panel: "hp-panel", pill: "hp-pill", knob: "hp-knob", mint: "hp-accent", kicker: "hp-kicker", track: "hp-track" };
 var REDRAW_DELAY = 600;
-var plainItems = (list2) => list2.map(({ module: module2, w, variant, settings, themed }) => ({
+var plainItems = (list2) => list2.map(({ module: module2, w, variant, themed }) => ({
   module: module2,
   w,
   variant,
-  ...Object.keys(settings || {}).length ? { settings: { ...settings } } : {},
   ...Object.keys(themed || {}).length ? { themed: { ...themed } } : {}
 }));
 function makeLife(win) {
@@ -218,7 +217,6 @@ var PageDraw = class {
       about: def20.about || "",
       width: def20.width || 12,
       variants: def20.variants || [],
-      settings: def20.settings || {},
       render: def20.render,
       watch: def20.watch
     });
@@ -539,7 +537,7 @@ var PageDraw = class {
       const w = WIDTHS.some(([n2]) => n2 === Number(i.w)) ? Number(i.w) : def20.width;
       const variant = known(i.variant) ? i.variant : def20.variants[0]?.[0] || "";
       const themed = Object.fromEntries(Object.entries(i.themed && typeof i.themed === "object" ? i.themed : {}).filter(([, v]) => known(v)));
-      return { module: i.module, w, variant, settings: i.settings || {}, ...Object.keys(themed).length ? { themed } : {} };
+      return { module: i.module, w, variant, ...Object.keys(themed).length ? { themed } : {} };
     });
   }
   // The variant a module shows in this theme: your pick in this theme, else the theme's own look for the module (Dune's
@@ -616,7 +614,6 @@ var PageDraw = class {
       theme: this.theme.id,
       module: def20.id,
       variant,
-      settings: { ...def20.settings, ...item.settings },
       store: G.state[def20.id] ??= {},
       life,
       root: this.root,
@@ -845,7 +842,7 @@ var PageDraw = class {
       ui.el(b, "b", "", d.name);
       ui.el(b, "small", "", d.about);
       b.addEventListener("click", () => {
-        const item = { module: d.id, w: d.width, variant: d.variants[0]?.[0] || "", settings: {} };
+        const item = { module: d.id, w: d.width, variant: d.variants[0]?.[0] || "" };
         const slot = this.makeSlot(item);
         this.grid.append(slot);
         this.addHandle(slot);

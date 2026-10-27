@@ -38,7 +38,7 @@ var def13 = /* @__PURE__ */ (() => {
         [all.length, "sermons written"],
         [past.length, "times preached"],
         [past.filter((e) => e.date.year === today.year).length, "preached in " + today.year],
-        [new Set(past.map(firstChurch)).size, "churches & groups"]
+        [new Set(past.map((e) => data.churchesOf(e.page)[0]).filter(Boolean)).size, "churches & groups"]
       ]) {
         const s2 = el(big, "div", "m-stats-num");
         el(s2, "b", "hp-num", ui.fmtNum(n2));
