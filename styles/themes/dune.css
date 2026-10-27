@@ -149,7 +149,7 @@
 .hp-home[data-theme="dune"] .hp-chip { font-weight: 500; }
 .hp-home[data-theme="dune"] .hp-chip .hp-ico { color: var(--du-orange-deep); }
 /* Labels: sentence case (the reference has no capitals), a touch smaller than the text. */
-.hp-home[data-theme="dune"] .hp-label { font-size: 0.8em; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--du-muted); }
+.hp-home[data-theme="dune"] .hp-label { font-size: max(11px, 0.8em); font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--du-muted); }
 /* The modules' own capital labels: sentence case too (the countdown's flip clock, nixie tubes and departure board keep
    theirs, as part of those skins). */
 .hp-home[data-theme="dune"] :is(.m-cal-wd-name, .m-recent-date span, .m-next-photo-count small, .m-roster-tile .m-roster-role, .m-sermons-rail-rel, .m-sermons-facts dt, .m-sermons-ddate span, .m-up-church),

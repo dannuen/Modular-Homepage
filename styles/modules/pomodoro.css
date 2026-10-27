@@ -5,7 +5,7 @@
 .hp-home .m-pomo-shell { display: flex; flex-direction: column; gap: var(--hm-gap-in); min-width: 0; padding: var(--hm-pad); }
 .hp-home .m-pomo-shell > .m-pomo { flex: 1; }
 .hp-home .m-pomo {
-	--pm-ink: #4a2c40; --pm-muted: #8b6a7f; --pm-paper: #fffdfb; --pm-font: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, monospace;
+	--pm-ink: #4a2c40; --pm-muted: #765569; --pm-paper: #fffdfb; --pm-font: ui-monospace, "Cascadia Mono", "SF Mono", Consolas, monospace;
 	--pm-bg: #fff0ee; --pm-floor: #ffd6d2; --pm-dot: rgba(255, 111, 125, 0.16); --pm-accent: #ff7a88; --pm-soft: #ffd3d8; --pm-shade: #e9a3ab;
 	--pm-pp: 6px;                                     /* one pixel of the character */
 	--pm-cut: 4px;
@@ -111,7 +111,7 @@
 .hp-home .m-pomo-ctrls { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
 .hp-home .m-pomo-presets { display: flex; flex-wrap: wrap; gap: 6px; }
 .hp-home .m-pomo-face > .m-pomo-presets { justify-content: center; padding-top: 2px; }
-.hp-home .m-pomo button.m-pomo-chip { min-height: 26px; --btn-pad: 0 9px; font-size: 10.5px; letter-spacing: 0.05em; text-transform: none; font-weight: 700; }
+.hp-home .m-pomo button.m-pomo-chip { min-height: 26px; --btn-pad: 0 9px; font-size: max(11px, 10.5px); letter-spacing: 0.05em; text-transform: none; font-weight: 700; }
 .hp-home .m-pomo button.m-pomo-chip.is-on { --btn-bg: var(--pm-ink); color: var(--pm-paper); --btn-shadow: inset 0 0 0 3px var(--pm-ink); }
 .hp-home .m-pomo :is(.m-pomo-ctrls, .m-pomo-presets, .m-pomo-ask, .m-pomo-recent)[hidden], .hp-home .m-pomo button.m-pomo-btn[hidden] { display: none; }
 
