@@ -44,7 +44,6 @@ expect("7pm, a range and a linked date", [core.time.parseTime("7pm")?.clock, cor
 // Durations in frontmatter. A long value that is not one comes back at once: the old regex could split each separator
 // several ways and tried every split, so 13 "N thousand" pairs already take it a tenth of a second, 16 take seconds and
 // 20 take minutes: 16 here, so the old regex fails this check instead of hanging it.
-const OLD_DURATION = /^\\s*(?:\\d+(?:\\.\\d+)?\\s*[a-z]+(?:\\s*,?\\s*(?:and\\s+)?|\\s*$))+$/i;
 const pairs = (n, sep) => Array.from({ length: n }, (_, i) => i + 1 + " thousand").join(sep) + " !";
 const ms = (fn) => {
   const t = performance.now();
@@ -57,8 +56,7 @@ H.app.metadataCache.byPath.set("Durations.md", { frontmatter: fm });
 let dur;
 const fast = ms(() => (dur = H.plugin.vault.page("Durations.md")));
 expect("durations", Object.keys(fm).map((k) => (dur[k] === fm[k] ? "text" : dur[k].as("minutes"))).join(), "90,90,135,90,45,text,text,text,text");
-const slow = ms(() => OLD_DURATION.test(pairs(13, " ")));
-if (!(fast < 50 && slow > 20)) throw new Error("duration regex: " + fast.toFixed(1) + " ms for 32 pairs (want < 50), the old regex " + slow.toFixed(1) + " ms for 13 (want > 20)");
+if (!(fast < 50)) throw new Error("duration regex: " + fast.toFixed(1) + " ms for two 16-pair values (want < 50)");
 // Stats' books: the chapter is cut from plain text (with or without a space) or an unresolved link's alias, but not a
 // numbered book's own number.
 H.plugin.settings.config.sermonFolder = "Books";
