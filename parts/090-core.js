@@ -73,7 +73,6 @@ function makeCore(env) {
   const { app, vault } = env;
   const doc = env.doc;
   const C = env.config;
-  const self = env.self;
   function el(parent, tag, cls, text) {
     const node = doc.createElement(tag);
     if (cls) node.className = cls;
@@ -191,7 +190,7 @@ function makeCore(env) {
   function mesh(node, seed, dark = true) {
     let h = 0;
     for (const ch of seed || "?") h = h * 31 + ch.charCodeAt(0) >>> 0;
-    const spot = (k) => [(h >> k * 3) % 100, (h >> k * 5 + 1) % 100];
+    const spot = (k) => [(h >>> k * 3) % 100, (h >>> k * 5 + 1) % 100];
     const [x1, y1] = spot(1), [x2, y2] = spot(2), [x3, y3] = spot(3);
     const shift = h % 20 - 10;
     node.style.backgroundImage = [
@@ -362,7 +361,7 @@ function makeCore(env) {
       if (raw >= 0 && raw < 1440) minutes = raw;
     } else if (typeof raw === "object" && typeof raw.as === "function") minutes = Math.round(raw.as("minutes"));
     else {
-      const s2 = String(raw).trim().toLowerCase().replace(/^buổi\s+/, "");
+      const s2 = String(raw).normalize("NFC").trim().toLowerCase().replace(/^buổi\s+/, "");
       const word = PERIOD_WORDS[s2];
       if (word) return { period: word, minutes: PERIODS[word].minutes, clock: null };
       const m = s2.match(/^(\d{1,2})(?:[:h.](\d{2})?)?\s*(am|pm|sa|ch)?$/);
@@ -450,15 +449,17 @@ function makeCore(env) {
       input.disabled = false;
     }
   }
-  const PAGE_VARS = ["--background-primary", "--background-primary-alt", "--background-secondary", "--background-modifier-border", "--text-normal", "--text-muted", "--text-faint"];
   const pageHost = () => env.host.closest(".workspace-leaf-content") || env.host.closest(".view-content") || env.host.parentElement || env.host;
   function rgbOf(color) {
     const probe = el(doc.body, "span", "");
     probe.style.cssText = "position:absolute;visibility:hidden";
     probe.style.color = color;
-    const rgb = (getComputedStyle(probe).color.match(/\d+(\.\d+)?/g) || [0, 0, 0]).slice(0, 3).map(Number);
+    // The span resolves var(); the canvas turns what Chromium keeps as oklch(), lab(), color() or color-mix() into sRGB bytes.
+    const c = doc.createElement("canvas").getContext("2d");
+    c.fillStyle = getComputedStyle(probe).color;
     probe.remove();
-    return rgb;
+    c.fillRect(0, 0, 1, 1);
+    return [...c.getImageData(0, 0, 1, 1).data].slice(0, 3);
   }
   const hexOf = (color) => "#" + rgbOf(color).map((v) => Math.round(v).toString(16).padStart(2, "0")).join("");
   const isDark = (color) => {
@@ -474,38 +475,17 @@ function makeCore(env) {
     return v === null || v === void 0 || v === "" || !Number.isFinite(n2) ? d : Math.max(0, Math.min(100, Math.round(n2)));
   };
   const page = {
-    enabled: !!env.theme?.pageColor,
-    read() {
-      const p = String(self?.page_color ?? "theme").trim();
-      return p.toLowerCase() === "accent" ? "accent" : !p || p.toLowerCase() === "theme" || !CSS.supports("color", p) ? "theme" : p;
-    },
-    // Obsidian's own background (not an override), as #rrggbb: where the colour pickers start.
-    themeHex: () => hexOf(getComputedStyle(pageHost().parentElement || doc.body).getPropertyValue("--background-primary").trim() || "#ffffff"),
-    apply(color) {
-      const node = pageHost();
-      for (const v of PAGE_VARS) node.style.removeProperty(v);
-      if (color === "accent") node.dataset.hpPage = "accent";
-      else delete node.dataset.hpPage;
-      if (!page.enabled || color === "theme" || color === "accent") return;
-      const dark = isDark(color), ink = dark ? "#ffffff" : "#000000";
-      const set = (k, v) => node.style.setProperty(k, v);
-      set("--background-primary", color);
-      set("--background-primary-alt", "color-mix(in srgb, " + color + " 95%, " + ink + ")");
-      set("--background-secondary", "color-mix(in srgb, " + color + " 94%, " + ink + ")");
-      set("--background-modifier-border", "color-mix(in srgb, " + color + " 86%, " + ink + ")");
-      set("--text-normal", dark ? "#f2efec" : "#22201e");
-      set("--text-muted", dark ? "#bdb6b0" : "#5f5a55");
-      set("--text-faint", dark ? "#8a847e" : "#8e8883");
-    },
-    reset() {
-      page.apply("theme");
-    }
+    // Obsidian's own background, as #rrggbb: where the fade colour picker starts.
+    themeHex: () => hexOf(getComputedStyle(pageHost().parentElement || doc.body).getPropertyValue("--background-primary").trim() || "#ffffff")
   };
   async function saveProps(fields, what) {
     const file = app.vault.getAbstractFileByPath(env.sourcePath);
     if (!(file instanceof import_obsidian2.TFile)) return false;
     try {
-      await app.fileManager.processFrontMatter(file, (fm) => Object.assign(fm, fields));
+      await app.fileManager.processFrontMatter(file, (fm) => {
+        // Overwrite the key the page reads (the first with the same canonical form, e.g. "Banner"), not add a second one.
+        for (const [k, v] of Object.entries(fields)) fm[Object.keys(fm).find((x) => canonical(x) === canonical(k)) ?? k] = v;
+      });
       notify(what + " saved");
       return true;
     } catch (err) {
@@ -575,7 +555,7 @@ function makeCore(env) {
   }
   function countWords(s2) {
     const clean2 = s2.replace(/%%[\s\S]*?%%/g, "").replace(/<!--[\s\S]*?-->/g, "").replace(/!\[\[[^\]]*\]\]/g, "").replace(/\[\[(?:[^\]|]*\|)?([^\]]*)\]\]/g, "$1").replace(/\[([^\]]*)\]\([^)]*\)/g, "$1");
-    return (clean2.match(/[\p{L}\p{N}]+/gu) || []).length;
+    return (clean2.match(/[\p{L}\p{M}\p{N}]+/gu) || []).length; // \p{M}: decomposed (NFD) accents stay in their word
   }
   function analyse(body2) {
     let fence = false;

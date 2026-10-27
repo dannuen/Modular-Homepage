@@ -181,7 +181,6 @@ var PageDraw = class {
         console.error("Modular Homepage: clean-up failed", err);
       }
     }
-    if (closing) this.core?.page.reset();
   }
   notify(message) {
     new import_obsidian5.Notice(message);
@@ -198,8 +197,6 @@ var PageDraw = class {
       root: this.root,
       tipBox: this.tipBox,
       host: this.host,
-      theme: this.theme,
-      self: this.self,
       sourcePath: this.block.sourcePath,
       manuscripts: this.plugin.manuscripts
     });
@@ -248,7 +245,6 @@ var PageDraw = class {
     this.tipBox.className = "hp-tip hp-panel";
     this.core = this.makeCore();
     const ui = this.core.uiFor(this.pageLife.component);
-    this.core.page.apply(this.core.page.enabled ? this.core.page.read() : "theme");
     const barButton = (iconName, title) => {
       const b = ui.el(null, "button", "hp-tb-icon");
       b.type = "button";

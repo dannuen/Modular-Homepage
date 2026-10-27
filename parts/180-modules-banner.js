@@ -76,29 +76,16 @@ var def2 = /* @__PURE__ */ (() => {
         color: c.toLowerCase() === "accent" ? "accent" : !c || c.toLowerCase() === "page" || !CSS.supports("color", c) ? "page" : c,
         strength: data.clampPct(self?.banner_fade_strength, FADE_DEFAULT.strength),
         reach: data.clampPct(self?.banner_fade_reach, FADE_DEFAULT.reach),
-        page: page.read(),
         photo: savedFile ? savedFile.path : null
       };
     };
     let cfg = read();
-    const gear = ui.button(box, "m-banner-gear", "sliders", "", "Page colour, banner photo and fade");
-    const set = ui.settings(box, gear, life, "Page & banner", () => {
+    const gear = ui.button(box, "m-banner-gear", "sliders", "", "Banner photo and fade");
+    const set = ui.settings(box, gear, life, "Banner", () => {
       cfg = read();
       sync();
     });
     const shows = [];
-    if (page.enabled) {
-      const ctl = set.row("Page colour");
-      shows.push(set.chips(ctl, [["theme", "Theme", "Obsidian's own background"], ["accent", "Accent", "A soft tint of the accent colour"]], () => cfg.page, (v) => {
-        cfg.page = v;
-        sync();
-      }));
-      const show = set.color(ctl, "Pick a page colour", page.themeHex(), (v) => {
-        cfg.page = v;
-        sync();
-      });
-      shows.push(() => show(cfg.page));
-    }
     const photoName = el(null, "span", "hp-set-value");
     set.row("Photo").append(photoName);
     const tiles = set.tiles();
@@ -129,16 +116,14 @@ var def2 = /* @__PURE__ */ (() => {
       sync();
     });
     set.actions(() => {
-      cfg = { ...FADE_DEFAULT, page: "theme", photo: read().photo };
+      cfg = { ...FADE_DEFAULT, photo: read().photo };
       sync();
     }, async () => {
       const fields = { banner_fade_color: cfg.color, banner_fade_strength: cfg.strength, banner_fade_reach: cfg.reach, [settings.property]: cfg.photo ? "![[" + cfg.photo + "]]" : "" };
-      if (page.enabled) fields.page_color = cfg.page;
-      if (await act.saveProps(fields, "Page & banner")) set.close(false);
+      if (await act.saveProps(fields, "Banner")) set.close(false);
     });
     function sync() {
       box.style.setProperty("--m-fade", fadeOf(cfg));
-      if (page.enabled) page.apply(cfg.page);
       showPhoto(cfg.photo ? app.vault.getAbstractFileByPath(cfg.photo) : null);
       for (const [path, t] of photoTiles) t.classList.toggle("is-on", path === cfg.photo);
       photoName.textContent = cfg.photo ? cfg.photo.split("/").pop() : "None";

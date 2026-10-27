@@ -80,7 +80,7 @@ A module switched off in the settings is left out of every page and of **Arrange
   - an event (no checkbox): `- Elders meeting [time:: 19:00] [duration:: 1h] 📅 2026-10-20`
 - **Countdown** dates come only from note lines like `- Christmas #countdown [[2026-12-24]]`. There are no presets.
 - **Sunday roster** reads the Church Roster plugin's quarterly exports from the roster folder (one note per quarter). The Table look shows the week the way the note does: a table per service, a column per role and a row per day, leaving out roles nobody fills that week; in a narrow slot each role gets its own line. Names set in **Your names on the roster** are marked as yours.
-- **Banner** reads the `banner` property of the home note, for example `![[photo.jpg]]`. The ⚙ button on the banner sets the photo, page colour and fade (`banner_fade_color`, `banner_fade_strength`, `banner_fade_reach`).
+- **Banner** reads the `banner` property of the home note, for example `![[photo.jpg]]`. The ⚙ button on the banner sets the photo and fade (`banner_fade_color`, `banner_fade_strength`, `banner_fade_reach`).
 
 ### Pomodoro
 
@@ -121,7 +121,7 @@ node build.mjs --out main.js      # writes elsewhere
 node build.mjs --check main.js    # also compares with an existing build
 ```
 
-`tools/harness` runs the real bundle in headless Chromium against a made-up vault and writes screenshots and a DOM report for every theme, light and dark, at desktop and phone widths (see its README). `tools/checks` tests the button rows, `writes.js` tests what the homepage writes to notes and `data.json`, and `dates.js` tests date parsing and the preaching dial.
+`tools/harness` runs the real bundle in headless Chromium against a made-up vault and writes screenshots and a DOM report for every theme, light and dark, at desktop and phone widths (see its README). `tools/checks` tests the button rows, `writes.js` tests what the homepage writes to notes and `data.json`, and `dates.js` tests date and time parsing, word counts, colour reading and the preaching dial.
 
 Read [GUIDELINES.md](GUIDELINES.md) before changing a module. It sets the card rules (one card per module, buttons in the top-right corner, spacing from theme tokens), the check to run, and how to install a fix safely.
 
