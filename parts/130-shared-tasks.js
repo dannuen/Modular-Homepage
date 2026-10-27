@@ -68,6 +68,7 @@ function parseTask(raw) {
   const doneMark = (s2.match(/✅\s*\d{4}-\d{2}-\d{2}/u) || [""])[0];
   const blockId = (s2.match(/\s(\^[\w-]+)\s*$/u) || [])[1] || "";
   const at = time ? parseClock(time[1]) : null;
+  if (time && at === null) keep.push(time[0]); // a time it can't read ("tối", "19:00-20:30") stays on the line through an edit
   return { text, tags, due: pick2(DUE), start: pick2(START), sched: pick2(SCHED), done: pick2(DONE), at, minutes: dur ? parseMinutes(dur[1]) : null, keep, doneMark, blockId };
 }
 var LIST = /^([\s>]*(?:\d+\.|\d+\)|\*|-|\+)\s+)(?:\[(.?)\]\s*)?(.*)$/u;
@@ -94,7 +95,7 @@ function lineBody(d, words, old) {
     ...d.tags.map((g) => "#" + g),
     withTime ? "[time:: " + fmtClock(d.at) + "]" : "",
     d.minutes ? "[duration:: " + fmtMinutes(d.minutes) + "]" : "",
-    ...old?.keep || [],
+    ...(old?.keep || []).filter((k) => !(withTime && TIME.test(k))),
     !ev && d.sched ? "⏳ " + d.sched : "",
     !ev && d.start ? "🛫 " + d.start : "",
     d.due ? "📅 " + d.due : "",
@@ -118,6 +119,8 @@ function moved(line, d, changes) {
   let s2 = line.trimEnd();
   for (const [k, [re, fmt]] of Object.entries(MOVE_TOKENS)) {
     if (!(k in changes)) continue;
+    // A time it can't read ("tối") was never shown as one, so clearing the time leaves it.
+    if (k === "at" && d.at == null && parseTask(s2).keep.some((x) => TIME.test(x))) continue;
     const token = d[k] === null || d[k] === void 0 ? "" : fmt(d[k]);
     if (re.test(s2)) s2 = s2.replace(re, (_, space) => token && space + token);
     else if (token) s2 = s2.replace(/(?:\s*✅\uFE0F?\s*\d{4}-\d{2}-\d{2})?(?:\s+\^[\w-]+)?$/u, (tail) => " " + token + tail);

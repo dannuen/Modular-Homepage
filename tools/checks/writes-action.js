@@ -19,7 +19,7 @@ const draftOf = (line) => {
   const p = L.parseTask(line.replace(/^[\s>]*(?:\d+[.)]|[-*+])\s+(?:\[.\]\s*)?/u, "")), iso = (d) => d?.toISODate() ?? null;
   return { kind: /^[\s>]*(?:\d+[.)]|[-*+])\s+\[.\]/u.test(line) ? "todo" : "event", text: p.text, due: iso(p.due), start: iso(p.start), sched: iso(p.sched), at: p.at, minutes: p.minutes, tags: p.tags };
 };
-const canonical = ["- [ ] Write intro #sermon 📅 2026-10-18", "- Elders meeting [time:: 19:00] [duration:: 1h] 📅 2026-10-20", "- [x] Gọi nhà in ⏫ ⏳ 2026-10-13 📅 2026-10-15 ✅ 2026-10-14 ^in-1", "  - [ ] Soạn dàn ý [duration:: 1h 30m] 🛫 2026-10-12", "> 1. [ ] Đọc Rô-ma 8 #kinh-thanh"];
+const canonical = ["- [ ] Write intro #sermon 📅 2026-10-18", "- Elders meeting [time:: 19:00] [duration:: 1h] 📅 2026-10-20", "- [x] Gọi nhà in ⏫ ⏳ 2026-10-13 📅 2026-10-15 ✅ 2026-10-14 ^in-1", "  - [ ] Soạn dàn ý [duration:: 1h 30m] 🛫 2026-10-12", "> 1. [ ] Đọc Rô-ma 8 #kinh-thanh", "- Tập hát [time:: tối] 📅 2026-10-21", "- Họp [time:: 19:00-20:30] 📅 2026-10-21"];
 for (const l of [...canonical, "- [ ] Gọi anh Phúc ☎️ #📬 về [[Sách|Tập #2]]  [time:: 09:00] [duration:: 30m] ⏳ 2026-10-14 📅 2026-10-30"]) expect("a move that changes nothing", L.moved(l, draftOf(l), draftOf(l)), l);
 for (const l of canonical) expect("a save that changes nothing", L.rebuilt(l, draftOf(l), draftOf(l).text).line, l);
 const done = canonical[2], add = (data) => L.intoSection(data, "## Tasks", ["- [ ] New"]);
@@ -29,6 +29,7 @@ for (const [what, got, want] of [
   ["toggled open and done again", L.toggled(L.toggled(done, false), true), done],
   ["findLine of a line that moved", L.findLine(["- [ ] A", "- [ ] B"], { raw: "B", line: 0, kind: "todo" }), 1],
   ["findLine of a line written twice", L.findLine(["- [ ] A", "- [ ] B", "- [ ] A"], { raw: "A", line: 3, kind: "todo" }), -1],
+  ["a save that sets a time over one it can't read", L.rebuilt(canonical[5], { ...draftOf(canonical[5]), at: 1170 }, "Tập hát").line, "- Tập hát [time:: 19:30] 📅 2026-10-21"],
   ["blockEnd takes the indented lines", L.blockEnd(["- [ ] A", "  - [ ] a1", "    more", "- [ ] B"], 0), 3],
   ["new task in an empty note", add(""), "## Tasks\n\n- [ ] New\n"],
   ["new task in a note without Tasks", add("# Day\n\nText\n"), "# Day\n\nText\n\n## Tasks\n\n- [ ] New\n"],
