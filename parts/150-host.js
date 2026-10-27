@@ -205,10 +205,7 @@ var PageDraw = class {
     const THEMES2 = plugin.themes;
     const self = this.self;
     const themeById = (id) => THEMES2.find((t) => t.id === String(id ?? "").trim().toLowerCase()) || null;
-    const pending = G.themePending;
-    const saved = themeById(self?.[PROPERTY]);
-    this.theme = pending && Date.now() - pending.at < 15e3 && themeById(pending.id) || saved || themeById(plugin.settings.defaultTheme) || THEMES2[0];
-    if (pending && saved && saved.id === pending.id) G.themePending = null;
+    this.theme = themeById(self?.[PROPERTY]) || themeById(plugin.settings.defaultTheme) || THEMES2[0];
     const theme = this.theme;
     const layout = this.layout = plugin.layoutFor(this.block.sourcePath);
     for (const [id, def20] of plugin.modules) this.defs.set(id, {
@@ -366,7 +363,6 @@ var PageDraw = class {
     });
     const chooseTheme = async (id) => {
       if (id === theme.id) return;
-      G.themePending = { id, at: Date.now() };
       const file = this.app.vault.getAbstractFileByPath(this.block.sourcePath);
       try {
         if (file instanceof import_obsidian5.TFile) await this.app.fileManager.processFrontMatter(file, (fm) => {
@@ -376,7 +372,6 @@ var PageDraw = class {
         console.error("Modular Homepage: could not save the theme", err);
         this.notify("Could not save the theme choice");
       }
-      if (this.alive) this.block.redraw();
     };
     const themeMenu = makeMenu(themeBtn, "Homepage theme", () => THEMES2.map((t) => ({ label: t.name, about: t.about, on: t.id === theme.id, run: () => chooseTheme(t.id) })));
     themeBtn.addEventListener("click", () => themeMenu(!isOpen(themeBtn)));
@@ -466,7 +461,7 @@ var PageDraw = class {
     const from = this.layout;
     const name = await askName(this.app, "Duplicate “" + from.name + "”", this.plugin.uniqueName(from.name + " copy"), "Duplicate");
     if (!name) return;
-    const items = this.G.arrange ? this.draftItems() : this.savedItems();
+    const items = this.G.arrange ? this.draftItems() : this.plugin.layoutById(from.id)?.items ?? [];
     try {
       const made = await this.plugin.createLayout(name, plainItems(items));
       if (this.G.arrange) {
@@ -515,6 +510,7 @@ var PageDraw = class {
   async refresh(paths) {
     if (!this.alive || !this.root?.isConnected) return;
     const dirty = this.slots().filter((s2) => {
+      if (s2.querySelector(".hp-set:not([hidden])")) return false; // an open ⚙ panel would lose its unsaved choices
       const def20 = this.defOf(s2.__item);
       try {
         return !def20.watch || def20.watch(paths, { config: this.plugin.config, app: this.app, seen: s2.__seen ?? /* @__PURE__ */ new Set() });
@@ -585,7 +581,13 @@ var PageDraw = class {
   slots = () => this.grid ? [...this.grid.querySelectorAll(":scope > .hp-slot")] : [];
   draftItems = () => this.slots().map((s2) => s2.__item);
   syncDraft() {
-    if (this.G.arrange) this.G.arrange.items = this.draftItems().map((i) => ({ ...i }));
+    if (!this.G.arrange) return;
+    this.G.arrange.items = this.draftItems().map((i) => ({ ...i }));
+    this.redrawTwins();
+  }
+  // Every view of this note shares G.arrange, so the others are drawn again to follow it.
+  redrawTwins() {
+    for (const b of this.plugin.blocks) if (b !== this.block && b.sourcePath === this.block.sourcePath) b.redraw();
   }
   // renderSlot(): draw one module into its slot, with its own ctx and clean-up.
   async renderSlot(slot) {
@@ -863,12 +865,14 @@ var PageDraw = class {
       G.arrange = { layoutId: this.layout.id, items: this.draftItems().map((i) => ({ ...i })) };
       this.slots().forEach((s2) => this.addHandle(s2));
       this.drawBar();
+      this.redrawTwins();
       return;
     }
     const list2 = this.draftItems();
     const wasSaved = save ? await this.saveItems(list2) : false;
     if (save && !wasSaved) return;
     G.arrange = null;
+    this.redrawTwins();
     this.drawBar();
     if (save) {
       for (const s2 of this.slots()) {

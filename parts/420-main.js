@@ -28,7 +28,8 @@ var ModularHomepage = class extends import_obsidian10.Plugin {
     this.registerMarkdownCodeBlockProcessor("modular-homepage-bar", (_source, el, ctx) => {
       ctx.addChild(new BarBlock(this, el, ctx.sourcePath));
     });
-    this.addSettingTab(new HomeSettingTab(this.app, this));
+    this.tab = new HomeSettingTab(this.app, this);
+    this.addSettingTab(this.tab);
     this.registerEvent(this.app.metadataCache.on("changed", (file) => this.noteChanged(file.path)));
     this.registerEvent(this.app.metadataCache.on("deleted", (file) => this.noteChanged(file.path)));
     this.registerEvent(this.app.metadataCache.on("resolved", () => {
@@ -55,6 +56,8 @@ var ModularHomepage = class extends import_obsidian10.Plugin {
     });
   }
   onunload() {
+    // They belong to the notes' views, which would keep them (and their timers) running until the note closes.
+    for (const b of [...this.blocks, ...this.bars]) b.unload();
     for (const { el } of this.styles.values()) el.remove();
     this.styles.clear();
   }
@@ -63,7 +66,7 @@ var ModularHomepage = class extends import_obsidian10.Plugin {
     for (const b of this.blocks) b.noteChanged(path);
   }
   pageState(path) {
-    if (!this.pageStates.has(path)) this.pageStates.set(path, { state: {}, arrange: null, themePending: null });
+    if (!this.pageStates.has(path)) this.pageStates.set(path, { state: {}, arrange: null });
     return this.pageStates.get(path);
   }
   // The stylesheet, once per window, while a homepage or a top bar shows there. At the end of <body>, after
@@ -109,10 +112,7 @@ var ModularHomepage = class extends import_obsidian10.Plugin {
         chosen: saved.chosen && typeof saved.chosen === "object" ? { ...saved.chosen } : {}
       };
     }
-    if (!this.layouts.list.length) {
-      const aurora = Array.isArray(saved?.themes?.aurora) ? saved.themes.aurora : FIRST_LAYOUT;
-      this.layouts = { version: 2, list: [{ id: "aurora", name: "Aurora", items: structuredClone(aurora) }], defaultId: "aurora", chosen: {} };
-    }
+    if (!this.layouts.list.length) this.layouts = { version: 2, list: [{ id: "aurora", name: "Aurora", items: structuredClone(FIRST_LAYOUT) }], defaultId: "aurora", chosen: {} };
   }
   // data.json changed outside Obsidian (a sync from another device): read it again and redraw.
   async onExternalSettingsChange() {
@@ -120,6 +120,8 @@ var ModularHomepage = class extends import_obsidian10.Plugin {
     if (!(await this.loadData())) return;
     await this.loadAll();
     this.redrawAll();
+    // An open settings tab holds the old settings object, so it is drawn again on the new one.
+    if (this.tab.containerEl.isConnected) this.tab.display();
   }
   async saveAll() {
     await this.saveData({ settings: this.settings, layouts: this.layouts });

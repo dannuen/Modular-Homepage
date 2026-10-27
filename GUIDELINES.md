@@ -45,6 +45,7 @@ Read this before changing the plugin. These rules come from the unified card wor
    - If you touched the button row, also run `node tools/checks/geom.js dist/main.js /tmp/g.json`, then `node tools/checks/geom-summary.js /tmp/g.json`.
    - If you touched the Tasks panel, a note write or the settings, also run `node tools/checks/writes.js dist/main.js`. It must print `writes: ok`.
    - If you touched dates, times, word counts, colour reading or the preaching dial, also run `node tools/checks/dates.js dist/main.js`. It must print `dates: ok`.
+   - If you touched the page host (redraws, Arrange, the theme or layout menu, folder watching), also run `node tools/checks/host.js dist/main.js`. It must print `host: ok`.
    - Look at the slot screenshots (`--slots`) of the modules you changed.
 
    Fix what this check finds, then install. Don't run more review rounds: Dan wants the result quickly.
