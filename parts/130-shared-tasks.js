@@ -219,8 +219,6 @@ async function dailyItems(vault, folder) {
 }
 async function renderTasks(env, input) {
   const DAILY_FOLDER = env.config.dailyFolder;
-  const DAILY_TEMPLATE = env.config.dailyTemplate;
-  const dailyPath = (d) => DAILY_FOLDER + "/" + d.setLocale("en").toFormat("yyyy/MM-LLLL/yyyy-MM-dd") + ".md";
   const TIMES = [15, 30, 45, 60, 90, 120];
   const EVENT_TIMES = ["08:00", "09:00", "14:00", "17:00", "19:00", "19:30"];
   const EVENT_LENGTHS = [30, 60, 90, 120, 180];
@@ -379,18 +377,6 @@ async function renderTasks(env, input) {
     if (!result) notify("That task was changed in its note, so nothing was saved. Open the note to edit it.");
     return result;
   }
-  async function todayNote() {
-    const day = DateTime.now().startOf("day");
-    const path = dailyPath(day);
-    let file = app.vault.getAbstractFileByPath(path);
-    if (file) return file;
-    const folder = path.slice(0, path.lastIndexOf("/"));
-    if (!app.vault.getAbstractFileByPath(folder)) await app.vault.createFolder(folder);
-    const templater = app.plugins.plugins["templater-obsidian"]?.templater;
-    const template = app.vault.getAbstractFileByPath(DAILY_TEMPLATE);
-    if (templater && template) file = await templater.create_new_note_from_template(template, app.vault.getAbstractFileByPath(folder), iso(day), false);
-    return app.vault.getAbstractFileByPath(path) || file || await app.vault.create(path, "");
-  }
   async function addTask() {
     if (!isMounted() || store.busy) return;
     const original = store.draft, d = copyDraft(original);
@@ -408,7 +394,7 @@ async function renderTasks(env, input) {
     const body2 = lineBody(d, words);
     return transact("Could not add the task", async () => {
       draw();
-      const file = await todayNote();
+      const file = await dailyNote(app, env.config, DateTime.now().startOf("day"));
       await app.vault.process(file, (data) => intoSection(data, "## " + SECTION2, [(isEvent(d) ? "- " : "- [ ] ") + body2]));
       const unchanged = store.draft === original && sameDraft(original, d);
       if (unchanged) {

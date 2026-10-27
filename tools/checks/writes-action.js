@@ -142,4 +142,28 @@ expect("prompts left open", H.$$(".modal-container").length, 0);
 await H.app.vault.process(H.file(H.homePath), (t) => t.replace(/^---\n/, "---\nCheck_Key: 10\n"));
 await [...H.plugin.blocks][0].draw.core.act.saveProps({ check_key: 40 }, "Check");
 expect("home note keys after a save", H.text(H.homePath).match(/^check_key:.*$/gim)?.join(), "Check_Key: 40");
+
+// Calendar, the top bar's Today and Tasks find or make a day's note one way (the focus log too: pomodoro.js): "Daily Notes/"
+// in Settings is the same folder, and without Templater a missing note is made empty, with its folders.
+delete H.app.plugins.plugins["templater-obsidian"];
+H.plugin.config.dailyFolder = "Daily Notes/";
+await H.redraw();
+const opened = () => H.log.opened.at(-1)?.file;
+expect("Calendar on today with Daily Notes/", tip("Wednesday 14 Oct", "daily note"), "Wednesday 14 Oct · open daily note");
+H.click('button[aria-label="Today\'s note"]');
+await H.settleAfterAction();
+expect("top bar's Today's note with Daily Notes/", opened(), day);
+H.click('button[aria-label="Next month"]');
+await H.settleAfterAction();
+H.click(H.$$(".m-cal-day", H.slot("calendar")).find((b) => b.title.startsWith("Monday 2 Nov")));
+await H.settleAfterAction();
+expect("Calendar's new note without Templater", opened() + " | " + H.text(opened()), "Daily Notes/2026/11-November/2026-11-02.md | ");
+await H.app.vault.delete(H.file(day));
+await H.settleAfterAction();
+const input = H.$(".hp-tk-add .hp-tk-input", H.slot("tasks"));
+input.value = "Viết thư";
+input.dispatchEvent(new Event("input"));
+H.click(H.$(".hp-tk-add .hp-tk-go", H.slot("tasks")));
+await H.settleAfterAction();
+expect("today's note made by Tasks without Templater", H.text(day), "## Tasks\n\n- [ ] Viết thư\n");
 return "ok";

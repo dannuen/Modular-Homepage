@@ -82,6 +82,18 @@ var renderWith = (app, doc, sourcePath, component) => (parent, md, cls = "hp-val
   if (parent) parent.append(node);
   return node;
 };
+// The one way Calendar, the top bar, Tasks and the focus log find or make a day's note: Templater is optional (empty note).
+var dailyNotePath = (cfg, d) => cfg.dailyFolder.replace(/\/+$/, "") + "/" + d.setLocale("en").toFormat("yyyy/MM-LLLL/yyyy-MM-dd") + ".md";
+async function dailyNote(app, cfg, d) {
+  const path = dailyNotePath(cfg, d), folder = path.slice(0, path.lastIndexOf("/"));
+  let file = app.vault.getAbstractFileByPath(path);
+  if (file) return file;
+  if (!app.vault.getAbstractFileByPath(folder)) await app.vault.createFolder(folder);
+  const templater = app.plugins?.plugins?.["templater-obsidian"]?.templater;
+  const template = app.vault.getAbstractFileByPath(cfg.dailyTemplate);
+  if (templater && template instanceof import_obsidian2.TFile) file = await templater.create_new_note_from_template(template, app.vault.getAbstractFileByPath(folder), d.toFormat("yyyy-MM-dd"), false);
+  return app.vault.getAbstractFileByPath(path) || file || await app.vault.create(path, "");
+}
 function makeCore(env) {
   const { app, vault } = env;
   const doc = env.doc;
@@ -399,8 +411,7 @@ function makeCore(env) {
     const h = (/* @__PURE__ */ new Date()).getHours();
     return h < 12 ? "Good morning" : h < 18 ? "Good afternoon" : "Good evening";
   };
-  const dailyFolder = (d) => C.dailyFolder + "/" + d.setLocale("en").toFormat("yyyy/MM-LLLL");
-  const dailyPath = (d) => dailyFolder(d) + "/" + d.toFormat("yyyy-MM-dd") + ".md";
+  const dailyPath = (d) => dailyNotePath(C, d);
   const minutesOf = (words) => Math.max(1, Math.round(words / C.spokenWpm));
   function notify(message) {
     new import_obsidian2.Notice(message);
@@ -429,9 +440,7 @@ function makeCore(env) {
   }
   async function openDaily(d, newTab) {
     try {
-      let file = app.vault.getAbstractFileByPath(dailyPath(d));
-      if (!file) file = await createFromTemplate(C.dailyTemplate, dailyFolder(d), d.toFormat("yyyy-MM-dd"), false);
-      if (file instanceof import_obsidian2.TFile) await app.workspace.getLeaf(newTab ? "tab" : false).openFile(file);
+      await app.workspace.getLeaf(newTab ? "tab" : false).openFile(await dailyNote(app, C, d));
     } catch (err) {
       console.error(err);
       notify("Could not open the daily note for " + d.toFormat("yyyy-MM-dd"));
