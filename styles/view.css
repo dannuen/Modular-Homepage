@@ -145,7 +145,7 @@
 	.hp-home .hp-back .hp-ico { display: inline-flex; }
 	.hp-home .hp-back > :not(.hp-ico) { display: none; }
 }
-.hp-home .hp-label { font-size: 0.72em; font-weight: 750; letter-spacing: 0.08em; text-transform: uppercase; color: var(--hm-muted); }
+.hp-home .hp-label { font-size: max(11px, 0.72em); font-weight: 750; letter-spacing: 0.08em; text-transform: uppercase; color: var(--hm-muted); }
 .hp-home .hp-muted { color: var(--hm-muted); }
 .hp-home .hp-empty { color: var(--hm-faint); font-style: italic; }
 .hp-home .hp-error { padding: 14px 18px; color: var(--hm-late); font-size: 0.9em; }
@@ -175,7 +175,7 @@
 .hp-home .hp-ring.is-past .hp-ring-fill { stroke: var(--hm-faint); }
 .hp-home .hp-ring-label { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center !important; line-height: 1.05; }
 .hp-home .hp-ring-label b { font-size: 0.74em; font-weight: 750; font-variant-numeric: tabular-nums; }
-.hp-home .hp-ring-label span { margin-top: 2px; font-size: 0.64em; color: var(--hm-muted); }
+.hp-home .hp-ring-label span { margin-top: 2px; font-size: max(11px, 0.64em); color: var(--hm-muted); }
 .hp-home img.hp-cover, .hp-home .hp-cover { width: 100% !important; height: 100% !important; object-fit: cover !important; border-radius: 0 !important; }
 .hp-home .hp-meter.is-soon .hp-meter-fill { background: var(--hm-soon); }
 .hp-home .hp-meter.is-urgent .hp-meter-fill { background: var(--hm-late); }
