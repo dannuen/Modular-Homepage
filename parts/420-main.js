@@ -48,6 +48,12 @@ var ModularHomepage = class extends import_obsidian10.Plugin {
           delete this.layouts.chosen[oldPath];
         }).catch(console.error);
         for (const b of this.blocks) if (b.sourcePath === oldPath) b.sourcePath = file.path;
+        // The page state goes too, so a view being arranged keeps its draft.
+        const state = this.pageStates.get(oldPath);
+        if (state) {
+          this.pageStates.set(file.path, state);
+          this.pageStates.delete(oldPath);
+        }
         this.noteChanged(oldPath);
         this.noteChanged(file.path);
       }));

@@ -50,14 +50,19 @@ await H.settle();
 expect("saved layout after Done in the second view", H.plugin.layoutFor(H.homePath).items.map((i) => i.module).join(), "banner");
 expect("views arranging after Done", H.$$(".hp-home.is-arranging").length, 0);
 
-// A renamed or moved homepage note keeps its picked layout, and its open views follow it.
+// A renamed or moved homepage note keeps its picked layout, and its open views follow it, still arranging.
 const picked = (await H.plugin.createLayout("Picked", [{ module: "coming-up", w: 12 }])).id;
 await H.plugin.chooseLayout(H.homePath, picked);
+await H.settle();
+H.click(H.$(".hp-tb-icon[aria-label^='Layout']", first));
+H.click(H.$$(".hp-hs-item", first).find((b) => b.textContent.startsWith("Arrange")));
+await H.settle();
 const moved = await H.app.vault.rename(H.file(H.homePath), "Moved/Home.md");
 H.app.vault.trigger("rename", moved, H.homePath); // the harness's rename only deletes and creates
 await H.settleAfterAction();
 expect("chosen layouts in data.json after a rename", JSON.stringify(H.data.layouts.chosen), JSON.stringify({ "Moved/Home.md": picked }));
 expect("views after a rename", [...H.plugin.blocks].map((b) => b.sourcePath + " " + b.layoutId).join(), "Moved/Home.md " + picked + ",Moved/Home.md " + picked);
+expect("views arranging after a rename", H.$$(".hp-home.is-arranging").length, 2);
 `;
 (async () => {
   const browser = await launch();
