@@ -22,6 +22,14 @@ expect("saveData calls with no data.json", saves(), before);
 H.data = data;
 await H.plugin.loadAll();
 
+// Saving a layout keeps a switched-off module at its place, though the page leaves it out.
+const id = H.plugin.layoutFor(H.homePath).id;
+H.plugin.settings.hiddenModules = ["tasks"];
+await H.plugin.saveLayoutItems(id, [{ module: "next-actions", w: 12 }], [...H.plugin.blocks][0]);
+expect("layout saved with Tasks switched off", H.plugin.layoutById(id).items.map((i) => i.module).join(), "tasks,next-actions");
+H.data = data;
+await H.plugin.loadAll();
+
 // A move changes only the time and date in the line; tags, emoji and links stay as written.
 const task = "- [ ] Gọi anh Phúc ☎️ #📬 về [[Sách|Tập #2]]  [time:: 09:00] [duration:: 30m] ⏳ 2026-10-14 📅 2026-10-30";
 await H.app.vault.process(H.file(day), (t) => t.replace("## Tasks\n", "## Tasks\n" + task + "\n"));

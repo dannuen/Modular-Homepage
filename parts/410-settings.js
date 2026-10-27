@@ -136,8 +136,8 @@ var HomeSettingTab = class extends import_obsidian9.PluginSettingTab {
     new import_obsidian9.Setting(containerEl).addButton((b) => b.setButtonText("New layout").onClick(async () => {
       const name = await askName(this.app, "New layout", "", "Create");
       if (!name) return;
-      await plugin.createLayout(name, []);
-      new import_obsidian9.Notice("Layout “" + name + "” made: pick it in a homepage's layout menu, then Arrange it");
+      const made = await plugin.createLayout(name, []);
+      new import_obsidian9.Notice("Layout “" + made.name + "” made: pick it in a homepage's layout menu, then Arrange it");
       this.display();
     }));
     new import_obsidian9.Setting(containerEl).setName("Modules").setHeading();

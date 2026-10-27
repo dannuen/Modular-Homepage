@@ -121,7 +121,7 @@ node build.mjs --out main.js      # writes elsewhere
 node build.mjs --check main.js    # also compares with an existing build
 ```
 
-`tools/harness` runs the real bundle in headless Chromium against a made-up vault and writes screenshots and a DOM report for every theme, light and dark, at desktop and phone widths (see its README). `tools/checks` tests the button rows, and `writes.js` tests what the homepage writes to notes and `data.json`.
+`tools/harness` runs the real bundle in headless Chromium against a made-up vault and writes screenshots and a DOM report for every theme, light and dark, at desktop and phone widths (see its README). `tools/checks` tests the button rows, `writes.js` tests what the homepage writes to notes and `data.json`, and `host.js` tests how a page follows changes (a theme pick, Arrange in a second view, an open ⚙ panel, a root folder).
 
 Read [GUIDELINES.md](GUIDELINES.md) before changing a module. It sets the card rules (one card per module, buttons in the top-right corner, spacing from theme tokens), the check to run, and how to install a fix safely.
 
