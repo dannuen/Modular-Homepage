@@ -579,7 +579,7 @@ var def8 = (() => {
       const foot = el(wrap, "div", "m-up-c1-foot");
       ui.button(foot, "hp-btn m-up-ink", "", "Explore all sermons", "Open the sermon archive", () => act.openNote(config.sermonArchive, false));
       function draw(dir = 0) {
-        const i = Math.min(store.index ?? 0, cards.length - 1), c = cards[i];
+        const i = store.index = Math.min(store.index ?? 0, cards.length - 1), c = cards[i];
         stage.replaceChildren();
         dots.replaceChildren();
         if (cards.length > 1) {
