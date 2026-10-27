@@ -14,12 +14,17 @@ const watch = H.plugin.modules.find(([id]) => id === "coming-up")[1].watch;
 for (const f of ["", "/", "Spaces/Sermons/"]) expect("coming-up watches " + JSON.stringify(f), watch(["Spaces/Sermons/x.md"], { config: { sermonFolder: f } }), true);
 expect("coming-up watches another folder", watch(["Notes/x.md"], { config: { sermonFolder: "Spaces/Sermons" } }), false);
 
-// An open ⚙ panel survives a note change that redraws its module.
+// An open ⚙ panel survives a note change that redraws its module, and the module catches up when the panel closes.
+const activeSermons = () => H.$$(".m-banner-stat", H.slot("banner")).find((x) => x.textContent.includes("active sermons"))?.textContent;
+const activeBefore = activeSermons();
 H.click(H.$(".m-banner-gear", H.slot("banner")));
 const panel = H.$(".hp-set", H.slot("banner"));
-await H.app.vault.process(H.file("Spaces/Sermons/⭐ Ánh Sáng Đến Thế Gian.md"), (t) => t + "\\n");
+await H.app.vault.process(H.file("Spaces/Sermons/⭐ Ánh Sáng Đến Thế Gian.md"), (t) => t.replace(/is_active:\\s*true/, "is_active: false"));
 await H.settleAfterAction();
 expect("banner panel open after a sermon edit", panel.isConnected && !panel.hidden, true);
+H.click(H.$(".m-banner-gear", H.slot("banner")));
+await H.settleAfterAction();
+expect("active sermons after the panel closes", activeSermons(), parseInt(activeBefore) - 1 + "active sermons");
 
 // A theme pick draws the page once (after the note's home_theme changes), in the new theme.
 let draws = 0;

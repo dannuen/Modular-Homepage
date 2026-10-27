@@ -31,11 +31,9 @@ var def2 = /* @__PURE__ */ (() => {
     }
   };
   async function hero(body2, ctx, savedFile) {
-    const { ui, time, data, act, app, self, config, page, life, redraw } = ctx;
+    const { ui, time, data, act, app, self, config, page, life } = ctx;
     const { el } = ui;
     const box = el(body2, "div", "m-banner-hero");
-    const said = time.greeting();
-    life.interval(() => time.greeting() !== said && redraw(), 6e4); // "Good morning" turns to afternoon at 12:00, evening at 18:00
     const img = el(box, "img", "m-banner-img");
     img.alt = "";
     img.decoding = "async";
@@ -49,7 +47,8 @@ var def2 = /* @__PURE__ */ (() => {
       }
     };
     ui.icon(el(box, "div", "m-banner-mark"), "lighthouse");
-    el(box, "div", "m-banner-greet", time.greeting() + ", " + config.name);
+    const greet = el(box, "div", "m-banner-greet", time.greeting() + ", " + config.name);
+    life.interval(() => greet.textContent = time.greeting() + ", " + config.name, 6e4); // afternoon at 12:00, evening at 18:00, without closing an open ⚙ panel
     ui.heading(box, 1, "m-banner-title hp-num", time.today.setLocale("en").toFormat("cccc, d LLLL"));
     const next = data.upcoming()[0];
     const sub = el(box, "div", "m-banner-sub");

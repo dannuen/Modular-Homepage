@@ -4,7 +4,7 @@ Runs the **real** plugin bundle (`main.js`, CommonJS with `require("obsidian")`)
 Obsidian. A mock of the Obsidian API stands in for Obsidian, and a made-up vault supplies the notes. The harness
 renders `Homepage.md` in Reading view the way Obsidian does, then writes screenshots and a DOM report.
 
-Note: `fixtures/` (copies of the author's `data.json`, `manifest.json` and a real Church Roster export) is not in this repository. Put a `data.json` in the plugin's format, a `manifest.json`, and a roster export named `Lịch HDCT Quý 4 - 2026.md` (with `## LỄ 1` and `## LỄ 2` tables; `fixture.js` builds the other roster notes from it) there before running. The folder is in `.gitignore`: never commit it.
+Note: `fixtures/` (copies of the author's `data.json`, `manifest.json` and a real Church Roster export) is not in this repository. Put a `data.json` in the plugin's format, a `manifest.json`, and a roster export named `Lịch HDCT Quý 4 - 2026.md` (with `## LỄ 1` and `## LỄ 2` tables whose rows start `| **dd/mm** |` as Church Roster writes them, at least 12 rows under LỄ 1 and one under LỄ 2; `fixture.js` builds the Q3 roster note from it) there before running. The folder is in `.gitignore`: never commit it.
 
 Requirements: Node 22 and Playwright 1.56 with Chromium. Both are already installed here
 (`PLAYWRIGHT_BROWSERS_PATH=/opt/pw-browsers`), so do not run `playwright install`. Nothing else needs installing,

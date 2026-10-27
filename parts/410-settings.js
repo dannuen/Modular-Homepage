@@ -11,7 +11,9 @@ var HomeSettingTab = class extends import_obsidian9.PluginSettingTab {
   display() {
     const { containerEl, plugin } = this;
     const C = plugin.settings.config;
+    this.emptying = true; // removing a focused layout name fires its blur: that is not a rename
     containerEl.empty();
+    this.emptying = false;
     let timer = 0;
     const changed = () => {
       window.clearTimeout(timer);
@@ -111,7 +113,7 @@ var HomeSettingTab = class extends import_obsidian9.PluginSettingTab {
           typed = v;
         });
         const commit = async () => {
-          if (typed.trim() && typed.trim() !== l2.name) {
+          if (!this.emptying && typed.trim() && typed.trim() !== l2.name) {
             await plugin.renameLayout(l2.id, typed);
             this.display();
           }

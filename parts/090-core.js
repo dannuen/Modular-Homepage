@@ -252,6 +252,7 @@ function makeCore(env) {
       if (box.hidden) return;
       show(false);
       if (revert) onClose();
+      box.dispatchEvent(new Event("hp-set-closed", { bubbles: true }));
     };
     gear.addEventListener("click", () => box.hidden ? show(true) : close());
     life.on(doc, "pointerdown", (e) => {

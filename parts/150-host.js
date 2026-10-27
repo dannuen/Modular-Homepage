@@ -510,7 +510,16 @@ var PageDraw = class {
   async refresh(paths) {
     if (!this.alive || !this.root?.isConnected) return;
     const dirty = this.slots().filter((s2) => {
-      if (s2.querySelector(".hp-set:not([hidden])")) return false; // an open ⚙ panel would lose its unsaved choices
+      if (s2.querySelector(".hp-set:not([hidden])")) { // an open ⚙ panel would lose its unsaved choices: catch up when it closes
+        if (!s2.__missed) s2.addEventListener("hp-set-closed", () => {
+          s2.__missed = false;
+          if (!this.alive || !s2.isConnected) return;
+          this.core = this.makeCore();
+          this.renderSlot(s2);
+        }, { once: true });
+        s2.__missed = true;
+        return false;
+      }
       const def20 = this.defOf(s2.__item);
       try {
         return !def20.watch || def20.watch(paths, { config: this.plugin.config, app: this.app, seen: s2.__seen ?? /* @__PURE__ */ new Set() });
