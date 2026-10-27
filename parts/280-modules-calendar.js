@@ -22,7 +22,8 @@ var def12 = /* @__PURE__ */ (() => {
       for (const t of (await dailyItems(vault, config.dailyFolder)).tasks) {
         if (!t.due || t.closed) continue;
         if (t.kind === "todo") dayOf2(t.due.toISODate()).todos.push(t);
-        else dayOf2(t.due.toISODate()).events.push({ text: t.text, at: time.parseTime(t.at), path: t.path });
+        // A range or a part of the day ("19:00-20:30", "tối") has no clock time in Tasks, but Calendar still shows it.
+        else dayOf2(t.due.toISODate()).events.push({ text: t.text, at: time.parseTime(t.at) ?? time.parseTime(t.raw.match(TIME)?.[1].trim()), path: t.path });
       }
       for (const d of byDay.values()) d.events.sort((a, b) => (a.at?.minutes ?? -1) - (b.at?.minutes ?? -1));
       ui.section(body2, isWeek ? "This week" : "Calendar", isPlanner ? "Click a date to open or create its daily note" : "");

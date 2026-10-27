@@ -104,11 +104,13 @@ expect("Next actions link", link.getAttribute("data-href").replace(/\.md$/, ""),
 expect("Next actions link text", link.textContent, "Gọi nhà thầu xác nhận");
 
 // Calendar reads the Tasks section as Tasks does: 🗓 or 📅 with U+FE0F, a to-do under a plain bullet, and a time in words.
-await H.app.vault.process(H.file(day), (t) => t.replace("## Tasks\n", "## Tasks\n- Nhóm nhỏ\n  - [ ] Gọi nhà in 🗓 2026-10-21\n- Họp ban chấp sự 📅️ 2026-10-20 [time:: 7:30 tối]\n"));
+// A time range, which Tasks can't place, still shows in Calendar.
+await H.app.vault.process(H.file(day), (t) => t.replace("## Tasks\n", "## Tasks\n- Nhóm nhỏ\n  - [ ] Gọi nhà in 🗓 2026-10-21\n- Họp ban chấp sự 📅️ 2026-10-20 [time:: 7:30 tối]\n- Tập hát [time:: 19:00-20:30] 📅 2026-10-21\n"));
 await H.settleAfterAction();
 const tip = (date, words) => (H.$$(".m-cal-day", H.slot("calendar")).find((b) => b.title.startsWith(date))?.title ?? "").split("\n").find((l) => l.includes(words));
 expect("Calendar on 20 Oct", tip("Tuesday 20 Oct", "Họp ban chấp sự"), "● 19:30 · Họp ban chấp sự");
 expect("Calendar on 21 Oct", tip("Wednesday 21 Oct", "Gọi nhà in"), "☐ Gọi nhà in");
+expect("Calendar's time range", tip("Wednesday 21 Oct", "Tập hát"), "● 19:00–20:30 · Tập hát");
 
 // The top bar's New note uses the Name from Settings → New notes.
 const [template, noteFolder] = H.plugin.config.templates.note;
