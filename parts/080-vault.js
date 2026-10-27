@@ -91,7 +91,8 @@ var UNITS = {
   s: "seconds"
 };
 var DURATION_PART = /(\d+(?:\.\d+)?)\s*([a-z]+)/gi;
-var DURATION = /^\s*(?:\d+(?:\.\d+)?\s*[a-z]+(?:\s*,?\s*(?:and\s+)?|\s*$))+$/i;
+// One way to split each separator (spaces, comma, "and"), so a long value that fails at the end can't backtrack for minutes.
+var DURATION = /^\s*(?:\d+(?:\.\d+)?\s*[a-z]+(?:\s*(?:,\s*)?(?:\band\s+)?|\s*$))+$/i;
 function parseDuration(s2) {
   if (!DURATION.test(s2)) return null;
   const parts = {};
