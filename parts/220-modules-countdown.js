@@ -126,9 +126,22 @@ var def6 = /* @__PURE__ */ (() => {
         const c = el(parent, "span", cls + " is-roll");
         const strip = el(c, "span", "m-cd-roll");
         for (const n2 of "0123456789") el(strip, "span", "", n2);
-        const set = (next) => strip.style.setProperty("--n", next);
-        set(ch);
-        return { node: c, set };
+        let cur = ch;
+        strip.style.setProperty("--n", ch);
+        return {
+          node: c,
+          set(next) {
+            // 0 to 9 (the digit wrapping) jumps instead of rolling back over every digit.
+            const jump = next > cur;
+            cur = next;
+            if (jump) strip.style.transition = "none";
+            strip.style.setProperty("--n", next);
+            if (jump) {
+              void strip.offsetHeight;
+              strip.style.transition = "";
+            }
+          }
+        };
       }
       // Big digits: the first image in the countdown's note, else a photo named like it in the attachments, else a mesh.
       function photo(parent, t) {
