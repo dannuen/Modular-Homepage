@@ -8,7 +8,7 @@
 /* Month */
 .hp-home .m-cal.is-month .m-cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
 .hp-home .m-cal-dow { padding: 2px 0 6px; text-align: center !important; font-size: 0.7em; font-weight: 700; letter-spacing: 0.06em; color: var(--hm-faint); }
-.hp-home button.m-cal-day { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; aspect-ratio: 1; min-height: 34px; border-radius: 12px; font-size: 0.88em; font-variant-numeric: tabular-nums; color: var(--hm-text); transition: background 0.15s ease; }
+.hp-home button.m-cal-day { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; aspect-ratio: 1; min-height: 34px; border-radius: var(--hm-radius-sm); font-size: 0.88em; font-variant-numeric: tabular-nums; color: var(--hm-text); transition: background 0.15s ease; }
 .hp-home button.m-cal-day:hover { background: var(--hm-hover); }
 .hp-home button.m-cal-day.is-out { color: var(--hm-faint); }
 .hp-home button.m-cal-day.is-today { box-shadow: inset 0 0 0 2px var(--hm-accent); font-weight: 750; }
@@ -31,17 +31,17 @@
 .hp-home .m-cal-wd.is-past { background: transparent; border-color: var(--hm-line); }
 .hp-home .m-cal-wd.is-past .m-cal-wd-num { color: var(--hm-faint); }
 .hp-home .m-cal-wd.is-today { border-color: var(--hm-accent); box-shadow: inset 0 0 0 1px var(--hm-accent); }
-.hp-home button.m-cal-wd-open { display: grid; grid-template-columns: 1fr auto; align-items: center; row-gap: 4px; border-radius: 8px; }
+.hp-home button.m-cal-wd-open { display: grid; grid-template-columns: 1fr auto; align-items: center; row-gap: 4px; border-radius: var(--hm-radius-sm); }
 .hp-home .m-cal-wd-name { font-size: 0.7em; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--hm-muted); }
 .hp-home .m-cal-wd.is-today .m-cal-wd-name { color: var(--hm-accent-ink); }
 .hp-home .m-cal-wd-num { grid-column: 1 / -1; font-size: 1.75em; line-height: 1; }
 .hp-home .m-cal-wd-evs { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-.hp-home .m-cal-ev { display: block; padding: 5px 7px; border-radius: 8px; font-size: 0.72em; line-height: 1.3; min-width: 0; cursor: pointer; }
+.hp-home .m-cal-ev { display: block; padding: 5px 7px; border-radius: var(--hm-radius-sm); font-size: 0.72em; line-height: 1.3; min-width: 0; cursor: pointer; }
 .hp-home .m-cal-ev b { display: block; font-weight: 700; font-variant-numeric: tabular-nums; }
 .hp-home .m-cal-ev span { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hp-home .m-cal-ev.is-preach { background: var(--hm-soft); color: var(--hm-accent-ink); }
 .hp-home .m-cal-ev.is-preach.is-inactive { background: var(--hm-track); color: var(--hm-muted); }
-.hp-home .m-cal-ev.is-event { box-shadow: inset 2px 0 0 var(--hm-accent-ink); background: var(--hm-hover); color: var(--hm-text); border-radius: 4px 8px 8px 4px; }
+.hp-home .m-cal-ev.is-event { box-shadow: inset 2px 0 0 var(--hm-accent-ink); background: var(--hm-hover); color: var(--hm-text); border-radius: var(--hm-radius-sm); }
 .hp-home .m-cal-ev.is-todo { cursor: default; color: color-mix(in srgb, var(--hm-late) 70%, var(--hm-text)); background: color-mix(in srgb, var(--hm-late) 10%, transparent); font-weight: 650; }
 
 /* A month in a wide slot: short rows instead of square days. */
@@ -67,28 +67,28 @@
 .theme-dark .hp-home .m-cal.is-planner { --m-ink: hsl(var(--accent-h), 22%, 24%); }
 .hp-home .m-cal-phead, .hp-home .m-cal.is-planner .m-cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px; }
 .hp-home .m-cal-phead > div { padding: 6px 8px; font-size: 0.75em; color: var(--hm-muted); }
-.hp-home .m-cal-pday { display: flex; flex-direction: column; gap: 4px; min-width: 0; min-height: 104px; padding: 6px; border-radius: 14px; background: var(--hm-surface-2); }
+.hp-home .m-cal-pday { display: flex; flex-direction: column; gap: 4px; min-width: 0; min-height: 104px; padding: 6px; border-radius: var(--hm-radius-sm); background: var(--hm-surface-2); }
 .hp-home .m-cal-pday.is-past { opacity: 0.85; }
 .hp-home .m-cal-pday.is-out { background: transparent; box-shadow: inset 0 0 0 1px var(--hm-line); }
 .hp-home .m-cal-pday:is(.is-out, .is-past) .m-cal-pnum { color: var(--hm-faint); }
 .hp-home .m-cal-pday.is-today { background: var(--hm-soft); box-shadow: inset 0 0 0 1.5px var(--hm-accent); }
-.hp-home button.m-cal-pbtn { display: flex; justify-content: space-between; align-items: center; width: 100%; --btn-pad: 3px 5px; padding: var(--btn-pad); border-radius: 9px; transition: background 0.12s ease; }
+.hp-home button.m-cal-pbtn { display: flex; justify-content: space-between; align-items: center; width: 100%; --btn-pad: 3px 5px; padding: var(--btn-pad); border-radius: var(--hm-radius-sm); transition: background 0.12s ease; }
 .hp-home button.m-cal-pbtn:hover { background: var(--hm-hover); }
 .hp-home .m-cal-pbtn .m-cal-note { box-shadow: none; }
 .hp-home .m-cal-pbtn .m-cal-note.has-note { width: 6px; height: 6px; background: var(--hm-accent); }
 .hp-home .m-cal-pnum { font-size: 0.95em; font-weight: 500; line-height: 1; font-variant-numeric: tabular-nums; }
 .hp-home .m-cal-pday.is-today .m-cal-pnum { padding: 4px 8px; border-radius: 999px; color: #fff; background: var(--m-ink); }
-.hp-home .m-cal-chip { display: flex; align-items: center; gap: 5px; min-width: 0; padding: 4px 8px; border-radius: 8px; font-size: 0.74em; line-height: 1.25; cursor: pointer; }
+.hp-home .m-cal-chip { display: flex; align-items: center; gap: 5px; min-width: 0; padding: 4px 8px; border-radius: var(--hm-radius-sm); font-size: 0.74em; line-height: 1.25; cursor: pointer; }
 .hp-home .m-cal-chip > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hp-home .m-cal-chip.is-preach { color: #fff; background: var(--m-ink); font-weight: 500; }
-.hp-home .m-cal-chip.is-event { color: var(--hm-text); background: var(--hm-hover); box-shadow: inset 2px 0 0 var(--hm-accent-ink); border-radius: 4px 8px 8px 4px; }
+.hp-home .m-cal-chip.is-event { color: var(--hm-text); background: var(--hm-hover); box-shadow: inset 2px 0 0 var(--hm-accent-ink); border-radius: var(--hm-radius-sm); }
 .hp-home .m-cal-chip.is-todo { cursor: default; color: color-mix(in srgb, var(--hm-late) 70%, var(--hm-text)); background: color-mix(in srgb, var(--hm-late) 10%, transparent); font-weight: 650; }
 .hp-home .m-cal-chip.is-preach.is-inactive, .hp-home .m-cal-pday.is-past .m-cal-chip.is-preach { color: var(--hm-muted); background: var(--hm-soft); }
 .hp-home .m-cal.is-planner .is-inactive { opacity: 1; }
 /* Narrow: tiles shrink and the chips become colour bars. */
 @container slot (max-width: 640px) {
 	.hp-home .m-cal-phead, .hp-home .m-cal.is-planner .m-cal-grid { gap: 3px; }
-	.hp-home .m-cal-pday { min-height: 58px; padding: 3px; border-radius: 9px; }
+	.hp-home .m-cal-pday { min-height: 58px; padding: 3px; border-radius: var(--hm-radius-sm); }
 	.hp-home .m-cal-chip { height: 5px; padding: 0; border-radius: 3px; }
 	.hp-home .m-cal-chip > * { display: none; }
 	.hp-home .m-cal-phead > div { padding: 4px 2px; text-align: center !important; }

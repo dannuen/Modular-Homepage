@@ -24,7 +24,7 @@
 .hp-home .m-roster-name { white-space: nowrap; }
 .hp-home .m-roster-title { margin-right: 4px; font-size: 0.74em; font-weight: var(--hm-row-weight); letter-spacing: 0.02em; color: var(--hm-faint); }
 .hp-home .m-roster-sep { color: var(--hm-faint); font-weight: 400; }
-.hp-home .m-roster-name.is-me { margin: 0 -1px; padding: 1px 6px; border-radius: 7px; background: var(--hm-soft); color: var(--hm-accent-ink); }
+.hp-home .m-roster-name.is-me { margin: 0 -1px; padding: 1px 6px; border-radius: var(--hm-radius-sm); background: var(--hm-soft); color: var(--hm-accent-ink); }
 .hp-home .m-roster-name a { color: inherit !important; }
 .hp-home .m-roster-name a:hover { color: var(--hm-accent-ink) !important; }
 

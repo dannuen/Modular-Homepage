@@ -87,7 +87,7 @@
 }
 .hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-group.is-late .hp-tk-count { color: var(--hm-late); }
 .hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-group .hp-tk-empty { padding: 8px 0; color: var(--hm-faint); }
-.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-row { padding: 10px 8px; margin: 0; border-radius: 10px; }
+.hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-row { padding: 10px 8px; margin: 0; border-radius: var(--hm-radius-sm); }
 .hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-row:hover, .hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-row:focus-within { background: var(--hm-hover); box-shadow: none; }
 .hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-row:hover + .hp-tk-row, .hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-row:focus-within + .hp-tk-row { box-shadow: none; }
 .hp-home[data-theme="pulpit"] .hp-tk-wrap .hp-tk-text { font-size: 0.97em; font-weight: 550; }

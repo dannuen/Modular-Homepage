@@ -4,7 +4,7 @@
 .hp-home .m-soon-day span { font-size: 0.9em; font-weight: 600; color: var(--hm-faint); }
 .hp-home .m-soon-day span.is-soon { color: var(--hm-accent-ink); }
 .hp-home .m-soon-list { display: flex; flex-direction: column; gap: 4px; margin-left: 5px; padding-left: 16px; border-left: 2px solid var(--hm-line); }
-.hp-home .m-soon-item { position: relative; margin-left: -8px; padding: 6px 8px; border-radius: 12px; cursor: pointer; transition: background 0.15s ease; }
+.hp-home .m-soon-item { position: relative; margin-left: -8px; padding: 6px 8px; border-radius: var(--hm-radius-sm); cursor: pointer; transition: background 0.15s ease; }
 .hp-home .m-soon-item:hover { background: var(--hm-hover); }
 .hp-home .m-soon-item::before { content: ""; position: absolute; left: -15px; top: 12px; width: 10px; height: 10px; border-radius: 50%; background: var(--hm-bg); box-shadow: inset 0 0 0 2px var(--hm-accent); }
 .hp-home .m-soon-item.is-next::before { background: var(--hm-accent); }

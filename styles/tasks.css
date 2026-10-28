@@ -115,7 +115,7 @@
 .hp-tk-wrap .hp-tk-pop-note { font-size: 0.86em; color: var(--tk-muted); font-style: italic; }
 .hp-tk-wrap .hp-tk-pop-type { display: flex; align-items: center; gap: 10px; font-size: 0.86em; font-weight: 600; color: var(--tk-muted); }
 .hp-tk-wrap input.hp-tk-pop-input {
-	all: unset; box-sizing: border-box; flex: 1 1 auto; min-width: 0; height: 34px; padding: 0 12px; border-radius: 10px;
+	all: unset; box-sizing: border-box; flex: 1 1 auto; min-width: 0; height: 34px; padding: 0 12px; border-radius: var(--hm-radius-sm);
 	font: inherit; font-weight: 650; color: var(--tk-text); background: var(--tk-hover); box-shadow: inset 0 0 0 1px var(--tk-line);
 }
 .hp-tk-wrap input.hp-tk-pop-input:focus { box-shadow: inset 0 0 0 1.5px var(--tk-accent); }
@@ -131,7 +131,7 @@
 .hp-tk-wrap .hp-tk-cal-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; }
 .hp-tk-wrap .hp-tk-cal-wd { padding: 2px 0 4px; text-align: center; font-size: 0.72em; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--tk-muted); }
 .hp-tk-wrap .hp-tk-cal-day {
-	height: 32px; display: grid; place-items: center; border-radius: 10px; font-size: 0.88em; font-weight: 650;
+	height: 32px; display: grid; place-items: center; border-radius: var(--hm-radius-sm); font-size: 0.88em; font-weight: 650;
 	font-variant-numeric: tabular-nums; color: var(--tk-text); background: var(--btn-bg); box-shadow: var(--btn-shadow);
 	transition: background 0.15s ease;
 }
@@ -154,14 +154,14 @@
 .hp-tk-wrap .hp-tk-empty { padding: 6px 8px 8px; font-size: 0.93em; color: var(--tk-muted); font-style: italic; }
 
 /* A task: round check, text, then tags / time / dates; the day it came from and × on the right. */
-.hp-tk-wrap .hp-tk-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 0 12px; padding: 8px; border-radius: 14px; transition: background 0.15s ease; }
+.hp-tk-wrap .hp-tk-row { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; align-items: center; gap: 0 12px; padding: 8px; border-radius: var(--hm-radius-sm); transition: background 0.15s ease; }
 .hp-tk-wrap .hp-tk-row + .hp-tk-row { box-shadow: 0 -1px 0 var(--tk-line); }
 .hp-tk-wrap .hp-tk-row:hover, .hp-tk-wrap .hp-tk-row:focus-within { background: var(--tk-hover); box-shadow: inset 0 0 0 1px var(--tk-line); }
 .hp-tk-wrap .hp-tk-row.is-new { animation: hp-tk-new 0.35s ease-out; opacity: 0.8; }
 /* An event: its start time where a to-do has its check (in a group with events the first column is wide enough for
    it, so the texts line up); dimmed once it has ended. */
 .hp-tk-wrap .hp-tk-when {
-	width: 46px; min-height: 26px; display: grid; place-items: center; padding: 3px 2px; border-radius: 8px;
+	width: 46px; min-height: 26px; display: grid; place-items: center; padding: 3px 2px; border-radius: var(--hm-radius-sm);
 	font-size: 0.8em; font-weight: 750; line-height: 1.1; text-align: center; font-variant-numeric: tabular-nums;
 	color: var(--tk-accent); background: var(--tk-soft); box-shadow: inset 0 0 0 1px var(--tk-soft-edge);
 }
@@ -221,7 +221,7 @@
    (on the same line when there is room, else on their own line at the right). */
 .hp-tk-wrap .hp-tk-edit {
 	position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 6px;
-	margin: 4px 0; padding: 6px 6px 6px 16px; border-radius: 20px; animation: hp-tk-pop 0.16s ease-out;
+	margin: 4px 0; padding: 6px 6px 6px 16px; border-radius: var(--hm-radius-sm); animation: hp-tk-pop 0.16s ease-out;
 }
 .hp-tk-wrap .hp-tk-edit:focus { outline: none; }
 .hp-tk-wrap .hp-tk-edit > input.hp-tk-input { flex: 1 1 100%; }
@@ -252,7 +252,7 @@
 /* Month: a Mon–Sun grid; today ringed; days from the next or last month faded. */
 .hp-tk-wrap .hp-tk-month { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; padding: 6px; overflow: hidden; }
 .hp-tk-wrap .hp-tk-month-wd { padding: 2px 6px 6px; font-size: 0.72em; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--tk-muted); }
-.hp-tk-wrap .hp-tk-mday { min-height: 96px; min-width: 0; display: flex; flex-direction: column; gap: 2px; padding: 4px; border-radius: 10px; box-shadow: inset 0 0 0 1px var(--tk-line); }
+.hp-tk-wrap .hp-tk-mday { min-height: 96px; min-width: 0; display: flex; flex-direction: column; gap: 2px; padding: 4px; border-radius: var(--hm-radius-sm); box-shadow: inset 0 0 0 1px var(--tk-line); }
 .hp-tk-wrap .hp-tk-mday.is-out { opacity: 0.5; }
 .hp-tk-wrap .hp-tk-mday.is-today { box-shadow: inset 0 0 0 1.5px var(--tk-soft-edge); background: var(--tk-soft); }
 .hp-tk-wrap .hp-tk-mday-num { align-self: flex-start; min-width: 24px; height: 24px; display: grid; place-items: center; --btn-pad: 0 6px; padding: var(--btn-pad); border-radius: 999px; font-size: 0.85em; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--tk-muted); }
@@ -260,7 +260,7 @@
 .hp-tk-wrap .hp-tk-mday-num:hover { color: var(--tk-text); background: var(--tk-hover); }
 .hp-tk-wrap .hp-tk-mitem { display: flex; align-items: center; gap: 5px; min-width: 0; font-size: 0.8em; line-height: 1.25; }
 .hp-tk-wrap .hp-tk-mitem-time { flex: none; font-weight: 750; font-variant-numeric: tabular-nums; color: var(--tk-accent); }
-.hp-tk-wrap .hp-tk-mitem-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; border-radius: 4px; }
+.hp-tk-wrap .hp-tk-mitem-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; border-radius: var(--hm-radius-sm); }
 .hp-tk-wrap .hp-tk-mitem-text:hover { color: var(--tk-accent); }
 .hp-tk-wrap .hp-tk-mitem.is-done .hp-tk-mitem-text { color: var(--tk-muted); text-decoration: line-through; }
 .hp-tk-wrap .hp-tk-mcheck { flex: none; width: 14px; height: 14px; display: grid; place-items: center; padding: 0; color: var(--tk-on-ink); }
@@ -268,14 +268,14 @@
 .hp-tk-wrap .hp-tk-mcheck .hp-tk-ico { opacity: 0; }
 .hp-tk-wrap .hp-tk-mitem.is-done .hp-tk-mcheck { background: var(--tk-on-bg); }
 .hp-tk-wrap .hp-tk-mitem.is-done .hp-tk-mcheck .hp-tk-ico { opacity: 1; }
-.hp-tk-wrap .hp-tk-mday-more { align-self: flex-start; --btn-pad: 0 4px; padding: var(--btn-pad); font-size: 0.76em; font-weight: 700; color: var(--tk-muted); border-radius: 4px; }
+.hp-tk-wrap .hp-tk-mday-more { align-self: flex-start; --btn-pad: 0 4px; padding: var(--btn-pad); font-size: 0.76em; font-weight: 700; color: var(--tk-muted); border-radius: var(--hm-radius-sm); }
 .hp-tk-wrap .hp-tk-mday-more:hover { color: var(--tk-accent); }
 
 /* Week: Not planned beside the calendar (above it on a narrow note). */
 .hp-tk-wrap .hp-tk-week { display: grid; grid-template-columns: minmax(170px, 220px) minmax(0, 1fr); gap: 12px; align-items: start; }
 .hp-tk-wrap .hp-tk-tray { display: flex; flex-direction: column; gap: 4px; padding: 10px; transition: box-shadow 0.15s ease; }
 .hp-tk-wrap .hp-tk-tray.is-drop { box-shadow: inset 0 0 0 2px var(--tk-accent); }
-.hp-tk-wrap .hp-tk-tray-item { display: flex; flex-direction: column; gap: 2px; padding: 7px 9px; border-radius: 10px; cursor: grab; user-select: none; touch-action: none; box-shadow: inset 0 0 0 1px var(--tk-line); background: var(--tk-pop-bg); }
+.hp-tk-wrap .hp-tk-tray-item { display: flex; flex-direction: column; gap: 2px; padding: 7px 9px; border-radius: var(--hm-radius-sm); cursor: grab; user-select: none; touch-action: none; box-shadow: inset 0 0 0 1px var(--tk-line); background: var(--tk-pop-bg); }
 .hp-tk-wrap .hp-tk-tray-item:hover { box-shadow: inset 0 0 0 1px var(--tk-soft-edge); }
 .hp-tk-wrap .hp-tk-tray-item.is-dragging { opacity: 0.4; }
 .hp-tk-wrap .hp-tk-tray-text { font-size: 0.88em; font-weight: 650; line-height: 1.25; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
@@ -288,7 +288,7 @@
 .hp-tk-wrap .hp-tk-wall { border-bottom: 1px solid var(--tk-line); padding-bottom: 4px; }
 .hp-tk-wrap .hp-tk-wall-label { align-self: center; font-size: 0.68em; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--tk-muted); }
 .hp-tk-wrap .hp-tk-wallday { min-width: 0; display: flex; flex-direction: column; gap: 2px; padding: 0 2px; }
-.hp-tk-wrap .hp-tk-wchip { display: flex; align-items: center; gap: 4px; min-width: 0; --btn-pad: 1px 6px; padding: var(--btn-pad); border-radius: 6px; font-size: 0.74em; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hp-tk-wrap .hp-tk-wchip { display: flex; align-items: center; gap: 4px; min-width: 0; --btn-pad: 1px 6px; padding: var(--btn-pad); border-radius: var(--hm-radius-sm); font-size: 0.74em; font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hp-tk-wrap .hp-tk-wchip > span:last-child { overflow: hidden; text-overflow: ellipsis; }
 .hp-tk-wrap .hp-tk-wchip.is-event { color: var(--tk-on-ink); background: var(--tk-on-bg); }
 .hp-tk-wrap .hp-tk-wchip.is-due { color: var(--tk-accent); background: var(--tk-soft); }
@@ -303,7 +303,7 @@
 /* A block: a to-do's time block (soft accent) or a timed event (solid accent); the bottom edge resizes. */
 .hp-tk-wrap .hp-tk-blk {
 	position: absolute; z-index: 2; display: flex; flex-direction: column; gap: 1px; overflow: hidden; padding: 3px 6px 6px;
-	border-radius: 7px; font-size: 0.74em; line-height: 1.2; cursor: grab; user-select: none; touch-action: none;
+	border-radius: var(--hm-radius-sm); font-size: 0.74em; line-height: 1.2; cursor: grab; user-select: none; touch-action: none;
 	color: var(--tk-text); background: var(--tk-soft); box-shadow: inset 3px 0 0 var(--tk-accent), inset 0 0 0 1px var(--tk-soft-edge);
 }
 .hp-tk-wrap .hp-tk-blk.is-event { color: var(--tk-on-ink); background: var(--tk-on-bg); box-shadow: none; }
@@ -326,7 +326,7 @@
 }
 @container (max-width: 600px) {
 	/* Add: the text on the first line; Due, Start, Time, Tag (icons until set) and Add on the second. */
-	.hp-tk-wrap .hp-tk-add { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "ico text text" "opts opts go"; gap: 4px 8px; padding: 6px; border-radius: 22px; }
+	.hp-tk-wrap .hp-tk-add { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "ico text text" "opts opts go"; gap: 4px 8px; padding: 6px; border-radius: var(--hm-radius-sm); }
 	.hp-tk-wrap .hp-tk-add > .hp-tk-kind { grid-area: ico; }
 	.hp-tk-wrap .hp-tk-kind-label { display: none; }
 	.hp-tk-wrap .hp-tk-kind-btn { --btn-pad: 0 9px; padding: var(--btn-pad); }
