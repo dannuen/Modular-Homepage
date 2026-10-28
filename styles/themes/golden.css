@@ -1,5 +1,5 @@
 /* THEME · Golden — from Dan's "Tam Dân 10 Năm" design system: ivory paper with a faint vignette, diagonal hairlines and
-   rings in gold; every card in the double gold frame (outer 60 %, inner 30 %), square corners, no shadows. Gold is
+   rings in gold (stripes 8 % and rings 10 %, under the print values 11 % and 13 %, so they read as paper on a screen); every card in the double gold frame (outer 60 %, inner 30 %), square corners, no shadows. Gold is
    line, not fill: the only solid gold is the main action. Type: Cormorant Garamond for titles, EB Garamond for text,
    Be Vietnam Pro for capital labels (lining figures). One gold-leaf line on the page: the greeting's highlight.
    Dark ("tối"): the same layout on warm charcoal with ivory text and brighter gold.
@@ -25,7 +25,8 @@
 	--gd-than: #2a2723; --gd-muted: #6b645a; --gd-faint: #6b645a;   /* than; xam-am and a step down for small text */
 	--gd-kim: #b8934a; --gd-gold-ink: #7d5f22; --gd-gold-fill: #7d5f22; --gd-gold-hover: #6a501c; /* vang-kim; vang-dam a step down */
 	--gd-frame-out: rgb(184 147 74 / 0.6); --gd-frame-in: rgb(184 147 74 / 0.3);
-	--gd-foil: linear-gradient(100deg, #9a7830, #d6b96e 30%, #a9853b 60%, #d2b572 85%, #94722c);
+	--gd-foil: linear-gradient(100deg, #8a6a26, #b8964f 30%, #94722c 60%, #bd9c57 85%, #86661f); /* the system's darker banner foil: the paper one is 1.8:1 */
+	--gd-late: #9b3a2e; --gd-soon: #8a6a26;
 	--gd-serif: "Cormorant Garamond", "EB Garamond", Georgia, serif;
 	--gd-text: "EB Garamond", "Cormorant Garamond", Georgia, serif;
 	--gd-label: "Be Vietnam Pro", "Segoe UI", Arial, sans-serif;
@@ -39,6 +40,7 @@
 	--gd-frame-out: rgb(198 164 94 / 0.6); --gd-frame-in: rgb(198 164 94 / 0.3);
 	--gd-foil: linear-gradient(100deg, #b8964f, #e8d39a 30%, #c9a75c 60%, #e2cb8c 85%, #b08e45);
 	--gd-on: 243, 236, 223;
+	--gd-late: #d98b7a; --gd-soon: #e8d39a;
 }
 
 /* ---------- Tokens ---------- */
@@ -49,6 +51,8 @@
 	--hm-line: var(--gd-frame-in); --hm-track: rgb(184 147 74 / 0.18); --hm-hover: rgb(184 147 74 / 0.1);
 	--hm-bg: var(--gd-nga); --hm-surface: var(--gd-nga); --hm-surface-2: var(--gd-nga-dam); --hm-pop: var(--gd-nga);
 	--hm-shadow: none;
+	--hm-late: var(--gd-late); --hm-soon: var(--gd-soon); --hm-live: var(--gd-gold-ink);   /* the base orange, green and red are off-palette and too faint */
+	--text-error: var(--gd-late);
 	--hm-radius: 0px; --hm-radius-sm: 0px;
 	--hm-gap: 22px; --hm-pad: 24px;
 	--hm-font: var(--gd-text);
@@ -73,6 +77,7 @@
 .hp-home[data-theme="golden"] .hp-btn:hover:not(:disabled) { transform: none; }
 .hp-home[data-theme="golden"] :is(.hp-tip, .hp-set) { background: var(--gd-nga); border: 1.5px solid var(--gd-frame-out); box-shadow: inset 0 0 0 4px var(--gd-nga), inset 0 0 0 5px var(--gd-frame-in); }
 .hp-home[data-theme="golden"] ::placeholder { color: var(--gd-muted); opacity: 1; }
+.theme-dark .hp-home[data-theme="golden"] ::placeholder { color: #c2b8aa; }
 /* Square corners on everything the theme draws: cards, buttons, switches, calendar days, dots, pop-ups, the top bar. */
 .hp-home[data-theme="golden"] :is(*, *::before, *::after),
 .hp-tb-box:has(~ .hp-home[data-theme="golden"]) :is(*, *::before, *::after),
@@ -82,6 +87,12 @@
 .hp-home[data-theme="golden"] .m-sermons-wave i { background: var(--hm-soft); box-shadow: inset 0 0 0 1px var(--gd-gold-ink); }
 .hp-home[data-theme="golden"] button.m-cal-day.is-preach { --btn-bg: transparent; color: var(--gd-gold-ink); box-shadow: inset 0 0 0 1px var(--gd-gold-ink), inset 0 0 0 3px var(--gd-nga), inset 0 0 0 4px var(--gd-frame-in); }
 .hp-home[data-theme="golden"] button.m-cal-day.is-preach .m-cal-note.has-note { background: var(--gd-gold-ink); }
+.hp-home[data-theme="golden"] button.m-cal-day.is-today:not(.is-preach) { box-shadow: inset 0 -2px 0 var(--gd-than); }   /* frames mean preaching; today is underlined */
+.hp-home[data-theme="golden"] .m-cal-ev.is-preach { background: none; box-shadow: inset 0 0 0 1px var(--gd-gold-ink); }
+.hp-home[data-theme="golden"] .m-cal-pday.is-past { opacity: 1; }
+.hp-home[data-theme="golden"] .m-cal-pday.is-today .m-cal-pnum { color: var(--gd-than); background: none; box-shadow: inset 0 -2px 0 var(--gd-than); }
+.hp-home[data-theme="golden"] .m-cal-chip.is-preach { color: var(--gd-gold-ink); background: none; box-shadow: inset 0 0 0 1px var(--gd-gold-ink); }
+.hp-home[data-theme="golden"] :is(.m-cal-chip.is-preach.is-inactive, .m-cal-pday.is-past .m-cal-chip.is-preach) { color: var(--gd-muted); background: none; box-shadow: inset 0 0 0 1px var(--gd-frame-out); }
 .hp-home[data-theme="golden"] .m-cal-legend i.is-preach { background: none; box-shadow: inset 0 0 0 1px var(--gd-gold-ink); }
 .hp-home[data-theme="golden"] .hp-switch-track { background: transparent; box-shadow: inset 0 0 0 1px var(--gd-muted); }
 .hp-home[data-theme="golden"] .hp-switch-track::after { background: var(--gd-muted); box-shadow: none; }
@@ -99,6 +110,22 @@
 .hp-home[data-theme="golden"] .m-up button.m-up-open { --btn-bg: var(--gd-gold-fill); color: var(--gd-nga); box-shadow: none; }
 .hp-home[data-theme="golden"] .m-up button.m-up-open:hover { --btn-bg: var(--gd-gold-hover); transform: none; }
 .hp-home[data-theme="golden"] .m-up-foot input:not(:checked) + .hp-switch-track { background: transparent; }
+.hp-home[data-theme="golden"] .m-up-stats { color: rgba(var(--m-on), 0.82); }
+.hp-home[data-theme="golden"] button.m-up-c1-dot.is-on { background: var(--gd-gold-ink); }
+.hp-home[data-theme="golden"] button.m-up-ink { --btn-bg: transparent; color: var(--gd-than); box-shadow: inset 0 0 0 1px var(--gd-gold-ink); }
+/* Preaching dial: chips as outlines (the track fill made "Later" 4.3:1); hour numbers at the 11px floor. */
+.hp-home[data-theme="golden"] .m-dial-chip:not(.is-next, .is-now) { background: none; box-shadow: inset 0 0 0 1px var(--gd-frame-out); }
+.hp-home[data-theme="golden"] .m-dial-hour { font-size: 11px; }
+/* Countdown Rings and Dots: gold, pale gold and ink instead of hues turned from the accent (lime, red, magenta). */
+.hp-home[data-theme="golden"] .m-cd { --cd-c1: var(--gd-gold-ink); --cd-c2: var(--gd-kim); --cd-c3: #dcc284; --cd-c4: var(--gd-than); }
+.hp-home[data-theme="golden"] .m-cd-dot.is-gone { background: none; box-shadow: inset 0 0 0 1px var(--gd-kim); }
+/* Masthead greeting: warm charcoal with a soft gold light and a gold hairline, no gold slab or shadow. */
+.hp-home[data-theme="golden"] .m-greet-mast {
+	background: radial-gradient(60% 90% at 88% 0%, rgb(214 185 110 / 0.35), transparent 70%), linear-gradient(135deg, #4a3a1c, #221c14);
+	box-shadow: inset 0 0 0 1px var(--gd-frame-out);
+}
+/* Glow greeting: its colours stay; a soft dark wash keeps the "Next preaching" line readable over the light end. */
+.hp-home[data-theme="golden"] .m-greet-glow .m-greet-next { padding: 4px 12px; background: rgb(40 24 12 / 0.4); }
 /* Flip clock: ivory tiles with a gold hairline, no shadow. */
 .hp-home[data-theme="golden"] .m-cd { --cd-face: var(--gd-nga-dam); --cd-face-2: var(--gd-nga-dam); --cd-edge: var(--gd-frame-in); }
 .hp-home[data-theme="golden"] .m-cd .m-cd-card { box-shadow: none; }
@@ -115,7 +142,7 @@
 .hp-home[data-theme="golden"] .hp-sec-title { font-size: 1.5em; }
 /* The one gold-leaf line: the greeting's highlighted words, in EB Garamond italic. */
 .hp-home[data-theme="golden"] .m-greet-title em {
-	font-family: var(--gd-text); font-style: italic; font-weight: 400; padding: 0 0.12em;
+	font-family: var(--gd-text); font-style: italic; font-weight: 400; padding: 0 0.06em 0 0;
 	background: var(--gd-foil); -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
 }
 
