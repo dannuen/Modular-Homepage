@@ -5,3 +5,4 @@ tools/harness/out*/
 tools/harness/fixtures/
 tools/checks/tmp/
 history.bundle
+.impeccable/

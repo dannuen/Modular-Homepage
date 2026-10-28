@@ -27,8 +27,8 @@
 .hp-home .m-cd-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-bottom: 14px; border-bottom: 1px solid var(--hm-line); }
 .hp-home .m-cd > .m-cd-strip { padding-right: var(--m-cd-room); }
 @container slot (max-width: 460px) {
-	.hp-home .m-cd > .hp-bar.is-float { position: static; margin: calc(var(--hm-bar-inset) - var(--hm-pad)) calc(var(--hm-bar-inset) - var(--hm-pad)) 0 0; pointer-events: auto; }
-	.hp-home .m-cd > .m-cd-strip { padding-right: 0; }
+	.hp-home .m-cd:not(.is-poster) > .hp-bar.is-float { position: static; margin: calc(var(--hm-bar-inset) - var(--hm-pad)) calc(var(--hm-bar-inset) - var(--hm-pad)) 0 0; pointer-events: auto; }
+	.hp-home .m-cd:not(.is-poster) > .m-cd-strip { padding-right: 0; }
 }
 .hp-home .m-cd-strip[hidden] { display: none; }
 .hp-home .m-cd-strip .hp-label { margin-right: 2px; }
@@ -66,6 +66,9 @@
 .hp-home .m-cd-colon { height: 1.1em; line-height: 1.02em; font-weight: 600; color: var(--hm-faint); }
 .hp-home .m-cd-colon.is-day { width: 0.14em; }
 .hp-home .m-cd.is-flip.is-live .m-cd-card { color: var(--hm-accent-ink); }
+/* On the day itself the zeros give way to the event's name, large, in every style. */
+.hp-home .m-cd.is-live .m-cd-clock { display: none; }
+.hp-home .m-cd.is-live .m-cd-title { font-size: clamp(1.9em, 8cqi, 3.6em); text-wrap: balance; }
 
 /* ---------- Motion ---------- */
 @keyframes m-cd-fold { to { transform: rotateX(-90deg); } }
@@ -117,6 +120,7 @@
 .hp-home .m-cd.is-dark .m-cd-group::after { right: -0.035em; }
 .hp-home .m-cd.is-dark .m-cd-card { --cd-r: 0; width: 0.68em; font-weight: 700; box-shadow: none; }
 .hp-home .m-cd.is-dark .m-cd-unit { color: var(--hm-text); }
+.theme-dark .hp-home .m-cd.is-dark .m-cd-cards { box-shadow: 0 0.12em 0.22em -0.08em rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(255, 255, 255, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
 
 /* Big digits: huge condensed white numbers over a photo (the note's first image), edge to edge in the card. */
 .hp-home .m-cd.is-poster { overflow: hidden; }
@@ -130,16 +134,23 @@
 .hp-home .m-cd.is-poster .m-cd-colon { width: auto; height: 1em; line-height: 0.92em; font-family: "Bahnschrift Condensed", "Arial Narrow", sans-serif; font-weight: 700; color: #fff; }
 .hp-home .m-cd.is-poster .m-cd-unit { color: #fff; }
 .hp-home .m-cd.is-poster .m-cd-stage .m-cd-kicker { color: rgba(255, 255, 255, 0.85); }
+/* Its buttons stay over the photo, white on glass (the photo starts at the card's top unless a strip is open). */
+.hp-home .m-cd.is-poster:not(:has(> .m-cd-strip:not([hidden]))) > .hp-bar .hp-knob { --btn-bg: rgba(20, 16, 12, 0.38); --btn-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5); color: #fff; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
 @container slot (max-width: 460px) {
-	.hp-home .m-cd.is-poster > .m-cd-stage { margin-top: 0; }
+	.hp-home .m-cd.is-poster > .m-cd-stage { padding-top: calc(var(--hm-tool) + var(--hm-bar-inset) * 2); }
 }
 
 /* Odometer: rolling digits in one black frame, the last digit on a light wheel. */
 .hp-home .m-cd.is-odometer .m-cd-clock { gap: 0.16em; padding: 0.1em 0.1em 0.06em; border-radius: 0.2em; background: #111; box-shadow: 0 0.1em 0.24em -0.1em rgba(0, 0, 0, 0.55); font-size: clamp(1.6em, 9cqi, 4.2em); }
-.hp-home .m-cd.is-odometer .m-cd-colon { display: none; }
+.hp-home .m-cd.is-odometer .m-cd-colon { width: 0.04em; height: 1.1em; overflow: hidden; color: transparent; background: #3a3a3a; }
 .hp-home .m-cd.is-odometer .m-cd-group { gap: 0.1em; }
 .hp-home .m-cd.is-odometer .m-cd-cards { gap: 0.04em; }
 .hp-home .m-cd.is-odometer .m-cd-card { width: 0.66em; border-radius: 0.06em; font-weight: 400; color: #efe3d3; background: linear-gradient(180deg, #0b0b0b, #3a3a3a 50%, #0b0b0b); box-shadow: none; }
 .hp-home .m-cd.is-odometer .m-cd-card.is-roll::after { content: ""; z-index: 1; inset: 0; height: auto; background: linear-gradient(180deg, rgba(0, 0, 0, 0.5), transparent 32%, transparent 68%, rgba(0, 0, 0, 0.5)); }
 .hp-home .m-cd.is-odometer .m-cd-group.is-s .m-cd-card:last-child { color: #111; background: linear-gradient(180deg, #a99d8e, #f0e7db 50%, #a99d8e); }
 .hp-home .m-cd.is-odometer .m-cd-unit { color: rgba(239, 227, 211, 0.6); }
+/* Narrow: D H M S, so the labels don't run together. */
+@container slot (max-width: 460px) {
+	.hp-home .m-cd.is-odometer .m-cd-unit { font-size: 0; letter-spacing: 0; }
+	.hp-home .m-cd.is-odometer .m-cd-unit::after { content: attr(data-short); font-size: 11px; letter-spacing: 0.12em; }
+}

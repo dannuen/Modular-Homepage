@@ -79,7 +79,6 @@ var def6 = /* @__PURE__ */ (() => {
       const joined = (list2) => list2.length < 2 ? list2.join("") : list2.slice(0, -1).join(", ") + " and " + list2.at(-1);
       const spoken2 = (st) => joined(partsOf(st).map(([n2, u]) => n2 + " " + u));
       const whenText = (x) => fmt2(x.at, x.at.year === DateTime2.now().year ? "cccc d LLLL" : "cccc d LLLL yyyy");
-      const relText = (x) => time.relLabel(time.daysUntil(x.at));
       function caption(parent, t, cls = "") {
         const cap = el(parent, "div", ("m-cd-cap " + cls).trim());
         el(cap, "div", "hp-kicker m-cd-kicker", "Counting down to");
@@ -87,7 +86,7 @@ var def6 = /* @__PURE__ */ (() => {
         if (t.emoji) el(title, "span", "m-cd-emoji", t.emoji);
         if (t.path) ui.link(title, t.path, t.title);
         else title.append(t.title);
-        el(cap, "div", "m-cd-when", whenText(t) + " · " + relText(t));
+        el(cap, "div", "m-cd-when", whenText(t)); // the clock carries the count
         return cap;
       }
       const half = (parent, cls, text) => {
@@ -168,7 +167,7 @@ var def6 = /* @__PURE__ */ (() => {
           if (i) el(clock3, "span", "m-cd-colon" + (i === 1 ? " is-day" : ""), i === 1 && skin !== "poster" ? "" : ":");
           const g = el(clock3, "div", "m-cd-group is-" + k);
           const cards = el(g, "div", "m-cd-cards");
-          el(g, "div", "m-cd-unit", many);
+          el(g, "div", "m-cd-unit", many).dataset.short = many[0];
           return { k, cards, digits: [] };
         });
         return (st) => {
