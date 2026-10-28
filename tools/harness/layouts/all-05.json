@@ -9,7 +9,7 @@
     {
       "module": "countdown",
       "w": 6,
-      "variant": "nixie"
+      "variant": "flip"
     },
     {
       "module": "active-sermons",

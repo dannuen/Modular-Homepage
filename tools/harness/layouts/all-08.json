@@ -17,7 +17,7 @@
     {
       "module": "countdown",
       "w": 12,
-      "variant": "board"
+      "variant": "odometer"
     },
     {
       "module": "calendar",

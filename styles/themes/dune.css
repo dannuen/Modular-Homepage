@@ -150,8 +150,8 @@
 .hp-home[data-theme="dune"] .hp-chip .hp-ico { color: var(--du-orange-deep); }
 /* Labels: sentence case (the reference has no capitals), a touch smaller than the text. */
 .hp-home[data-theme="dune"] .hp-label { font-size: max(11px, 0.8em); font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--du-muted); }
-/* The modules' own capital labels: sentence case too (the countdown's flip clock, nixie tubes and departure board keep
-   theirs, as part of those skins). */
+/* The modules' own capital labels: sentence case too (the countdown's flip clock keeps
+   its own). */
 .hp-home[data-theme="dune"] :is(.m-cal-wd-name, .m-recent-date span, .m-next-photo-count small, .m-roster-tile .m-roster-role, .m-sermons-rail-rel, .m-sermons-facts dt, .m-sermons-ddate span, .m-up-church),
 .hp-home[data-theme="dune"] .hp-tk-wrap :is(.hp-tk-group-head, .hp-tk-cal-wd, .hp-tk-month-wd, .hp-tk-wall-label, .hp-tk-when.is-allday) { text-transform: none; letter-spacing: 0; font-weight: 600; }
 .hp-home[data-theme="dune"] .hp-meter { height: 6px; background: var(--du-well); }
@@ -225,10 +225,8 @@
 .hp-home[data-theme="dune"] .m-up-foot .hp-switch input:checked + .hp-switch-track { background: rgb(var(--m-on)); }
 .hp-home[data-theme="dune"] .m-up-foot .hp-switch.hp-switch input:checked + .hp-switch-track::after { background: var(--m-panel); box-shadow: none; }   /* doubled: outranks the dark mode knob */
 .hp-home[data-theme="dune"] button.m-up-c1-dot.is-on { background: linear-gradient(90deg, var(--du-black), var(--du-orange)); }   /* not the accent's hue turned to lime */
-.hp-home[data-theme="dune"] .m-cd.is-live .m-cd-card { color: var(--du-orange-deep); }
+.hp-home[data-theme="dune"] .m-cd.is-flip.is-live .m-cd-card { color: var(--du-orange-deep); }
 /* Countdown rings and dots: ink, two oranges and the muted sand instead of hues turned from the accent. */
-.hp-home[data-theme="dune"] .m-cd { --cd-c1: var(--du-black); --cd-c2: #d9620e; --cd-c3: var(--du-muted); --cd-c4: var(--du-orange-deep); }
-.theme-dark .hp-home[data-theme="dune"] .m-cd { --cd-c2: var(--du-orange); --cd-c4: var(--du-orange-hi); }
 /* Calendar marks: to-dos a clear red apart from the orange events in dark; dots on a preaching day get a ring of the
    cell's ink. */
 .theme-dark .hp-home[data-theme="dune"] :is(.m-cal-marks, .m-cal-legend) i.is-todo { background: #ff6b5b; }

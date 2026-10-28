@@ -56,7 +56,7 @@ Every module is one card, with its buttons in the card's top-right corner. Title
 | Next sermon | Countdown, preparation slider and the sermons in preparation | Hero, Compact, Photo, This week, Event |
 | Coming up | The next preaching dates as a timeline | |
 | Sunday roster | Who does what this week, church by church, from the roster notes | Table, Tiles |
-| Countdown | Live countdown to dates you tag `#countdown` | Flip clock, Rings, Hourglass, Candle, Nixie tubes, Dots, Words, Departures |
+| Countdown | A live flip clock counting down to dates you tag `#countdown` | Classic, Dark flaps, Big digits (over the note's first image), Odometer |
 | Preaching dial | The next preaching day on a 12-hour clock | |
 | Active sermons | Sermons in preparation, with outline and progress | Cards, Agenda, List, Board, Desk, Table, Panel, Carousel, Profile, Photo |
 | Tasks | To-dos and events from the daily notes, with the active sermons' dates | List, Month, Week |
@@ -103,7 +103,7 @@ Open **Settings → Modular Homepage**.
 
 The defaults are set up for the author's vault, so change the name and folders to match yours. Settings and layouts are stored in the plugin's `data.json`; if it changes outside Obsidian (a sync), the plugin reads it again and redraws.
 
-Optional plugins: Templater (the create buttons make notes from templates; a missing daily note is made from the daily note template, or empty without Templater) and Periodic Notes (opens today's note; without it the plugin opens or creates it itself).
+Optional plugins: Templater (the create buttons make notes from templates; a missing daily note is made from the daily note template, or empty without Templater). Today's note is opened or created by the plugin itself, in the daily notes folder from Settings.
 
 ## Install
 

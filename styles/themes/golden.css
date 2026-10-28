@@ -116,9 +116,6 @@
 /* Preaching dial: chips as outlines (the track fill made "Later" 4.3:1); hour numbers at the 11px floor. */
 .hp-home[data-theme="golden"] .m-dial-chip:not(.is-next, .is-now) { background: none; box-shadow: inset 0 0 0 1px var(--gd-frame-out); }
 .hp-home[data-theme="golden"] .m-dial-hour { font-size: 11px; }
-/* Countdown Rings and Dots: gold, pale gold and ink instead of hues turned from the accent (lime, red, magenta). */
-.hp-home[data-theme="golden"] .m-cd { --cd-c1: var(--gd-gold-ink); --cd-c2: var(--gd-kim); --cd-c3: #dcc284; --cd-c4: var(--gd-than); }
-.hp-home[data-theme="golden"] .m-cd-dot.is-gone { background: none; box-shadow: inset 0 0 0 1px var(--gd-kim); }
 /* Masthead greeting: warm charcoal with a soft gold light and a gold hairline, no gold slab or shadow. */
 .hp-home[data-theme="golden"] .m-greet-mast {
 	background: radial-gradient(60% 90% at 88% 0%, rgb(214 185 110 / 0.35), transparent 70%), linear-gradient(135deg, #4a3a1c, #221c14);

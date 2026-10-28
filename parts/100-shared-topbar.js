@@ -35,18 +35,7 @@ function renderTopbar(env, input) {
   function notify(message) {
     new import_obsidian2.Notice(message);
   }
-  async function createFromTemplate(templatePath, folderPath, name, open) {
-    const templater = app.plugins.plugins["templater-obsidian"]?.templater;
-    const template = app.vault.getAbstractFileByPath(templatePath);
-    if (!templater || !template) {
-      notify("Templater or template not found: " + templatePath);
-      return null;
-    }
-    if (!app.vault.getAbstractFileByPath(folderPath)) await app.vault.createFolder(folderPath);
-    return templater.create_new_note_from_template(template, app.vault.getAbstractFileByPath(folderPath), name, open);
-  }
   async function openToday(newTab) {
-    if (!newTab && app.commands.executeCommandById("periodic-notes:open-daily-note")) return;
     try {
       await app.workspace.getLeaf(newTab ? "tab" : false).openFile(await dailyNote(app, env.config, DateTime.now().startOf("day")));
     } catch (err) {
@@ -56,7 +45,7 @@ function renderTopbar(env, input) {
   }
   async function newFrom([template, folder, name], what) {
     try {
-      await createFromTemplate(template, folder, name || void 0, true);
+      await createFromTemplate(app, template, folder, name || void 0, true);
     } catch (err) {
       console.error(err);
       notify("Could not create a new " + what);

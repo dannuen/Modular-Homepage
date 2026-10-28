@@ -9,7 +9,7 @@
     {
       "module": "countdown",
       "w": 4,
-      "variant": "candle"
+      "variant": "odometer"
     },
     {
       "module": "active-sermons",

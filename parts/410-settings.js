@@ -18,7 +18,12 @@ var HomeSettingTab = class extends import_obsidian9.PluginSettingTab {
     const changed = () => {
       window.clearTimeout(timer);
       timer = window.setTimeout(async () => {
-        await plugin.saveAll();
+        try {
+          await plugin.saveAll();
+        } catch (err) {
+          console.error("Modular Homepage: could not save the settings", err);
+          new import_obsidian9.Notice("Could not save the settings: " + (err.message || err));
+        }
         plugin.redrawAll();
       }, 500);
     };

@@ -105,6 +105,17 @@ async function makeDailyNote(app, cfg, path, d) {
   if (templater && template instanceof import_obsidian2.TFile) file = await templater.create_new_note_from_template(template, app.vault.getAbstractFileByPath(folder), d.toFormat("yyyy-MM-dd"), false);
   return app.vault.getAbstractFileByPath(path) || file || await app.vault.create(path, "");
 }
+// New sermons, notes and projects (homepage and top bar): a note from a Templater template, in its folder.
+async function createFromTemplate(app, templatePath, folderPath, name, open) {
+  const templater = app.plugins.plugins["templater-obsidian"]?.templater;
+  const template = app.vault.getAbstractFileByPath(templatePath);
+  if (!templater || !template) {
+    new import_obsidian2.Notice("Templater or template not found: " + templatePath);
+    return null;
+  }
+  if (!app.vault.getAbstractFileByPath(folderPath)) await app.vault.createFolder(folderPath);
+  return templater.create_new_note_from_template(template, app.vault.getAbstractFileByPath(folderPath), name, open);
+}
 function makeCore(env) {
   const { app, vault } = env;
   const doc = env.doc;
@@ -432,21 +443,11 @@ function makeCore(env) {
   }
   const present = (path) => Boolean(app.vault.getAbstractFileByPath(path));
   const openNote = (target, newTab) => app.workspace.openLinkText(target, env.sourcePath, !!newTab);
-  async function createFromTemplate(templatePath, folderPath, name, open) {
-    const templater = app.plugins.plugins["templater-obsidian"]?.templater;
-    const template = app.vault.getAbstractFileByPath(templatePath);
-    if (!templater || !template) {
-      notify("Templater or template not found: " + templatePath);
-      return null;
-    }
-    if (!app.vault.getAbstractFileByPath(folderPath)) await app.vault.createFolder(folderPath);
-    return templater.create_new_note_from_template(template, app.vault.getAbstractFileByPath(folderPath), name, open);
-  }
   async function newFrom(kind) {
     const t = C.templates[kind];
     if (!t) return;
     try {
-      await createFromTemplate(t[0], t[1], t[2] || void 0, true);
+      await createFromTemplate(app, t[0], t[1], t[2] || void 0, true);
     } catch (err) {
       console.error(err);
       notify("Could not create a new " + kind);

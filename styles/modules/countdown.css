@@ -1,35 +1,15 @@
-/* Countdown — structure and the skins. Colours come from the theme's tokens (--hm-*), through the --cd-* tokens below;
+/* Countdown: a flip clock and its styles (Classic, Dark flaps, Big digits, Odometer). Colours come from the theme's tokens (--hm-*), through the --cd-* tokens below;
    "Theme touches" at the end tune them per theme. Sizes follow the module's own width (@container slot). */
 
 /* ---------- Tokens (the default look; light and dark follow the theme) ---------- */
 .hp-home .m-cd {
 	--cd-ink: var(--hm-text);
-	--cd-face: color-mix(in srgb, var(--hm-text) 5%, var(--hm-bg));         /* flip cards and board tiles: upper half */
+	--cd-face: color-mix(in srgb, var(--hm-text) 5%, var(--hm-bg));         /* flip cards: upper half */
 	--cd-face-2: color-mix(in srgb, var(--hm-text) 8%, var(--hm-bg));       /* lower half */
 	--cd-edge: color-mix(in srgb, var(--hm-text) 10%, transparent);
 	--cd-hinge: color-mix(in srgb, var(--hm-bg) 75%, transparent);
-	--cd-c1: var(--hm-accent);                                              /* rings and dots */
-	--cd-c2: hsl(calc(var(--accent-h) + 34) 68% 64%);
-	--cd-c3: hsl(calc(var(--accent-h) - 36) 70% 60%);
-	--cd-c4: hsl(calc(var(--accent-h) - 78) 62% 52%);
-	--cd-sand: color-mix(in srgb, #d6a35a 92%, var(--hm-accent));          /* hourglass */
-	--cd-frame: color-mix(in srgb, var(--hm-text) 50%, #8b5e34);
-	--cd-glass: color-mix(in srgb, var(--hm-text) 4%, transparent);
-	--cd-glass-line: color-mix(in srgb, var(--hm-text) 34%, transparent);
-	--cd-shine: rgba(255, 255, 255, 0.6);
-	--cd-wax: #f6efe2; --cd-wax-edge: #dac9a9; --cd-wax-pool: #ebdfc8;      /* candle */
-	--cd-flame: #ffab2e; --cd-flame-core: #fff4c8; --cd-halo: 0.42;
-	--cd-plate: color-mix(in srgb, var(--hm-text) 9%, var(--hm-bg));
-	--cd-plate-edge: color-mix(in srgb, var(--hm-text) 22%, var(--hm-bg));
-	--cd-glow: #ff7a1a; --cd-glow-ink: #ffe4c6;                             /* nixie tubes */
 }
-.theme-dark .hp-home .m-cd {
-	--cd-shine: rgba(255, 255, 255, 0.16);
-	--cd-wax: #eadcc3; --cd-wax-edge: #a8916b; --cd-wax-pool: #d4c2a0;
-	--cd-halo: 0.6;
-}
-
-/* ---------- The card, the caption, and the strips of skins and dates ---------- */
+/* ---------- The card, the caption, and the strips of styles and dates ---------- */
 .hp-home .m-cd { display: flex; flex-direction: column; gap: 18px; padding: var(--hm-pad); min-width: 0; }
 .hp-home .m-cd-stage { min-width: 0; }
 .hp-home .m-cd-empty { padding: 4px 0; }
@@ -39,22 +19,16 @@
 .hp-home .m-cd-title a:hover, .hp-home .m-cd-name a:hover { color: var(--hm-accent-ink) !important; }
 .hp-home .m-cd-emoji { margin-right: 0.3em; }
 .hp-home .m-cd-when { font-size: 0.88em; color: var(--hm-muted); }
-.hp-home .m-cd-side { flex: 1 1 14em; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
-.hp-home .m-cd-big { margin-top: 10px; font-size: 2.3em; }
-.hp-home .m-cd-prog { display: flex; flex-direction: column; gap: 6px; max-width: 22em; margin-top: 6px; }
-.hp-home .m-cd-prog-head { display: flex; align-items: baseline; gap: 8px; font-size: 0.8em; color: var(--hm-muted); }
-.hp-home .m-cd-prog-head b { color: var(--hm-text); font-variant-numeric: tabular-nums; }
 /* Change look and ⚙: two round buttons over the card's top-right corner, and the strip each opens at the top of the card
-   (skins, your dates), kept clear of the buttons. The board, whose header runs to the corner, and narrow slots, where the
-   caption reaches it, give the buttons a row of their own instead (--m-cd-room 0: nothing to keep clear of). */
+   (styles, your dates), kept clear of the buttons. Narrow slots, where the caption reaches the corner, give the buttons a
+   row of their own instead. */
 .hp-home .m-cd { --m-cd-room: calc(var(--hm-tool) * 2 + 14px - (var(--hm-pad) - var(--hm-bar-inset))); }
-.hp-home .m-cd.is-board { --m-cd-room: 0px; }
 .hp-home .m-cd-look.is-open, .hp-home .m-cd-gear.is-open { color: var(--hm-accent-ink); }
 .hp-home .m-cd-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding-bottom: 14px; border-bottom: 1px solid var(--hm-line); }
 .hp-home .m-cd > .m-cd-strip { padding-right: var(--m-cd-room); }
 @container slot (max-width: 460px) {
-	.hp-home .m-cd > .hp-bar.is-float { position: static; margin: calc(var(--hm-bar-inset) - var(--hm-pad)) calc(var(--hm-bar-inset) - var(--hm-pad)) 0 0; pointer-events: auto; }
-	.hp-home .m-cd > .m-cd-strip { padding-right: 0; }
+	.hp-home .m-cd:not(.is-poster) > .hp-bar.is-float { position: static; margin: calc(var(--hm-bar-inset) - var(--hm-pad)) calc(var(--hm-bar-inset) - var(--hm-pad)) 0 0; pointer-events: auto; }
+	.hp-home .m-cd:not(.is-poster) > .m-cd-strip { padding-right: 0; }
 }
 .hp-home .m-cd-strip[hidden] { display: none; }
 .hp-home .m-cd-strip .hp-label { margin-right: 2px; }
@@ -68,15 +42,15 @@
 .hp-home .m-cd.is-live .m-cd-kicker { color: var(--hm-live); }
 .hp-home .m-cd.is-live .m-cd-kicker::before { content: ""; display: inline-block; width: 0.62em; height: 0.62em; margin-right: 0.5em; border-radius: 50%; background: var(--hm-live); vertical-align: 0.02em; animation: m-cd-pulse 1.6s ease-in-out infinite; }
 
-/* ---------- Split-flap pieces (the flip clock and the board) ---------- */
-.hp-home .m-cd :is(.m-cd-card, .m-cd-ch) { position: relative; display: inline-block; flex: none; perspective: 3em; color: var(--cd-ink); font-variant-numeric: tabular-nums; }
+/* ---------- Split-flap pieces ---------- */
+.hp-home .m-cd .m-cd-card { position: relative; display: inline-block; flex: none; perspective: 3em; color: var(--cd-ink); font-variant-numeric: tabular-nums; }
 .hp-home .m-cd :is(.m-cd-half, .m-cd-leaf) { position: absolute; left: 0; right: 0; height: 50%; overflow: hidden; -webkit-backface-visibility: hidden; backface-visibility: hidden; box-shadow: inset 0 0 0 1px var(--cd-edge); }
 .hp-home .m-cd :is(.m-cd-half, .m-cd-leaf) > span { position: absolute; left: 0; right: 0; height: 200%; display: flex; align-items: center; justify-content: center; line-height: 1; }
 .hp-home .m-cd :is(.m-cd-half.is-top, .m-cd-leaf.is-fold) { top: 0; border-radius: var(--cd-r) var(--cd-r) 0 0; background: var(--cd-face); transform-origin: 50% 100%; }
 .hp-home .m-cd :is(.m-cd-half.is-top, .m-cd-leaf.is-fold) > span { top: 0; }
 .hp-home .m-cd :is(.m-cd-half.is-bottom, .m-cd-leaf.is-unfold) { bottom: 0; border-radius: 0 0 var(--cd-r) var(--cd-r); background: var(--cd-face-2); transform-origin: 50% 0; }
 .hp-home .m-cd :is(.m-cd-half.is-bottom, .m-cd-leaf.is-unfold) > span { bottom: 0; }
-.hp-home .m-cd :is(.m-cd-card, .m-cd-ch)::after { content: ""; position: absolute; z-index: 3; left: 0; right: 0; top: calc(50% - 0.5px); height: 1px; background: var(--cd-hinge); }
+.hp-home .m-cd .m-cd-card::after { content: ""; position: absolute; z-index: 3; left: 0; right: 0; top: calc(50% - 0.5px); height: 1px; background: var(--cd-hinge); }
 .hp-home .m-cd .m-cd-leaf { z-index: 2; }
 .hp-home .m-cd .m-cd-leaf.is-fold { animation: m-cd-fold 0.26s ease-in forwards; }
 .hp-home .m-cd .m-cd-leaf.is-unfold { transform: rotateX(90deg); animation: m-cd-unfold 0.26s 0.24s ease-out forwards; }
@@ -91,210 +65,29 @@
 .hp-home .m-cd-unit { font-size: clamp(11px, 0.15em, 0.78rem); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--hm-muted); }
 .hp-home .m-cd-colon { height: 1.1em; line-height: 1.02em; font-weight: 600; color: var(--hm-faint); }
 .hp-home .m-cd-colon.is-day { width: 0.14em; }
-.hp-home .m-cd.is-live .m-cd-card { color: var(--hm-accent-ink); }
-
-/* ---------- rings: days, hours, minutes and seconds around the number ---------- */
-.hp-home .m-cd-rings { display: flex; align-items: center; gap: 30px; }
-.hp-home .m-cd-orbit { position: relative; flex: none; width: clamp(150px, 30cqi, 230px); aspect-ratio: 1; }
-.hp-home .m-cd-orbit svg { display: block; width: 100%; height: 100%; transform: rotate(-90deg); }
-.hp-home .m-cd-ring-track { stroke: var(--hm-track); }
-.hp-home .m-cd-ring-arc { transition: stroke-dasharray 0.6s ease, opacity 0.3s ease; }
-.hp-home .m-cd-ring-arc.is-s { transition: opacity 0.3s ease; }
-.hp-home .m-cd-ring-arc.is-d { stroke: var(--cd-c1); }
-.hp-home .m-cd-ring-arc.is-h { stroke: var(--cd-c2); }
-.hp-home .m-cd-ring-arc.is-m { stroke: var(--cd-c3); }
-.hp-home .m-cd-ring-arc.is-s { stroke: var(--cd-c4); }
-.hp-home .m-cd-orbit-mid { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center !important; }
-.hp-home .m-cd-orbit-mid b { font-size: clamp(1.4em, 5cqi, 2.3em); }
-.hp-home .m-cd-orbit-mid span { font-size: 0.74em; color: var(--hm-muted); font-variant-numeric: tabular-nums; }
-.hp-home .m-cd-legend { display: grid; grid-template-columns: repeat(2, minmax(0, max-content)); gap: 6px 22px; margin-top: 12px; }
-.hp-home .m-cd-leg { display: flex; align-items: baseline; gap: 7px; font-size: 0.9em; color: var(--hm-muted); }
-.hp-home .m-cd-leg i { flex: none; width: 0.62em; height: 0.62em; border-radius: 50%; align-self: center; }
-.hp-home .m-cd-leg b { font-size: 1.35em; color: var(--hm-text); }
-.hp-home .m-cd.is-live .m-cd-ring-arc { animation: m-cd-pulse 2.4s ease-in-out infinite; }
-.hp-home .m-cd.is-live .m-cd-legend { display: none; }
-.hp-home .m-cd-leg.is-d i { background: var(--cd-c1); }
-.hp-home .m-cd-leg.is-h i { background: var(--cd-c2); }
-.hp-home .m-cd-leg.is-m i { background: var(--cd-c3); }
-.hp-home .m-cd-leg.is-s i { background: var(--cd-c4); }
-
-/* ---------- hourglass and candle: a figure beside the caption ---------- */
-.hp-home :is(.m-cd-glass, .m-cd-candle) { display: flex; align-items: center; gap: 30px; }
-.hp-home .m-cd-fig { flex: none; width: clamp(88px, 18cqi, 140px); }
-.hp-home .m-cd-candle .m-cd-fig { width: clamp(96px, 20cqi, 160px); }
-.hp-home .m-cd-fig svg { display: block; width: 100%; height: auto; overflow: visible; }
-.hp-home .m-cd-frame { fill: var(--cd-frame); }
-.hp-home .m-cd-glass-fill { fill: var(--cd-glass); }
-.hp-home .m-cd-glass-line { stroke: var(--cd-glass-line); stroke-width: 1.5; }
-.hp-home .m-cd-shine { stroke: var(--cd-shine); stroke-width: 2.2; stroke-linecap: round; }
-.hp-home .m-cd-sand { fill: var(--cd-sand); }
-.hp-home .m-cd-stream { stroke: var(--cd-sand); stroke-width: 1.8; stroke-dasharray: 2 3; animation: m-cd-fall 0.45s linear infinite; transition: opacity 0.3s ease; }
-.hp-home .m-cd-turn { transform-origin: 60px 100px; transition: transform 1.4s cubic-bezier(0.6, -0.25, 0.3, 1.3); }
-.hp-home .m-cd.is-live .m-cd-turn { transform: rotate(180deg); }
-.hp-home .m-cd.is-live .m-cd-stream { opacity: 0 !important; }
-.hp-home .m-cd-halo-a { stop-color: var(--cd-flame); stop-opacity: var(--cd-halo); }
-.hp-home .m-cd-halo-b { stop-color: var(--cd-flame); stop-opacity: 0; }
-.hp-home .m-cd-halo { transform-box: fill-box; transform-origin: center; animation: m-cd-glow 3.4s ease-in-out infinite; transition: scale 0.6s ease; }
-.hp-home .m-cd-wax-mid { stop-color: var(--cd-wax); }
-.hp-home .m-cd-wax-edge { stop-color: var(--cd-wax-edge); }
-.hp-home .m-cd-pool { fill: var(--cd-wax-pool); }
-.hp-home .m-cd-plate { fill: var(--cd-plate); stroke: var(--hm-line); stroke-width: 1; }
-.hp-home .m-cd-plate-edge { fill: var(--cd-plate-edge); }
-.hp-home .m-cd-ribbon { fill: var(--hm-accent); opacity: 0.85; }
-.hp-home .m-cd-wick { stroke: #3b2d22; stroke-width: 1.7; stroke-linecap: round; }
-.hp-home .m-cd-flame { transform-box: fill-box; transform-origin: 50% 100%; animation: m-cd-flicker 1.9s ease-in-out infinite; transition: scale 0.6s ease; }
-.hp-home .m-cd-flame-out { fill: var(--cd-flame); }
-.hp-home .m-cd-flame-in { fill: var(--cd-flame-core); }
-.hp-home .m-cd-flame-blue { fill: #7fb0ff; opacity: 0.55; }
-.hp-home .m-cd.is-live .m-cd-flame { scale: 1.35; animation-duration: 0.9s; }
-.hp-home .m-cd.is-live .m-cd-halo { scale: 1.35; }
-
-/* ---------- nixie: glowing tubes in a dark case ---------- */
-.hp-home .m-cd-nixie { display: flex; flex-direction: column; gap: 18px; }
-.hp-home .m-cd-tubes {
-	align-self: center; display: flex; align-items: flex-start; justify-content: center; gap: 0.1em; max-width: 100%;
-	padding: 0.28em 0.32em 0.2em; border-radius: var(--hm-radius-sm); font-size: clamp(1.6em, 10.4cqi, 4.6em);
-	background: linear-gradient(180deg, #2a211c, #140f0c);
-	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.09), inset 0 -0.05em 0.1em rgba(0, 0, 0, 0.55), 0 22px 26px -22px rgba(0, 0, 0, 0.7);
-}
-.hp-home .m-cd-tgroup { display: flex; flex-direction: column; align-items: center; gap: 0.08em; }
-.hp-home .m-cd-trow { display: flex; gap: 0.07em; }
-.hp-home .m-cd-tube {
-	position: relative; display: block; width: 0.66em; height: 1.16em; overflow: hidden;
-	border-radius: 0.33em 0.33em 0.08em 0.08em / 0.28em 0.28em 0.06em 0.06em;
-	background:
-		radial-gradient(ellipse 70% 42% at 50% 50%, color-mix(in srgb, var(--cd-glow) 18%, transparent), transparent 75%),
-		repeating-linear-gradient(60deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 4px),
-		repeating-linear-gradient(-60deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 4px),
-		linear-gradient(90deg, #110c0a, #2c231e 48%, #110c0a);
-	box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.13), inset 0.05em 0 0.08em rgba(255, 255, 255, 0.05);
-}
-.hp-home .m-cd-tube::before { content: ""; position: absolute; z-index: 2; left: 0; right: 0; bottom: 0; height: 0.1em; background: linear-gradient(180deg, #43372f, #19130f); }
-.hp-home .m-cd-tube::after { content: ""; position: absolute; z-index: 2; top: 0.07em; bottom: 0.2em; left: 0.08em; width: 0.07em; border-radius: 1em; background: linear-gradient(180deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0)); }
-.hp-home :is(.m-cd-ghosts, .m-cd-lit) { position: absolute; inset: 0 0 0.1em; display: grid; place-items: center; font-family: "Bahnschrift", "DIN Alternate", "Arial Narrow", var(--hm-font); font-weight: 300; font-size: 0.9em; line-height: 1; }
-.hp-home .m-cd-ghosts > span { grid-area: 1 / 1; color: rgba(255, 196, 150, 0.06); }
-.hp-home .m-cd-lit { color: var(--cd-glow-ink); text-shadow: 0 0 0.03em #fff, 0 0 0.08em var(--cd-glow), 0 0 0.2em var(--cd-glow), 0 0 0.45em color-mix(in srgb, var(--cd-glow) 70%, transparent); }
-.hp-home .m-cd-neon { display: flex; flex-direction: column; justify-content: center; gap: 0.2em; height: 1.16em; padding: 0 0.03em; }
-.hp-home .m-cd-neon i { width: 0.09em; height: 0.09em; border-radius: 50%; background: var(--cd-glow-ink); box-shadow: 0 0 0.06em var(--cd-glow), 0 0 0.18em var(--cd-glow); animation: m-cd-blink 2s steps(1, end) infinite; }
-.hp-home .m-cd-tlabel { font-size: max(11px, clamp(0.56rem, 0.13em, 0.74rem)); font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255, 214, 178, 0.55); }
-
-/* ---------- dots: an hour, day or week each ---------- */
-.hp-home .m-cd-dots { display: flex; align-items: flex-start; gap: 30px; }
-.hp-home .m-cd-dots .m-cd-side { flex: 0 1 16em; }
-.hp-home .m-cd-count { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin-top: 10px; }
-.hp-home .m-cd-count .m-cd-big { margin: 0; }
-.hp-home .m-cd-count span { color: var(--hm-muted); }
-.hp-home .m-cd-dotnote { font-size: 0.78em; color: var(--hm-faint); }
-.hp-home .m-cd-field { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
-.hp-home .m-cd-drow { display: grid; grid-template-columns: 3.5em repeat(24, minmax(0, 1fr)); align-items: center; gap: 4px; }
-.hp-home .m-cd-field.is-day { max-width: 25em; }
-.hp-home .m-cd-field.is-day .m-cd-drow { grid-template-columns: 2.4em repeat(7, minmax(0, 1fr)); gap: 6px; }
-.hp-home .m-cd-wrow { display: grid; grid-template-columns: repeat(13, minmax(0, 1fr)); gap: 6px; max-width: 30em; }
-.hp-home .m-cd-dlabel { font-size: 0.72em; color: var(--hm-muted); white-space: nowrap; }
-.hp-home .m-cd-hlabel { font-size: max(11px, 0.66em); color: var(--hm-faint); text-align: center !important; }
-.hp-home .m-cd-dot { display: block; width: 100%; max-width: 18px; aspect-ratio: 1; justify-self: center; border-radius: 50%; box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--hm-text) 20%, transparent); }
-.hp-home .m-cd-field.is-day .m-cd-dot { max-width: 26px; }
-.hp-home .m-cd-dot.is-out { visibility: hidden; }
-.hp-home .m-cd-dot.is-gone { background: color-mix(in srgb, var(--cd-c1) 55%, transparent); box-shadow: none; }
-.hp-home .m-cd-dot.is-now { background: var(--cd-c1); box-shadow: 0 0 0 3px color-mix(in srgb, var(--cd-c1) 28%, transparent); animation: m-cd-pulse 2s ease-in-out infinite; }
-.hp-home .m-cd-dot.is-target { background: radial-gradient(circle, var(--cd-c4) 0 34%, transparent 38%); box-shadow: inset 0 0 0 2px var(--cd-c4); }
-
-/* ---------- words: the time written out ---------- */
-.hp-home .m-cd-words { display: flex; flex-direction: column; gap: 10px; max-width: 46em; }
-.hp-home .m-cd-sentence { margin: 0; font-family: var(--hm-font-display); font-size: clamp(1.5em, 5cqi, 2.7em); font-weight: var(--hm-display-weight); letter-spacing: var(--hm-display-spacing); line-height: 1.14; text-wrap: balance; }
-.hp-home .m-cd-sentence em { font-style: normal; color: var(--hm-accent-ink); }
-.hp-home .m-cd-until { margin: 0; font-size: 1.04em; line-height: 1.45; color: var(--hm-muted); }
-.hp-home .m-cd-name { font-weight: 650; color: var(--hm-text); }
-.hp-home .m-cd-words .m-cd-when { font-size: 0.82em; color: var(--hm-faint); }
-
-/* ---------- board: every countdown on a departures board ---------- */
-/* One grid for the whole board, so the columns line up; each row takes it over (subgrid). */
-.hp-home .m-cd.is-board { --cd-face: color-mix(in srgb, var(--hm-text) 9%, var(--hm-bg)); --cd-face-2: color-mix(in srgb, var(--hm-text) 13%, var(--hm-bg)); --cd-edge: color-mix(in srgb, var(--hm-text) 8%, transparent); }
-.hp-home .m-cd-board { display: grid; grid-template-columns: 1em minmax(0, 1fr) auto auto; column-gap: 18px; margin: -6px -6px 0; font-family: var(--font-monospace, ui-monospace, "SF Mono", Consolas, monospace); }
-.hp-home .m-cd-brow { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: center; padding: 9px 6px; border-top: 1px solid var(--hm-line); border-radius: 8px; }
-.hp-home .m-cd-brow.is-head { padding-block: 4px 8px; border-top: 0; font-family: var(--hm-font); font-size: 0.7em; font-weight: 750; letter-spacing: 0.1em; text-transform: uppercase; color: var(--hm-muted); }
-.hp-home .m-cd-brow.is-head .m-cd-bleft { text-align: right !important; }
-.hp-home .m-cd-brow[role="link"] { cursor: pointer; }
-.hp-home .m-cd-brow[role="link"]:hover { background: var(--hm-hover); }
-.hp-home .m-cd-bname { min-width: 0; overflow: hidden; }
-.hp-home .m-cd-bname .m-cd-flaps { -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 2.5em), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 2.5em), transparent); }
-.hp-home .m-cd-bsub { display: none; min-width: 0; font-family: var(--hm-font); font-size: 0.78em; color: var(--hm-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.hp-home .m-cd-flaps { display: flex; gap: 2px; }
-.hp-home .m-cd .m-cd-ch { --cd-r: 3px; width: 0.95em; height: 1.4em; font-weight: 650; font-size: 1.02em; perspective: 2em; }
-.hp-home .m-cd-blamp { display: grid; place-items: center; }
-.hp-home .m-cd-blamp i { width: 8px; height: 8px; border-radius: 50%; background: var(--hm-track); }
-.hp-home .m-cd-brow.is-soon .m-cd-blamp i { background: var(--hm-soon); box-shadow: 0 0 6px var(--hm-soon); }
-.hp-home .m-cd-brow.is-live .m-cd-blamp i { background: var(--hm-live); box-shadow: 0 0 8px var(--hm-live); animation: m-cd-blink 1.2s steps(1, end) infinite; }
-.hp-home .m-cd-brow.is-live .m-cd-bleft .m-cd-ch { color: var(--hm-live); }
-
-/* ---------- Narrower modules ---------- */
-/* A narrower board: no When column; each row is the name, then the date in words and the time left under it. */
-@container slot (max-width: 760px) {
-	.hp-home .m-cd-board { display: flex; flex-direction: column; }
-	.hp-home .m-cd-brow { grid-template-columns: 1em minmax(0, 1fr) auto; grid-template-areas: "lamp name name" "lamp sub left"; gap: 6px 12px; }
-	.hp-home .m-cd-brow.is-head { grid-template-areas: "lamp name left"; }
-	.hp-home .m-cd-blamp { grid-area: lamp; }
-	.hp-home .m-cd-bname { grid-area: name; }
-	.hp-home .m-cd-bsub { grid-area: sub; display: block; }
-	.hp-home .m-cd-bleft { grid-area: left; justify-self: end; }
-	.hp-home .m-cd-bwhen, .hp-home .m-cd-brow.is-head .m-cd-bsub { display: none; }
-}
-@container slot (max-width: 560px) {
-	.hp-home .m-cd-rings { flex-direction: column; align-items: stretch; gap: 18px; }
-	.hp-home .m-cd-orbit { align-self: center; width: clamp(150px, 56cqi, 220px); }
-	.hp-home .m-cd-rings .m-cd-side { flex: none; }
-	.hp-home .m-cd-dots { flex-direction: column; gap: 16px; }
-	.hp-home .m-cd-dots .m-cd-side { flex: none; }
-	.hp-home .m-cd-field { width: 100%; }
-	.hp-home .m-cd-drow { grid-template-columns: 3em repeat(24, minmax(0, 1fr)); gap: 2px; }
-	.hp-home .m-cd-dlabel { font-size: max(11px, 0.66em); }
-	.hp-home :is(.m-cd-glass, .m-cd-candle) { gap: 18px; }
-	.hp-home .m-cd-fig { width: clamp(76px, 26cqi, 120px); }
-	.hp-home .m-cd-candle .m-cd-fig { width: clamp(80px, 28cqi, 130px); }
-	.hp-home .m-cd-big { font-size: 1.8em; }
-	.hp-home .m-cd .m-cd-ch { width: 0.8em; height: 1.36em; font-size: 0.86em; }
-	.hp-home .m-cd-board { padding: 6px 8px; }
-	.hp-home .m-cd-sentence { font-size: clamp(1.35em, 7cqi, 2em); }
-}
-@container slot (max-width: 330px) {
-	.hp-home :is(.m-cd-glass, .m-cd-candle) { flex-direction: column; align-items: flex-start; }
-	.hp-home :is(.m-cd-glass, .m-cd-candle) .m-cd-side { flex: none; }
-}
+.hp-home .m-cd.is-flip.is-live .m-cd-card { color: var(--hm-accent-ink); }
+/* On the day itself the zeros give way to the event's name, large, in every style. */
+.hp-home .m-cd.is-live .m-cd-clock { display: none; }
+.hp-home .m-cd.is-live .m-cd-title { font-size: clamp(1.9em, 8cqi, 3.6em); text-wrap: balance; }
 
 /* ---------- Motion ---------- */
 @keyframes m-cd-fold { to { transform: rotateX(-90deg); } }
 @keyframes m-cd-unfold { to { transform: rotateX(0deg); } }
-@keyframes m-cd-fall { to { stroke-dashoffset: -5; } }
+@keyframes m-cd-drop { from { opacity: 0; transform: translateY(-0.12em); } }
 @keyframes m-cd-pulse { 50% { opacity: 0.45; } }
-@keyframes m-cd-blink { 50% { opacity: 0.25; } }
-@keyframes m-cd-glow { 0%, 100% { opacity: 1; } 30% { opacity: 0.86; } 55% { opacity: 0.96; } 80% { opacity: 0.82; } }
-@keyframes m-cd-flicker {
-	0%, 100% { transform: scale(1, 1) skewX(0deg); }
-	20% { transform: scale(0.97, 1.05) skewX(-2deg); }
-	45% { transform: scale(1.03, 0.97) skewX(1.5deg); }
-	70% { transform: scale(0.98, 1.04) skewX(-1deg); }
-}
 @media (prefers-reduced-motion: reduce) {
 	.hp-home .m-cd *, .hp-home .m-cd *::before { animation: none !important; transition: none !important; }
 }
 
 /* ---------- Theme touches ---------- */
-/* Frosted: acrylic flaps, its mint, teal and blush for the rings and dots, mint tubes. */
+/* Frosted: acrylic flaps. */
 .hp-home[data-theme="frosted"] .m-cd {
 	--cd-ink: var(--fg-teal);
 	--cd-face: linear-gradient(180deg, var(--fg-pill-a), var(--fg-pill-b));
 	--cd-face-2: linear-gradient(180deg, var(--fg-pill-b), var(--fg-panel-a));
 	--cd-edge: var(--fg-edge);
-	--cd-c1: var(--fg-mint-b); --cd-c2: var(--fg-teal); --cd-c3: #eeb0ad; --cd-c4: #d9b98c;
-	--cd-sand: #dcbf92;
-	--cd-frame: color-mix(in srgb, var(--fg-teal) 55%, var(--fg-text));
-	--cd-glow: #2fe0b8; --cd-glow-ink: #e2fff7;
 }
 .hp-home[data-theme="frosted"] .m-cd .m-cd-card { box-shadow: 0 0.06em 0 -0.02em var(--fg-lip), 0 0.12em 0.2em -0.1em var(--fg-shadow); }
-.hp-home[data-theme="frosted"] .m-cd-tubes { background: linear-gradient(180deg, #23302f, #111917); }
-.hp-home[data-theme="frosted"] .m-cd-tube { background: radial-gradient(ellipse 70% 42% at 50% 50%, rgba(47, 224, 184, 0.16), transparent 75%), repeating-linear-gradient(60deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 4px), repeating-linear-gradient(-60deg, rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 4px), linear-gradient(90deg, #0b1211, #1f2b29 48%, #0b1211); }
-.hp-home[data-theme="frosted"] .m-cd-ghosts > span { color: rgba(170, 255, 230, 0.06); }
-.hp-home[data-theme="frosted"] .m-cd-tlabel { color: rgba(190, 255, 235, 0.5); }
 .hp-home[data-theme="frosted"] button.m-cd-chip.is-on { --btn-bg: linear-gradient(180deg, var(--fg-mint-a), var(--fg-mint-b)); --btn-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7); color: var(--fg-mint-ink); }
 /* Aurora: glass flaps. */
 .hp-home[data-theme="aurora"] .m-cd {
@@ -302,11 +95,67 @@
 	--cd-face-2: color-mix(in srgb, var(--background-primary) 56%, transparent);
 	--cd-edge: color-mix(in srgb, var(--text-normal) 12%, transparent);
 }
-/* Pulpit: no box, a serif for the numbers; the words in italic. */
-.hp-home[data-theme="pulpit"] .m-cd { padding-inline: 0; }
+/* Pulpit: no box, lighter numbers. */
 .hp-home[data-theme="pulpit"] .m-cd .m-cd-card { font-weight: 500; box-shadow: none; }
 .hp-home[data-theme="pulpit"] .m-cd { --cd-face: var(--background-primary); --cd-face-2: color-mix(in srgb, var(--text-normal) 3%, var(--background-primary)); }
-.hp-home[data-theme="pulpit"] .m-cd-sentence { font-weight: 450; }
-.hp-home[data-theme="pulpit"] .m-cd-sentence em { font-style: italic; }
+.hp-home[data-theme="pulpit"] .m-cd:not(.is-poster) { padding-inline: 0; }
 .hp-home[data-theme="pulpit"] .m-cd-strip { border-bottom: 0; padding-bottom: 0; }
 
+
+/* ---------- Styles (after the theme touches: each style keeps its own colours in every theme) ---------- */
+/* Rolling digits (Odometer): a strip of 0-9 slides up to the digit (--n). */
+.hp-home .m-cd .m-cd-card.is-roll { overflow: hidden; perspective: none; }
+.hp-home .m-cd .m-cd-card.is-roll::after { content: none; }
+.hp-home .m-cd-roll { position: absolute; left: 0; right: 0; top: 0; height: 1000%; display: flex; flex-direction: column; transform: translateY(calc(var(--n, 0) * -10%)); transition: transform 0.5s cubic-bezier(0.3, 0.7, 0.3, 1); }
+.hp-home .m-cd-roll > span { flex: 1; display: flex; align-items: center; justify-content: center; line-height: 1; }
+
+/* Dark flaps: a dark card per unit with a metal pin on each side, white digits. */
+.hp-home .m-cd.is-dark { --cd-ink: #f4f4f2; --cd-face: #2b2b2e; --cd-face-2: #212124; --cd-edge: transparent; --cd-hinge: transparent; }
+.hp-home .m-cd.is-dark .m-cd-clock { gap: 0.22em; }
+.hp-home .m-cd.is-dark .m-cd-colon { display: none; }
+.hp-home .m-cd.is-dark .m-cd-group { position: relative; gap: 0.24em; }
+.hp-home .m-cd.is-dark .m-cd-cards { position: relative; gap: 0; padding: 0 0.12em; border-radius: 0.12em; background: linear-gradient(180deg, #2b2b2e 50%, #212124 50%); box-shadow: 0 0.12em 0.22em -0.08em rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.07); }
+.hp-home .m-cd.is-dark .m-cd-cards::after { content: ""; position: absolute; z-index: 3; left: 0; right: 0; top: calc(50% - 0.5px); height: 1.5px; background: rgba(0, 0, 0, 0.75); }
+.hp-home .m-cd.is-dark .m-cd-group::before, .hp-home .m-cd.is-dark .m-cd-group::after { content: ""; position: absolute; z-index: 4; top: 0.41em; width: 0.07em; height: 0.28em; border-radius: 0.03em; background: linear-gradient(90deg, #55555a, #dcdce0 50%, #55555a); box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.45); }
+.hp-home .m-cd.is-dark .m-cd-group::before { left: -0.035em; }
+.hp-home .m-cd.is-dark .m-cd-group::after { right: -0.035em; }
+.hp-home .m-cd.is-dark .m-cd-card { --cd-r: 0; width: 0.68em; font-weight: 700; box-shadow: none; }
+.hp-home .m-cd.is-dark .m-cd-unit { color: var(--hm-text); }
+.theme-dark .hp-home .m-cd.is-dark .m-cd-cards { box-shadow: 0 0.12em 0.22em -0.08em rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(255, 255, 255, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
+
+/* Big digits: huge condensed white numbers over a photo (the note's first image), edge to edge in the card. */
+.hp-home .m-cd.is-poster { overflow: hidden; }
+.hp-home .m-cd.is-poster > .m-cd-stage { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; }
+.hp-home .m-cd.is-poster > .m-cd-stage { position: relative; isolation: isolate; margin: calc(-1 * var(--hm-pad)); padding: calc(var(--hm-pad) * 1.6) var(--hm-pad); color: #fff; --hm-text: #fff; --hm-muted: rgba(255, 255, 255, 0.82); --hm-accent-ink: #fff; }
+.hp-home .m-cd.is-poster > .m-cd-strip:not([hidden]) ~ .m-cd-stage { margin-top: 0; }
+.hp-home .m-cd-photo { position: absolute; inset: 0; z-index: -2; filter: grayscale(0.5) sepia(0.3) brightness(0.85); }
+.hp-home .m-cd-tint { position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(24, 18, 12, 0.3), rgba(24, 18, 12, 0.62)); }
+.hp-home .m-cd.is-poster .m-cd-clock { gap: 0.03em; font-size: clamp(2.4em, 14cqi, 7em); }
+.hp-home .m-cd.is-poster .m-cd-cards { gap: 0.02em; }
+.hp-home .m-cd.is-poster .m-cd-card { width: 0.6em; height: 1em; font-family: "Bahnschrift Condensed", "DIN Condensed", "Arial Narrow", var(--hm-font-display); font-weight: 700; font-stretch: condensed; color: #fff; box-shadow: none; text-shadow: 0 0.03em 0.18em rgba(0, 0, 0, 0.35); }
+.hp-home .m-cd .m-cd-card.is-drop { display: inline-flex; align-items: center; justify-content: center; line-height: 1; }
+.hp-home .m-cd .m-cd-card.is-drop::after { content: none; }
+.hp-home .m-cd .m-cd-card.is-drop.is-new { animation: m-cd-drop 0.35s cubic-bezier(0.3, 0.7, 0.3, 1); }
+.hp-home .m-cd.is-poster .m-cd-colon { width: auto; height: 1em; line-height: 0.92em; font-family: "Bahnschrift Condensed", "Arial Narrow", sans-serif; font-weight: 700; color: #fff; }
+.hp-home .m-cd.is-poster .m-cd-unit { color: #fff; }
+.hp-home .m-cd.is-poster .m-cd-stage .m-cd-kicker { color: rgba(255, 255, 255, 0.85); }
+/* Its buttons stay over the photo, white on glass (the photo starts at the card's top unless a strip is open). */
+.hp-home .m-cd.is-poster:not(:has(> .m-cd-strip:not([hidden]))) > .hp-bar .hp-knob { --btn-bg: rgba(20, 16, 12, 0.38); --btn-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.5); color: #fff; -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
+@container slot (max-width: 460px) {
+	.hp-home .m-cd.is-poster > .m-cd-stage { padding-top: calc(var(--hm-tool) + var(--hm-bar-inset) * 2); }
+}
+
+/* Odometer: rolling digits in one black frame, the last digit on a light wheel. */
+.hp-home .m-cd.is-odometer .m-cd-clock { gap: 0.16em; padding: 0.1em 0.1em 0.06em; border-radius: 0.2em; background: #111; box-shadow: 0 0.1em 0.24em -0.1em rgba(0, 0, 0, 0.55); font-size: clamp(1.6em, 9cqi, 4.2em); }
+.hp-home .m-cd.is-odometer .m-cd-colon { width: 0.04em; height: 1.1em; overflow: hidden; color: transparent; background: #3a3a3a; }
+.hp-home .m-cd.is-odometer .m-cd-group { gap: 0.1em; }
+.hp-home .m-cd.is-odometer .m-cd-cards { gap: 0.04em; }
+.hp-home .m-cd.is-odometer .m-cd-card { width: 0.66em; border-radius: 0.06em; font-weight: 400; color: #efe3d3; background: linear-gradient(180deg, #0b0b0b, #3a3a3a 50%, #0b0b0b); box-shadow: none; }
+.hp-home .m-cd.is-odometer .m-cd-card.is-roll::after { content: ""; z-index: 1; inset: 0; height: auto; background: linear-gradient(180deg, rgba(0, 0, 0, 0.5), transparent 32%, transparent 68%, rgba(0, 0, 0, 0.5)); }
+.hp-home .m-cd.is-odometer .m-cd-group.is-s .m-cd-card:last-child { color: #111; background: linear-gradient(180deg, #a99d8e, #f0e7db 50%, #a99d8e); }
+.hp-home .m-cd.is-odometer .m-cd-unit { color: rgba(239, 227, 211, 0.6); }
+/* Narrow: D H M S, so the labels don't run together. */
+@container slot (max-width: 460px) {
+	.hp-home .m-cd.is-odometer .m-cd-unit { font-size: 0; letter-spacing: 0; }
+	.hp-home .m-cd.is-odometer .m-cd-unit::after { content: attr(data-short); font-size: 11px; letter-spacing: 0.12em; }
+}
