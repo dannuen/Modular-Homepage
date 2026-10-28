@@ -12,7 +12,7 @@
     {
       "module": "countdown",
       "w": 4,
-      "variant": "dots"
+      "variant": "dark"
     },
     {
       "module": "active-sermons",

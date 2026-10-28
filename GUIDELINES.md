@@ -27,7 +27,7 @@ Read this before changing the plugin. These rules come from the unified card wor
 
 - The Dune theme, the Event card in Next sermon, and the Glow greeting.
 - Pomodoro's pixel art. Its outer box follows the theme.
-- Countdown's Nixie and Departures fonts. Next sermon's Photo padding.
+- Countdown is a flip clock only; its looks are styles of that clock (Classic, Dark flaps, Big digits, Odometer), and Dark flaps, Big digits and Odometer keep their own colours in every theme. Next sermon's Photo padding.
 - Pulpit is hairline blocks with no side padding, so its buttons line up with the content's right edge.
 - Countdown dates come only from note lines like `- Christmas #countdown [[2026-12-24]]`, with no presets.
 

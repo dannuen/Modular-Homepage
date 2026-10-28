@@ -34,15 +34,15 @@
 
 /* Every module is a block between hairlines, flush with the column; its buttons sit at the right edge.
    (The Event card keeps its own look.) */
-.hp-home[data-theme="pulpit"] .hp-body > .hp-card:not(.m-next-ev) { padding-inline: 0; }
-.hp-home[data-theme="pulpit"] .hp-body > .hp-card:not(.m-next-ev) > .hp-bar { margin-right: 0; }
-.hp-home[data-theme="pulpit"] .hp-body > .hp-card:not(.m-next-ev) > .hp-bar.is-float { right: 0; }
-.hp-home[data-theme="pulpit"] .m-cd:not(.is-board) { --m-cd-room: calc(var(--hm-tool) * 2 + 14px); }
+.hp-home[data-theme="pulpit"] .hp-body > .hp-card:not(.m-next-ev, .is-poster) { padding-inline: 0; }
+.hp-home[data-theme="pulpit"] .hp-body > .hp-card:not(.m-next-ev, .is-poster) > .hp-bar { margin-right: 0; }
+.hp-home[data-theme="pulpit"] .hp-body > .hp-card:not(.m-next-ev, .is-poster) > .hp-bar.is-float { right: 0; }
+.hp-home[data-theme="pulpit"] .m-cd:not(.is-poster) { --m-cd-room: calc(var(--hm-tool) * 2 + 14px); }
 .hp-home[data-theme="pulpit"] .m-up > .hp-set { right: 0; }
 .hp-home[data-theme="pulpit"] .m-next:is(.is-compact, .is-hero) > .m-next-card { padding-inline: 0; }
 .hp-home[data-theme="pulpit"] .m-stats-band .m-stats-num:first-child { padding-left: 0; }
 .hp-home[data-theme="pulpit"] .m-stats-band .m-stats-num:last-child { padding-right: 0; }
-.hp-home[data-theme="pulpit"] :is(.m-cd-board, .m-proj-scroll, .m-sermons-scroll) { margin-inline: 0; }   /* flush cards: the board's bleed would scroll sideways */
+.hp-home[data-theme="pulpit"] :is(.m-proj-scroll, .m-sermons-scroll) { margin-inline: 0; }
 .hp-home[data-theme="pulpit"] .m-cal-wd:not(.is-past) { border-color: transparent; }
 .hp-home[data-theme="pulpit"] .m-cal-wd.is-today { border-color: var(--hm-accent); }
 .hp-home[data-theme="pulpit"] .m-sermons-glyph { font-family: var(--pu-serif); }

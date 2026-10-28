@@ -57,7 +57,7 @@ node render.js --main $M --theme pixel --dark --layout layouts/all-05.json --out
 node render.js --main $M --theme dune --width 420 --body-class is-mobile,is-phone --layout layouts/all-08.json --out phone.png
 node render.js --main $M --theme aurora --layout '[{"module":"countdown","w":8,"variant":"flip"}]' --out cd.png \
   --action 'H.click(H.slot("countdown").querySelector("[aria-label=\"Change look\"]")); await H.sleep(50);
-            H.click([...H.$$(".m-cd-chip")].find(b => b.textContent.includes("Nixie")))'
+            H.click([...H.$$(".m-cd-chip")].find(b => b.textContent.includes("Odometer")))'
 node render.js --main $M --theme prism --out hover.png --pw-action 'await page.hover(".hp-slot[data-module=calendar] .hp-card")'
 ```
 
