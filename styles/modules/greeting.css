@@ -35,7 +35,7 @@
 .hp-home .m-greet-next { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-top: 6px; font-size: 1.25em; font-weight: 600; line-height: 1.3; }
 .hp-home .m-greet-when { padding: 2px 12px; border-radius: 999px; background: #fff; color: hsl(var(--accent-h) var(--accent-s) 28%); font-size: 0.8em; font-weight: 800; letter-spacing: 0.02em; }
 .hp-home .m-greet-stats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-.hp-home .m-greet-stat { display: flex; align-items: baseline; gap: 6px; padding: 5px 12px; border-radius: 10px; font-size: 0.85em; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.16); }
+.hp-home .m-greet-stat { display: flex; align-items: baseline; gap: 6px; padding: 5px 12px; border-radius: var(--hm-radius-sm); font-size: 0.85em; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.16); }
 .hp-home .m-greet-stat b { font-size: 1.25em; font-variant-numeric: tabular-nums; }
 .hp-home .m-greet-stat span { opacity: 0.75; }
 @container slot (max-width: 600px) {
