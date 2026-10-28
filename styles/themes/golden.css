@@ -89,18 +89,10 @@
 .hp-home[data-theme="golden"] .hp-switch input:checked + .hp-switch-track::after { background: var(--gd-gold-ink); }
 
 /* ---------- Modules with a look of their own, brought onto the paper ---------- */
-/* Glow greeting: the ivory card in the double frame instead of the sunset slab. */
-.hp-home[data-theme="golden"] .m-greet .m-greet-glow {   /* .m-greet: outranks the module's dark-mode glow */
-	--gl-ink: var(--gd-than); --gl-ink-dark: var(--gd-than);
-	background: var(--gd-nga); border: 1.5px solid var(--gd-frame-out); box-shadow: inset 0 0 0 4px var(--gd-nga), inset 0 0 0 5px var(--gd-frame-in);
-}
-.hp-home[data-theme="golden"] .m-greet-glow::before, .hp-home[data-theme="golden"] .m-greet-glow::after { content: none; }
-.hp-home[data-theme="golden"] .m-greet-glow :is(.m-greet-next, .m-greet-glow-hello) { text-shadow: none; }
-.hp-home[data-theme="golden"] .m-greet-glow .m-greet-when { background: none; color: var(--gd-gold-ink); }
-.hp-home[data-theme="golden"] .m-greet-glow .m-greet-stat { color: var(--gd-than); background: var(--gd-nga-dam); border-color: var(--gd-frame-in); backdrop-filter: none; }
-/* Next sermon, Event: no glowing orb; the day panel and the title on plain paper. */
-.hp-home[data-theme="golden"] .m-next-ev { --ev-glass: var(--gd-nga); --ev-go: var(--gd-gold-fill); --ev-go-ink: var(--gd-nga); }
-.hp-home[data-theme="golden"] :is(.m-next-ev-orb, .m-next-ev-haze, .m-up-c1-bloom) { display: none; }
+/* The Glow greeting keeps its colours and the Event card its blur and gold ball (Dan, 2026-10-28); the ball stays round. */
+.hp-home[data-theme="golden"] .m-next-ev { --ev-go: var(--gd-gold-fill); --ev-go-ink: var(--gd-nga); }
+.hp-home[data-theme="golden"] :is(.m-next-ev-orb, .m-next-ev-haze) { border-radius: 50% !important; }
+.hp-home[data-theme="golden"] .m-up-c1-bloom { display: none; }
 .hp-home[data-theme="golden"] .m-next-ev-panel { box-shadow: inset 0 0 0 1px var(--gd-frame-out); }
 /* Sermon carousel, profile and photo cards: ivory panels with the page's ink (they were dark slides). */
 .hp-home[data-theme="golden"] :is(.m-up-c1-card, .m-up-c1-peek, .m-up-p, .m-up-t) { --m-up-panel: var(--gd-nga-dam); --m-up-on: var(--gd-on); box-shadow: inset 0 0 0 1px var(--gd-frame-in); }
