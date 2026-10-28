@@ -73,6 +73,7 @@
 /* ---------- Motion ---------- */
 @keyframes m-cd-fold { to { transform: rotateX(-90deg); } }
 @keyframes m-cd-unfold { to { transform: rotateX(0deg); } }
+@keyframes m-cd-drop { from { opacity: 0; transform: translateY(-0.12em); } }
 @keyframes m-cd-pulse { 50% { opacity: 0.45; } }
 @media (prefers-reduced-motion: reduce) {
 	.hp-home .m-cd *, .hp-home .m-cd *::before { animation: none !important; transition: none !important; }
@@ -102,7 +103,7 @@
 
 
 /* ---------- Styles (after the theme touches: each style keeps its own colours in every theme) ---------- */
-/* Rolling digits (Big digits, Odometer): a strip of 0-9 slides up to the digit (--n). */
+/* Rolling digits (Odometer): a strip of 0-9 slides up to the digit (--n). */
 .hp-home .m-cd .m-cd-card.is-roll { overflow: hidden; perspective: none; }
 .hp-home .m-cd .m-cd-card.is-roll::after { content: none; }
 .hp-home .m-cd-roll { position: absolute; left: 0; right: 0; top: 0; height: 1000%; display: flex; flex-direction: column; transform: translateY(calc(var(--n, 0) * -10%)); transition: transform 0.5s cubic-bezier(0.3, 0.7, 0.3, 1); }
@@ -124,6 +125,7 @@
 
 /* Big digits: huge condensed white numbers over a photo (the note's first image), edge to edge in the card. */
 .hp-home .m-cd.is-poster { overflow: hidden; }
+.hp-home .m-cd.is-poster > .m-cd-stage { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; }
 .hp-home .m-cd.is-poster > .m-cd-stage { position: relative; isolation: isolate; margin: calc(-1 * var(--hm-pad)); padding: calc(var(--hm-pad) * 1.6) var(--hm-pad); color: #fff; --hm-text: #fff; --hm-muted: rgba(255, 255, 255, 0.82); --hm-accent-ink: #fff; }
 .hp-home .m-cd.is-poster > .m-cd-strip:not([hidden]) ~ .m-cd-stage { margin-top: 0; }
 .hp-home .m-cd-photo { position: absolute; inset: 0; z-index: -2; filter: grayscale(0.5) sepia(0.3) brightness(0.85); }
@@ -131,6 +133,9 @@
 .hp-home .m-cd.is-poster .m-cd-clock { gap: 0.03em; font-size: clamp(2.4em, 14cqi, 7em); }
 .hp-home .m-cd.is-poster .m-cd-cards { gap: 0.02em; }
 .hp-home .m-cd.is-poster .m-cd-card { width: 0.6em; height: 1em; font-family: "Bahnschrift Condensed", "DIN Condensed", "Arial Narrow", var(--hm-font-display); font-weight: 700; font-stretch: condensed; color: #fff; box-shadow: none; text-shadow: 0 0.03em 0.18em rgba(0, 0, 0, 0.35); }
+.hp-home .m-cd .m-cd-card.is-drop { display: inline-flex; align-items: center; justify-content: center; line-height: 1; }
+.hp-home .m-cd .m-cd-card.is-drop::after { content: none; }
+.hp-home .m-cd .m-cd-card.is-drop.is-new { animation: m-cd-drop 0.35s cubic-bezier(0.3, 0.7, 0.3, 1); }
 .hp-home .m-cd.is-poster .m-cd-colon { width: auto; height: 1em; line-height: 0.92em; font-family: "Bahnschrift Condensed", "Arial Narrow", sans-serif; font-weight: 700; color: #fff; }
 .hp-home .m-cd.is-poster .m-cd-unit { color: #fff; }
 .hp-home .m-cd.is-poster .m-cd-stage .m-cd-kicker { color: rgba(255, 255, 255, 0.85); }

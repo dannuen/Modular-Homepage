@@ -120,7 +120,7 @@ var def6 = /* @__PURE__ */ (() => {
           }
         };
       }
-      // Odometer and Big digits roll each digit up a strip of 0-9 instead of folding a flap.
+      // Odometer rolls each digit up a strip of 0-9 instead of folding a flap.
       function roll(parent, ch, cls) {
         const c = el(parent, "span", cls + " is-roll");
         const strip = el(c, "span", "m-cd-roll");
@@ -139,6 +139,21 @@ var def6 = /* @__PURE__ */ (() => {
               void strip.offsetHeight;
               strip.style.transition = "";
             }
+          }
+        };
+      }
+      // Big digits: a frameless digit that drops into place, so nothing is ever cut by a clip edge.
+      function drop(parent, ch, cls) {
+        const c = el(parent, "span", cls + " is-drop", ch);
+        return {
+          node: c,
+          set(next) {
+            if (c.textContent === next) return;
+            c.textContent = next;
+            if (still || doc.hidden) return;
+            c.classList.remove("is-new");
+            void c.offsetWidth;
+            c.classList.add("is-new");
           }
         };
       }
@@ -162,7 +177,7 @@ var def6 = /* @__PURE__ */ (() => {
         caption(wrap, t);
         const clock3 = el(wrap, "div", "m-cd-clock");
         clock3.setAttribute("aria-hidden", "true");
-        const cell = skin === "poster" || skin === "odometer" ? roll : flap;
+        const cell = skin === "odometer" ? roll : skin === "poster" ? drop : flap;
         const groups = UNITS2.map(([k, , many], i) => {
           if (i) el(clock3, "span", "m-cd-colon" + (i === 1 ? " is-day" : ""), i === 1 && skin !== "poster" ? "" : ":");
           const g = el(clock3, "div", "m-cd-group is-" + k);

@@ -1,7 +1,7 @@
 {
 	"id": "modular-homepage",
 	"name": "Modular Homepage",
-	"version": "0.2.6",
+	"version": "0.2.7",
 	"minAppVersion": "1.8.0",
 	"description": "The homepage's modules, themes and layout manager, drawn from Obsidian's own metadata cache (no Dataview). Show it with a modular-homepage code block.",
 	"author": "Dannuen",
