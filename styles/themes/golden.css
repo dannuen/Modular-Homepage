@@ -79,9 +79,10 @@
 .hp-home[data-theme="golden"] ::placeholder { color: var(--gd-muted); opacity: 1; }
 .theme-dark .hp-home[data-theme="golden"] ::placeholder { color: #c2b8aa; }
 /* Square corners on everything the theme draws: cards, buttons, switches, calendar days, dots, pop-ups, the top bar. */
-.hp-home[data-theme="golden"] :is(*, *::before, *::after),
-.hp-tb-box:has(~ .hp-home[data-theme="golden"]) :is(*, *::before, *::after),
-.hp-hs-layer:has(~ .hp-home[data-theme="golden"]) :is(*, *::before, *::after) { border-radius: 0 !important; }
+/* (:is() can't hold ::before/::after, so those are listed on their own, e.g. the switch knob.) */
+.hp-home[data-theme="golden"] *, .hp-home[data-theme="golden"] *::before, .hp-home[data-theme="golden"] *::after,
+.hp-tb-box:has(~ .hp-home[data-theme="golden"]) *, .hp-tb-box:has(~ .hp-home[data-theme="golden"]) *::before, .hp-tb-box:has(~ .hp-home[data-theme="golden"]) *::after,
+.hp-hs-layer:has(~ .hp-home[data-theme="golden"]) *, .hp-hs-layer:has(~ .hp-home[data-theme="golden"]) *::before, .hp-hs-layer:has(~ .hp-home[data-theme="golden"]) *::after { border-radius: 0 !important; }
 
 /* ---------- Gold is line, not fill (only the main action is solid) ---------- */
 .hp-home[data-theme="golden"] .m-sermons-wave i { background: var(--hm-soft); box-shadow: inset 0 0 0 1px var(--gd-gold-ink); }
