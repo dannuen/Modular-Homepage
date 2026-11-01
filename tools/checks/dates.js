@@ -34,6 +34,7 @@ expect("Q1 2027 file, ## Lịch năm 2027", roster("## Lịch năm 2027\\n" + ta
 expect("list date with a note", roster("- **01/11**\\n  - Giảng: A\\n- **08/11** (Tiệc thánh)\\n  - Giảng: B\\n", "Lịch Quý 4 - 2026"), "2026-11-01  1, 2026-11-08  1");
 expect("dotted times as services", roster("## 01/11\\n### 8.30 Lễ sáng\\n- Giảng: A\\n### 10.30 Lễ trưa\\n- Giảng: B\\n", "Lịch Quý 4 - 2026"), "2026-11-01 8.30 Lễ sáng 1, 2026-11-01 10.30 Lễ trưa 1");
 expect("## LỄ 1 table with bold dates", roster("## LỄ 1\\n" + table("**27/12**") + "| **03/01** | B |\\n", "Lịch HDCT Quý 1 - 2027"), "2026-12-27 LỄ 1 1, 2027-01-03 LỄ 1 1");
+expect("NGHỈ is nobody", new Map(H.plugin.modules).get("roster").parse("| Ngày | Giảng | Đàn |\\n|---|---|---|\\n| 01/11 | NGHỈ | Nghỉ |\\n| 08/11 | A | Nghi\u0309 |\\n", "Lịch Quý 4 - 2026", "2026-10-27").map((e) => e.roles.map((r) => r.people.join("+") || "-").join(" ")).join(", "), "- -, A -");
 // Countdown lines: the name before the tag, else after it, else the date; nothing without the exact tag and a date link.
 const countdown = new Map(H.plugin.modules).get("countdown").lineOf;
 expect("countdown lines", ["Christmas #countdown [[2026-12-24]]", "#countdown Easter [[2027-03-28|Easter Sunday]]", "#countdown [[Daily/2027-01-01]]", "Christmas #countdowns [[2026-12-24]]", "Christmas [[2026-12-24]]"].map((l) => JSON.stringify(countdown(l))).join(" "),

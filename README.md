@@ -80,7 +80,7 @@ A module switched off in the settings is left out of every page and of **Arrange
   - a to-do: `- [ ] Write intro #sermon 📅 2026-10-18`
   - an event (no checkbox): `- Elders meeting [time:: 19:00] [duration:: 1h] 📅 2026-10-20`
 - **Countdown** dates come only from note lines like `- Christmas #countdown [[2026-12-24]]`. There are no presets.
-- **Sunday roster** reads the Church Roster plugin's quarterly exports from the roster folder (one note per quarter). The Table look shows the week the way the note does: a table per service, a column per role and a row per day, leaving out roles nobody fills that week; in a narrow slot each role gets its own line. Names set in **Your names on the roster** are marked as yours.
+- **Sunday roster** reads the Church Roster plugin's quarterly exports from the roster folder (one note per quarter). The Table look shows the week the way the note does: a table per service, a column per role and a row per day, leaving out roles nobody fills that week (a blank cell or NGHỈ means the role is not held); a week where every role is blank or NGHỈ shows "No service"; in a narrow slot each role gets its own line. Names set in **Your names on the roster** are marked as yours.
 - **Banner** reads the `banner` property of the home note, for example `![[photo.jpg]]`. The ⚙ button on the banner sets the photo and fade (`banner_fade_color`, `banner_fade_strength`, `banner_fade_reach`).
 
 ### Pomodoro
