@@ -203,7 +203,7 @@ var def5 = (() => {
     if (own) return churches.find((c) => fold(c) === fold(own)) || own;
     return churches.find((c) => fold(f.basename).includes(fold(c))) || "";
   }
-  const scheduleOf = (base, church) => String(base).normalize("NFC").replace(church ? new RegExp(escapeRe(church.normalize("NFC")), "iu") : /(?!)/, " ").replace(/^\s*lịch\s+/iu, "").replace(/(?<!\p{L})(?:quý|quí|quy|quarter|năm|year)\s*\d*(?![\p{L}\d])/giu, " ").replace(/(?<!\d)(?:19|20)\d{2}(?!\d)/g, " ").replace(/\s+/g, " ").replace(/^[\s\-–—_,:]+|[\s\-–—_,:]+$/g, "").trim();
+  const scheduleOf = (base, church) => String(base).normalize("NFC").replace(church ? new RegExp(escapeRe(church.normalize("NFC")), "iu") : /(?!)/, " ").replace(/^\s*lịch\s+/iu, "").replace(/(?<!\p{L})(?:quý|quí|quy|quarter|tháng|month|năm|year)\s*\d*(?![\p{L}\d])/giu, " ").replace(/(?<!\d)(?:19|20)\d{2}(?!\d)/g, " ").replace(/\s+/g, " ").replace(/^[\s\-–—_,:]+|[\s\-–—_,:]+$/g, "").trim();
   async function readRoster(app, folder, churches, todayIso) {
     const root = app.vault.getAbstractFileByPath(folder);
     if (!root || !Array.isArray(root.children)) return { missing: true, days: [], notes: 0 };
@@ -211,8 +211,13 @@ var def5 = (() => {
     const notes = walk(root).filter((f) => String(f.extension).toLowerCase() === "md").sort((a, b) => (b.stat?.mtime ?? 0) - (a.stat?.mtime ?? 0) || b.path.localeCompare(a.path));
     const texts = await Promise.all(notes.map((f) => app.vault.cachedRead(f).catch(() => "")));
     const byDay = /* @__PURE__ */ new Map();
+    // A note with no church of its own (the song leaders' schedule) takes the church of a note exported from the same
+    // roster file. shortcut: matches the roster file by name, so two same-named .roster files in different folders would mix.
+    const rosterOf = (f) => String(app.metadataCache?.getFileCache?.(f)?.frontmatterLinks?.find((x) => x.key === "roster")?.link || "").split("/").pop();
+    const own = notes.map((f) => churchOf(app, f, churches)), byRoster = /* @__PURE__ */ new Map();
+    notes.forEach((f, k) => own[k] && rosterOf(f) && !byRoster.has(rosterOf(f)) && byRoster.set(rosterOf(f), own[k]));
     notes.forEach((f, k) => {
-      const church = churchOf(app, f, churches);
+      const church = own[k] || byRoster.get(rosterOf(f)) || "";
       for (const e of parse2(texts[k], f.basename, todayIso)) {
         const service = e.service || scheduleOf(f.basename, church) || f.basename;
         const day = byDay.get(e.date) || byDay.set(e.date, { iso: e.date, services: [] }).get(e.date);

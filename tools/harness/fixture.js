@@ -215,6 +215,17 @@ function buildVault({ today = "2026-10-14", tz = "+07:00", theme = "aurora", hom
 			"%% church-roster:end %%", ""
 		].join("\n"), { created: -14, edited: -14 });
 	}
+	// The song leaders' schedule: no church of its own, so it takes the church of the note exported from the same roster.
+	{
+		const sundays = Array.from({ length: 90 }, (_, k) => iso(k)).filter((d) => parts(d).wd === 0 && d.slice(0, 4) === today.slice(0, 4)), { y, m } = parts(sundays[0]);
+		add("Church Roster/Lịch Hát Dẫn Tháng " + m + " - " + y + ".md", [
+			"---", 'roster: "[[Church Roster/Church Roster.roster]]"', "---", "",
+			"%% church-roster:start %%", "",
+			"| Ngày | Nam 1 | Nam 2 | Nữ 1 | Nữ 2 |", "| --- | --- | --- | --- | --- |",
+			...sundays.map((d) => "| " + d.slice(8, 10) + "/" + d.slice(5, 7) + " | Văn Huấn | Thế Lực | Hồng Liên | Thùy Trang (T) |"), "",
+			"%% church-roster:end %%", ""
+		].join("\n"), { created: -1, edited: -1 });
+	}
 	add("Church Roster/Church Roster.roster", "{}", { created: -120, edited: -13 });
 
 	// ---------- Other parts of the vault (Vault at a glance, Recently edited) ----------
