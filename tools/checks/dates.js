@@ -35,6 +35,8 @@ expect("list date with a note", roster("- **01/11**\\n  - Giảng: A\\n- **08/11
 expect("dotted times as services", roster("## 01/11\\n### 8.30 Lễ sáng\\n- Giảng: A\\n### 10.30 Lễ trưa\\n- Giảng: B\\n", "Lịch Quý 4 - 2026"), "2026-11-01 8.30 Lễ sáng 1, 2026-11-01 10.30 Lễ trưa 1");
 expect("## LỄ 1 table with bold dates", roster("## LỄ 1\\n" + table("**27/12**") + "| **03/01** | B |\\n", "Lịch HDCT Quý 1 - 2027"), "2026-12-27 LỄ 1 1, 2027-01-03 LỄ 1 1");
 expect("NGHỈ is nobody", new Map(H.plugin.modules).get("roster").parse("| Ngày | Giảng | Đàn |\\n|---|---|---|\\n| 01/11 | NGHỈ | Nghỉ |\\n| 08/11 | A | Nghi\u0309 |\\n", "Lịch Quý 4 - 2026", "2026-10-27").map((e) => e.roles.map((r) => r.people.join("+") || "-").join(" ")).join(", "), "- -, A -");
+// The song leaders' note has no church: it joins the church of the note from the same roster file, named without its month.
+expect("song leaders under their church", H.$$(".m-roster-table", H.slot("roster")).map((t) => t.getAttribute("aria-label")).filter((l) => /Hát Dẫn/.test(l)).join(), "Trường Xuân · Hát Dẫn");
 // Countdown lines: the name before the tag, else after it, else the date; nothing without the exact tag and a date link.
 const countdown = new Map(H.plugin.modules).get("countdown").lineOf;
 expect("countdown lines", ["Christmas #countdown [[2026-12-24]]", "#countdown Easter [[2027-03-28|Easter Sunday]]", "#countdown [[Daily/2027-01-01]]", "Christmas #countdowns [[2026-12-24]]", "Christmas [[2026-12-24]]"].map((l) => JSON.stringify(countdown(l))).join(" "),
@@ -74,7 +76,7 @@ expect("Stats books", H.$$(".m-stats-bar > span:first-child", books).map((s) => 
     main: path.resolve(process.argv[2]),
     theme: "aurora",
     now: "2026-12-25T07:30:00+07:00",
-    layout: [{ module: "preaching-dial", w: 12 }, { module: "stats", w: 12 }],
+    layout: [{ module: "preaching-dial", w: 12 }, { module: "stats", w: 12 }, { module: "roster", w: 12 }],
     action,
     out: path.join(require("os").tmpdir(), "hp-dates.png"),
     quiet: true
