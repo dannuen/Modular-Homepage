@@ -53,7 +53,8 @@ var def3 = /* @__PURE__ */ (() => {
         let lastDisplay;
         const tick = () => {
           const mins = Math.floor(target.diff(time.DateTime.now(), "minutes").minutes);
-          const display = mins <= 0 ? "today" : mins < 60 * 48 ? mins : "days:" + c.n;
+          const clock = e.time && mins < 60 * 48; // no time set: count days, not hours to midnight
+          const display = mins <= 0 ? "today" : clock ? mins : "days:" + c.n;
           if (display === lastDisplay) return;
           lastDisplay = display;
           num.replaceChildren();
@@ -62,10 +63,10 @@ var def3 = /* @__PURE__ */ (() => {
             el(num, "span", "", u);
           };
           if (mins <= 0) el(num, "b", "hp-num", "Today");
-          else if (mins < 60 * 48) {
+          else if (clock) {
             if (mins >= 60) unit(Math.floor(mins / 60), "h");
             unit(mins % 60, "m");
-          } else unit(c.n, "days"); // calendar days, as the chip above says
+          } else unit(c.n, c.n === 1 ? "day" : "days"); // calendar days, as the chip above says
         };
         tick();
         life.interval(tick, 3e4);
@@ -102,7 +103,7 @@ var def3 = /* @__PURE__ */ (() => {
           r.title = prep ? prep.pct + "% of the preparation time used" : "";
           const main = el(card, "div", "m-next-week-main");
           el(main, "div", "hp-label", e.date.setLocale("en").toFormat("cccc, d LLLL") + (n2 === 0 ? " · today" : n2 === 1 ? " · tomorrow" : "") + (e.time ? " · " + time.timeText(e.time) : ""));
-          ui.link(el(main, "div", "m-next-week-title"), p.file.path, p.file.name);
+          ui.link(el(main, "div", "m-next-week-title"), p.file.path, p.file.name.replace(data.EMOJI, ""));
           const facts = el(main, "div", "m-next-week-facts");
           for (const [k, v] of [["Scripture", p.bible], ["Key verse", p.verse], ["Church", p.church]]) {
             if (!ui.textOf(v)) continue;
@@ -183,14 +184,14 @@ var def3 = /* @__PURE__ */ (() => {
           ui.button(row2, "hp-btn hp-pill", "", "Sermon archive", "Open the sermon archive", (e) => act.openNote(config.sermonArchive, e.ctrlKey || e.metaKey));
           return;
         }
-        const { p, next, n: days, prep } = lead;
+        const { p, next, n: days, prep, title } = lead;
         el(disc, "b", "", days === null ? "—" : days === 0 ? "Today" : String(days));
         el(disc, "span", "", days === null ? "no date" : days === 0 ? "preaching" : days === 1 ? "day left" : "days left");
         disc.setAttribute("role", "img");
-        disc.setAttribute("aria-label", days === null ? "No preaching date" : days === 0 ? "Preaching today" : days + " days left");
+        disc.setAttribute("aria-label", days === null ? "No preaching date" : days === 0 ? "Preaching today" : days === 1 ? "1 day left" : days + " days left");
         disc.classList.toggle("is-today", days === 0);
         el(main, "div", "hp-kicker", "Next sermon" + (next ? " · " + next.date.setLocale("en").toFormat("cccc d LLLL") + (next.time ? " · " + time.timeText(next.time) : "") : " · no date yet"));
-        ui.link(ui.heading(main, 1, "m-next-title"), p.file.path, p.file.name);
+        ui.link(ui.heading(main, 1, "m-next-title"), p.file.path, title);
         const pills = el(main, "div", "m-next-pills");
         const passage = ui.textOf(p.bible) ? ["Scripture", p.bible] : ["Key verse", p.verse];
         for (const [label, v, ic] of [[...passage, "book"], ["Church", p.church, "church"]]) {
@@ -225,7 +226,7 @@ var def3 = /* @__PURE__ */ (() => {
           const more = el(main, "div", "m-next-also");
           el(more, "span", "hp-label", "Also preparing");
           for (const o of lineup.slice(1)) {
-            const chip = ui.link(more, o.p.file.path, o.p.file.name, "hp-link hp-pill hp-chip m-next-also-chip");
+            const chip = ui.link(more, o.p.file.path, o.title, "hp-link hp-pill hp-chip m-next-also-chip");
             if (o.next) el(chip, "span", "hp-muted", " · " + o.next.date.setLocale("en").toFormat("d LLL"));
           }
         }
