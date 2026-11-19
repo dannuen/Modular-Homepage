@@ -4,7 +4,8 @@ var def5 = (() => {
   const DATE_HEAD = new RegExp("^(ngày|date|dates|day|" + DAYS + ")$", "iu");
   const SKIP_HEAD = /^(#|stt|tt|no\.?|tuần|week)$/iu;
   const INFO_HEAD = /^(ghi chú|chú thích|notes?|remarks?|sự kiện|events?|occasion|dịp|chủ đề|đề tài|theme|topic|kinh thánh|scripture|passage|câu gốc|series)$/iu;
-  const EMPTY = /^(-+|—|–|\?|tba|tbd|n\/a)?$/iu;
+  // NGHỈ: the position is not held that week
+  const EMPTY = /^(-+|—|–|\?|tba|tbd|n\/a|ngh(?:ỉ|i\u0309))?$/iu;
   const WEEKDAY = new RegExp("(?<!\\p{L})(" + DAYS + "|sun|mon|tue|tues|wed|thu|thur|thurs|fri|sat|ngày)(?!\\p{L})\\.?,?", "giu");
   const PERIOD = /(?<!\p{L})(?:quý|quí|quy|quarter|q|tháng|month|năm|year)\s*\d|(?<!\d)(?:19|20)\d{2}(?!\d)/iu;
   const tidy = (s2) => String(s2 ?? "").replace(/~~[\s\S]*?~~/g, "").replace(/\s*(?:→|->)\s*/g, ", ").replace(/<br\s*\/?>/gi, "\n").replace(/<[^>]+>/g, "").replace(/(\*\*|__|==|`)/g, "").replace(/^[\s,]+|[\s,]+$/g, "");
@@ -300,7 +301,7 @@ var def5 = (() => {
         if (about.length) el(box, "div", "m-roster-note", about.join(" · "));
         const filled = s2.roles.filter((r) => r.people.length);
         if (!filled.length) {
-          el(box, "div", "hp-empty", "Nobody on the roster.");
+          el(box, "div", "hp-empty", "No service.");
           return;
         }
         const list2 = el(box, "div", "m-roster-tiles");
@@ -345,8 +346,8 @@ var def5 = (() => {
           if (day.weekday !== 7) el(when, "small", "m-roster-wd", fmt2(day, "ccc"));
           el(when, "b", "hp-num", fmt2(day, "dd/LL"));
           if (r.note) el(when, "small", "m-roster-note", r.note);
-          if (!cols.length) {
-            withRole(el(tr, "div", "m-roster-td is-none hp-empty", "Nobody on the roster."), "cell");
+          if (!r.roles.some((x) => x.people.length)) {
+            withRole(el(tr, "div", "m-roster-td is-none hp-empty", "No service."), "cell");
             continue;
           }
           for (const c of cols) {
