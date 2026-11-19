@@ -55,6 +55,7 @@ var HomeSettingTab = class extends import_obsidian9.PluginSettingTab {
     text("Attachments folder", "Church photos, named after the church.", "attachments");
     text("Bible folder", "For the books in Stats.", "bibleFolder");
     text("Roster folder", "The Church Roster plugin's exports.", "rosterFolder");
+    text("Roster file church", "The church of the Church Roster file (.roster) in the roster folder, read without exporting.", "rosterFileChurch");
     new import_obsidian9.Setting(containerEl).setName("Roster churches").setDesc("Roster notes are grouped by these churches, in this order (separated by commas).").addText((t) => t.setValue(C.rosterChurches.join(", ")).onChange((v) => {
       C.rosterChurches = list(v);
       changed();

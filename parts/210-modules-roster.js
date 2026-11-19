@@ -204,22 +204,33 @@ var def5 = (() => {
     return churches.find((c) => fold(f.basename).includes(fold(c))) || "";
   }
   const scheduleOf = (base, church) => String(base).normalize("NFC").replace(church ? new RegExp(escapeRe(church.normalize("NFC")), "iu") : /(?!)/, " ").replace(/^\s*lịch\s+/iu, "").replace(/(?<!\p{L})(?:quý|quí|quy|quarter|tháng|month|năm|year)\s*\d*(?![\p{L}\d])/giu, " ").replace(/(?<!\d)(?:19|20)\d{2}(?!\d)/g, " ").replace(/\s+/g, " ").replace(/^[\s\-–—_,:]+|[\s\-–—_,:]+$/g, "").trim();
-  async function readRoster(app, folder, churches, todayIso) {
+  async function readRoster(app, folder, churches, todayIso, fileChurch = "") {
     const root = app.vault.getAbstractFileByPath(folder);
     if (!root || !Array.isArray(root.children)) return { missing: true, days: [], notes: 0 };
     const walk = (f) => Array.isArray(f.children) ? f.children.flatMap(walk) : [f];
     const notes = walk(root).filter((f) => String(f.extension).toLowerCase() === "md").sort((a, b) => (b.stat?.mtime ?? 0) - (a.stat?.mtime ?? 0) || b.path.localeCompare(a.path));
     const texts = await Promise.all(notes.map((f) => app.vault.cachedRead(f).catch(() => "")));
+    // A .roster file (Church Roster's own workbook) is read through Church Roster, as the text its exports would write,
+    // so the exported notes are not needed. Not in "_" folders (Church Roster's backups); without Church Roster, nothing changes.
+    const api = app.plugins?.plugins?.["church-roster"]?.api;
+    const rosters = typeof api?.markdownFor !== "function" ? [] : walk(root).filter((f) => String(f.extension).toLowerCase() === "roster" && !f.path.slice(root.path.length).split("/").slice(0, -1).some((part) => part.startsWith("_")));
+    const sources = [];
+    for (const f of rosters) {
+      const years = await Promise.resolve().then(() => api.markdownFor(f)).catch((err) => (console.error("Modular Homepage: reading " + f.path + " failed", err), null));
+      if (!Array.isArray(years)) continue;
+      for (const y of years) sources.push({ f, text: y.le, name: "Lịch HDCT Năm " + y.year, church: fileChurch }, { f, text: y.hd, name: "Lịch Hát Dẫn - " + y.year, church: fileChurch });
+    }
+    const read = new Set(sources.map((x) => x.f.name));
     const byDay = /* @__PURE__ */ new Map();
     // A note with no church of its own (the song leaders' schedule) takes the church of a note exported from the same
     // roster file. shortcut: matches the roster file by name, so two same-named .roster files in different folders would mix.
     const rosterOf = (f) => String(app.metadataCache?.getFileCache?.(f)?.frontmatterLinks?.find((x) => x.key === "roster")?.link || "").split("/").pop();
     const own = notes.map((f) => churchOf(app, f, churches)), byRoster = /* @__PURE__ */ new Map();
     notes.forEach((f, k) => own[k] && rosterOf(f) && !byRoster.has(rosterOf(f)) && byRoster.set(rosterOf(f), own[k]));
-    notes.forEach((f, k) => {
-      const church = own[k] || byRoster.get(rosterOf(f)) || "";
-      for (const e of parse2(texts[k], f.basename, todayIso)) {
-        const service = e.service || scheduleOf(f.basename, church) || f.basename;
+    notes.forEach((f, k) => !read.has(rosterOf(f)) && sources.push({ f, text: texts[k], name: f.basename, church: own[k] || byRoster.get(rosterOf(f)) || "" })); // a note exported from a .roster read above is a copy
+    sources.forEach(({ f, text, name, church }) => {
+      for (const e of parse2(text, name, todayIso)) {
+        const service = e.service || scheduleOf(name, church) || name;
         const day = byDay.get(e.date) || byDay.set(e.date, { iso: e.date, services: [] }).get(e.date);
         if (day.services.some((s2) => s2.church === church && s2.service === service && s2.path !== f.path)) continue;
         day.services.push({ ...e, church, service, team: !e.service, path: f.path });
@@ -252,7 +263,7 @@ var def5 = (() => {
       const card = el(body2, "div", "m-roster hp-card hp-grow is-" + variant);
       const view = el(card, "div", "m-roster-view");
       const empty = (text) => el(view, "div", "hp-empty m-roster-empty", text);
-      const { missing, notes, days } = await readRoster(app, folder, churches, todayIso);
+      const { missing, notes, days } = await readRoster(app, folder, churches, todayIso, config.rosterFileChurch || "");
       if (missing) {
         empty("No “" + folder + "” folder in the vault. Set the Roster folder in the plugin settings to the folder Church Roster exports to.");
         return;

@@ -37,6 +37,20 @@ expect("## LỄ 1 table with bold dates", roster("## LỄ 1\\n" + table("**27/12
 expect("NGHỈ is nobody", new Map(H.plugin.modules).get("roster").parse("| Ngày | Giảng | Đàn |\\n|---|---|---|\\n| 01/11 | NGHỈ | Nghỉ |\\n| 08/11 | A | Nghi\u0309 |\\n", "Lịch Quý 4 - 2026", "2026-10-27").map((e) => e.roles.map((r) => r.people.join("+") || "-").join(" ")).join(", "), "- -, A -");
 // The song leaders' note has no church: it joins the church of the note from the same roster file, named without its month.
 expect("song leaders under their church", H.$$(".m-roster-table", H.slot("roster")).map((t) => t.getAttribute("aria-label")).filter((l) => /Hát Dẫn/.test(l)).join(), "Trường Xuân · Hát Dẫn");
+// A .roster file is read through Church Roster's api (not its "_" backups), under the file's church; notes exported from it are skipped.
+const asked = [];
+const fromFile = { year: 2026, le: "## LỄ 1\\n\\n| Ngày | HDCT |\\n| --- | --- |\\n| **27/12** | Từ file |\\n", hd: "| Ngày | Nam 1 |\\n| --- | --- |\\n| 27/12 | Hát file |\\n" };
+H.app.plugins.plugins["church-roster"] = { api: { markdownFor: async (f) => (asked.push(f.path), [fromFile]) } };
+await H.app.vault.modify(H.file("Church Roster/Church Roster.roster"), "{ }");
+await H.app.vault.create("Church Roster/_backup/Church Roster.roster", "{}");
+await H.settleAfterAction();
+const fileTables = () => H.$$(".m-roster-table", H.slot("roster")).filter((t) => /Trường Xuân/.test(t.getAttribute("aria-label")));
+expect("roster file read, not its backups", [...new Set(asked)].join(), "Church Roster/Church Roster.roster");
+expect("roster file tables", fileTables().map((t) => t.getAttribute("aria-label") + ": " + H.$$(".m-roster-name", t).map((n) => n.textContent).join("+")).join(" / "), "Trường Xuân · LỄ 1: Từ file / Trường Xuân · Hát Dẫn: Hát file");
+H.app.plugins.plugins["church-roster"].api.markdownFor = async () => null; // a roster saved half-way: back to the notes
+await H.app.vault.modify(H.file("Church Roster/Church Roster.roster"), "{");
+await H.settleAfterAction();
+expect("bad roster file falls back to the notes", fileTables().some((t) => /Hát Dẫn/.test(t.getAttribute("aria-label"))) && !H.slot("roster").textContent.includes("Từ file"), true);
 // Countdown lines: the name before the tag, else after it, else the date; nothing without the exact tag and a date link.
 const countdown = new Map(H.plugin.modules).get("countdown").lineOf;
 expect("countdown lines", ["Christmas #countdown [[2026-12-24]]", "#countdown Easter [[2027-03-28|Easter Sunday]]", "#countdown [[Daily/2027-01-01]]", "Christmas #countdowns [[2026-12-24]]", "Christmas [[2026-12-24]]"].map((l) => JSON.stringify(countdown(l))).join(" "),
