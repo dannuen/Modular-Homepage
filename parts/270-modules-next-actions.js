@@ -8,7 +8,7 @@ var def11 = /* @__PURE__ */ (() => {
     variants: [],
     async render(body2, { ui, time, data, config }) {
       const { el } = ui;
-      const open = (await data.projects()).filter((p) => p.active).flatMap((p) => p.open.map((t) => ({ ...t, p }))).sort((a, b) => (a.due?.toMillis() ?? Infinity) - (b.due?.toMillis() ?? Infinity) || a.line - b.line);
+      const open = (await data.projects()).filter((p) => p.active).flatMap((p) => p.open.map((t) => ({ ...t, p }))).sort((a, b) => (a.due?.toMillis() ?? Infinity) - (b.due?.toMillis() ?? Infinity)); // stable: ties keep project order, then each project's own order
       const due = open.filter((t) => t.due && time.daysUntil(t.due) <= 0).length;
       ui.section(body2, "Next actions");
       const card = el(body2, "div", "m-actions-card hp-card hp-grow");
