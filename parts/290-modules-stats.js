@@ -6,29 +6,12 @@ var def13 = /* @__PURE__ */ (() => {
     name: "Stats",
     about: "Your preaching in numbers, with charts",
     width: 12,
-    variants: [["full", "Full"], ["band", "Band"], ["tiles", "Tiles"]],
+    variants: [["full", "Full"]],
     async render(body2, ctx) {
-      const { ui, time, data, config, variant, store, app } = ctx;
+      const { ui, time, data, config, store, app } = ctx;
       const { el } = ui;
       const today = time.today;
-      const all = data.sermons(), entries = data.entries(), past = data.past();
-      if (variant === "band" || variant === "tiles") {
-        const active = await data.active();
-        const weekStart = today.startOf("week"), weekEnd = weekStart.plus({ weeks: 1 });
-        const projects = (await data.projects()).filter((p) => p.active);
-        const band = el(body2, "div", (variant === "tiles" ? "m-stats-tiles" : "m-stats-band") + " hp-card hp-grow");
-        for (const [n2, label] of [
-          [active.length, active.length === 1 ? "active sermon" : "active sermons"],
-          [entries.filter((e) => data.isActive(e.page) && e.date >= weekStart && e.date < weekEnd).length, "preaching this week"],
-          [active.reduce((s2, c) => s2 + c.ms.total, 0), "words drafted"],
-          variant === "tiles" ? [projects.reduce((s2, p) => s2 + p.open.length, 0), "open project tasks"] : [projects.length, "active projects"]
-        ]) {
-          const s2 = el(band, "div", "m-stats-num" + (variant === "tiles" ? " hp-panel" : ""));
-          el(s2, "b", "hp-num", ui.fmtNum(n2));
-          el(s2, "span", "", label);
-        }
-        return;
-      }
+      const all = data.sermons(), past = data.past();
       ui.section(body2, "In numbers");
       const stats = el(body2, "div", "m-stats hp-card hp-grow");
       ui.bar(stats, { label: "All " + ui.plural(all.length, "sermon", "sermons") + " in " + config.sermonFolder });
@@ -77,7 +60,7 @@ var def13 = /* @__PURE__ */ (() => {
         const months2 = Array.from({ length: 12 }, (_, i) => monthStart.minus({ months: 11 - i }));
         const perMonth = months2.map((m) => {
           const end = m.plus({ months: 1 });
-          return entries.filter((e) => e.date >= m && e.date < end).length;
+          return past.filter((e) => e.date >= m && e.date < end).length;
         });
         const topMonth = Math.max(1, ...perMonth);
         const mt = tile("Preaching dates per month", "Last 12 months", 7);
@@ -95,7 +78,7 @@ var def13 = /* @__PURE__ */ (() => {
         const weeks = Array.from({ length: 52 }, (_, i) => thisWeek.minus({ weeks: 51 - i }));
         const perWeek = weeks.map((w) => {
           const end = w.plus({ weeks: 1 });
-          return entries.filter((e) => e.date >= w && e.date < end).length;
+          return past.filter((e) => e.date >= w && e.date < end).length;
         });
         const heat = el(ht, "div", "m-stats-heat");
         weeks.forEach((w, i) => {

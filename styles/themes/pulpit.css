@@ -40,8 +40,6 @@
 .hp-home[data-theme="pulpit"] .m-cd:not(.is-poster) { --m-cd-room: calc(var(--hm-tool) * 2 + 14px); }
 .hp-home[data-theme="pulpit"] .m-up > .hp-set { right: 0; }
 .hp-home[data-theme="pulpit"] .m-next:is(.is-compact, .is-hero) > .m-next-card { padding-inline: 0; }
-.hp-home[data-theme="pulpit"] .m-stats-band .m-stats-num:first-child { padding-left: 0; }
-.hp-home[data-theme="pulpit"] .m-stats-band .m-stats-num:last-child { padding-right: 0; }
 .hp-home[data-theme="pulpit"] :is(.m-proj-scroll, .m-sermons-scroll) { margin-inline: 0; }
 .hp-home[data-theme="pulpit"] .m-sermons-glyph { font-family: var(--pu-serif); }
 .hp-home[data-theme="pulpit"] .m-next.is-hero .m-next-card { border-block: 1px solid var(--hm-line); }
