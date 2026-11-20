@@ -7,8 +7,8 @@
 .hp-home svg.m-pstats-svg { display: block; width: 100%; height: auto; margin: 14px 0 4px; overflow: visible; }
 .hp-home .m-pstats-grid { stroke: var(--hm-line); stroke-width: 1; }
 .hp-home .m-pstats-label { fill: var(--hm-muted); font-family: var(--hm-font); font-size: 11px; }
-.hp-home .m-pstats-label.is-now { fill: var(--hm-text); font-weight: 750; }
-.hp-home .m-pstats-value { fill: var(--hm-text); font-family: var(--hm-font-display); font-size: 34px; font-weight: 760; letter-spacing: -0.04em; }
+.hp-home .m-pstats-label.is-now { fill: var(--hm-text); font-weight: var(--hm-title-weight); }
+.hp-home .m-pstats-value { fill: var(--hm-text); font-family: var(--hm-font-display); font-size: 34px; font-weight: var(--hm-title-weight); letter-spacing: -0.04em; }
 .hp-home .m-pstats-track { stroke: var(--hm-track); }
 .hp-home .m-pstats-open { stroke: var(--hm-accent); }
 .hp-home .m-pstats-bar-accent { fill: var(--hm-accent); }
