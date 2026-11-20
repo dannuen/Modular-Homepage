@@ -2,7 +2,7 @@
 /* One card per look: the count and the archive link in its top row, the sermons as tiles or rows inside. */
 .hp-home :is(.m-sermons-box, .m-sermons-empty) { display: flex; flex-direction: column; gap: var(--hm-gap-in); min-width: 0; padding: var(--hm-pad); }
 .hp-home .m-sermons-empty .hp-empty { padding: 0; }
-.hp-home .m-sermons-glyph { display: grid; place-items: center; width: 46px; height: 46px; border-radius: var(--hm-radius-sm); font-size: 22px; line-height: 1; font-weight: 750; color: var(--hm-muted); flex: none; }
+.hp-home .m-sermons-glyph { display: grid; place-items: center; width: 46px; height: 46px; border-radius: var(--hm-radius-sm); font-size: 22px; line-height: 1; font-weight: var(--hm-title-weight); color: var(--hm-muted); flex: none; }
 .hp-home .m-sermons-title { font-family: var(--hm-font-display); font-size: 1.08em; font-weight: var(--hm-title-weight); line-height: 1.25; letter-spacing: -0.01em; }
 .hp-home .m-sermons-title a { color: var(--hm-text) !important; }
 .hp-home .m-sermons-title a:hover { color: var(--hm-accent-ink) !important; }
@@ -23,7 +23,7 @@
 .hp-home .m-sermons-card .m-sermons-meta { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .hp-home .m-sermons-wave-box { padding-top: 14px; border-top: 1px solid var(--hm-line); } /* a section of the tile, not a box in it */
 .hp-home .m-sermons-wave-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
-.hp-home .m-sermons-wave-head b { font-size: 0.8em; color: var(--hm-muted); font-weight: 600; font-variant-numeric: tabular-nums; }
+.hp-home .m-sermons-wave-head b { font-size: 0.8em; color: var(--hm-muted); font-weight: var(--hm-row-weight); font-variant-numeric: tabular-nums; }
 .hp-home .m-sermons-wave { display: flex; align-items: flex-end; gap: 4px; height: 70px; border-bottom: 1px solid var(--hm-line); }
 .hp-home .m-sermons-wave i { flex: 1; min-width: 5px; border-radius: 4px 4px 0 0; cursor: pointer; background: var(--hm-fill); transition: opacity 0.15s ease; }
 .hp-home .m-sermons-wave i.is-empty { background: repeating-linear-gradient(90deg, var(--hm-track) 0 3px, transparent 3px 6px); }
@@ -34,7 +34,7 @@
 .hp-home .m-sermons-facts3 b { display: block; font-size: 1.3em; }
 .hp-home .m-sermons-facts3 span { font-size: 0.74em; color: var(--hm-muted); }
 .hp-home .m-sermons-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 14px; border-top: 1px solid var(--hm-line); }
-.hp-home .m-sermons-open { display: inline-flex; align-items: center; gap: 6px; font-size: 0.82em; font-weight: 700; color: var(--hm-accent-ink); cursor: pointer; }
+.hp-home .m-sermons-open { display: inline-flex; align-items: center; gap: 6px; font-size: 0.82em; font-weight: var(--hm-title-weight); color: var(--hm-accent-ink); cursor: pointer; }
 
 /* List: one compact row per sermon. */
 .hp-home .m-sermons-list { display: flex; flex-direction: column; padding: var(--hm-pad); }
@@ -52,9 +52,9 @@
 .hp-home .m-sermons-day:last-child { padding-bottom: 0; }
 .hp-home .m-sermons-rail { display: flex; flex-direction: column; }
 .hp-home .m-sermons-rail-num { font-size: 3.1em; line-height: 0.95; }
-.hp-home .m-sermons-rail-wd { margin-top: 8px; font-size: 0.88em; font-weight: 600; }
+.hp-home .m-sermons-rail-wd { margin-top: 8px; font-size: 0.88em; font-weight: var(--hm-row-weight); }
 .hp-home .m-sermons-rail-mo { font-size: 0.8em; color: var(--hm-muted); }
-.hp-home .m-sermons-rail-rel { margin-top: 10px; align-self: flex-start; padding: 3px 9px; border-radius: 999px; font-size: 0.7em; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; background: var(--hm-track); color: var(--hm-muted); }
+.hp-home .m-sermons-rail-rel { margin-top: 10px; align-self: flex-start; padding: 3px 9px; border-radius: 999px; font-size: 0.7em; font-weight: var(--hm-title-weight); letter-spacing: 0.05em; text-transform: uppercase; background: var(--hm-track); color: var(--hm-muted); }
 .hp-home .m-sermons-rail-rel.is-soon { background: var(--hm-soft); color: var(--hm-accent-ink); }
 .hp-home .m-sermons-rail-rel.is-urgent { background: color-mix(in srgb, var(--hm-late) 15%, transparent); color: var(--hm-late); }
 .hp-home .m-sermons-items { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
@@ -79,7 +79,7 @@
 .hp-home .m-sermons-in { margin: 0 var(--hm-pad-in); padding: var(--hm-pad-in) 0; border-top: 1px solid var(--hm-line); display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(220px, 1fr); gap: 28px; }
 .hp-home .m-sermons-in .hp-label { margin-bottom: 10px; }
 .hp-home .m-sermons-facts { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 7px 18px; margin: 0 0 24px; font-size: 0.92em; }
-.hp-home .m-sermons-facts dt { font-size: 0.78em; font-weight: 650; letter-spacing: 0.07em; text-transform: uppercase; color: var(--hm-faint); padding-top: 2px; }
+.hp-home .m-sermons-facts dt { font-size: 0.78em; font-weight: var(--hm-title-weight); letter-spacing: 0.07em; text-transform: uppercase; color: var(--hm-faint); padding-top: 2px; }
 .hp-home .m-sermons-facts dd { margin: 0; min-width: 0; }
 .hp-home .m-sermons-outline { display: flex; flex-direction: column; }
 .hp-home .m-sermons-ol { display: grid; grid-template-columns: 22px minmax(0, 1fr) 84px 48px; align-items: center; gap: 12px; padding: 7px 8px; margin: 0 -8px; border-radius: var(--hm-radius-sm); cursor: pointer; }
@@ -91,7 +91,7 @@
 .hp-home .m-sermons-ol.is-empty .m-sermons-ol-h { color: var(--hm-faint); }
 .hp-home .m-sermons-panel { align-self: start; padding-left: 24px; border-left: 1px solid var(--hm-line); display: flex; flex-direction: column; gap: 20px; }
 .hp-home .m-sermons-big { font-size: 2.3em; }
-.hp-home .m-sermons-big small { font-family: var(--hm-font); font-size: 0.36em; font-weight: 500; letter-spacing: 0; color: var(--hm-muted); }
+.hp-home .m-sermons-big small { font-family: var(--hm-font); font-size: 0.36em; font-weight: var(--hm-row-weight); letter-spacing: 0; color: var(--hm-muted); }
 .hp-home .m-sermons-note { margin-top: 8px; font-size: 0.8em; color: var(--hm-muted); }
 .hp-home .m-sermons-panel .hp-meter { margin-top: 4px; }
 .hp-home .m-sermons-foot { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-top: 16px; border-top: 1px dashed var(--hm-line); }
@@ -123,11 +123,11 @@
 .hp-home .m-sermons-bphoto { position: absolute; inset: 0; z-index: -2; filter: grayscale(1) contrast(1.08); }
 .hp-home .m-sermons-btint { position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(10, 10, 14, 0.05), rgba(10, 10, 14, 0.55)), linear-gradient(135deg, hsl(var(--accent-h) 85% 55% / 0.5), hsl(var(--accent-h) 70% 22% / 0.4)); }
 .hp-home .m-sermons-bchips { position: absolute; left: 14px; right: 14px; top: 14px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
-.hp-home .m-sermons-bchip { display: inline-flex; align-items: center; height: 28px; padding: 0 12px; border-radius: 999px; font-size: 0.76em; font-weight: 650; white-space: nowrap; color: #fff; background: rgba(20, 16, 12, 0.38); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.hp-home .m-sermons-bchip { display: inline-flex; align-items: center; height: 28px; padding: 0 12px; border-radius: 999px; font-size: 0.76em; font-weight: var(--hm-title-weight); white-space: nowrap; color: #fff; background: rgba(20, 16, 12, 0.38); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
 .hp-home .m-sermons-bchip.is-hot { background: #ff6166; }
 .hp-home .m-sermons-bbody { position: relative; display: flex; flex-direction: column; gap: 10px; flex: 1; padding: 0 var(--hm-pad-in) var(--hm-pad-in); }
-.hp-home .m-sermons-bemoji { display: grid; place-items: center; width: 50px; height: 50px; margin-top: -26px; border-radius: var(--hm-radius-sm); font-size: 24px; line-height: 1; font-weight: 750; color: var(--hm-muted); box-shadow: 0 0 0 4px var(--hm-bg); }
-.hp-home .m-sermons-bkicker { font-size: 0.76em; font-weight: 650; color: var(--hm-muted); }
+.hp-home .m-sermons-bemoji { display: grid; place-items: center; width: 50px; height: 50px; margin-top: -26px; border-radius: var(--hm-radius-sm); font-size: 24px; line-height: 1; font-weight: var(--hm-title-weight); color: var(--hm-muted); box-shadow: 0 0 0 4px var(--hm-bg); }
+.hp-home .m-sermons-bkicker { font-size: 0.76em; font-weight: var(--hm-title-weight); color: var(--hm-muted); }
 .hp-home .m-sermons-btitle { font-size: 1.16em; font-weight: var(--hm-title-weight); line-height: 1.22; letter-spacing: -0.02em; }
 .hp-home .m-sermons-bref { margin-top: -4px; font-size: 0.84em; color: var(--hm-muted); }
 .hp-home .m-sermons-bref a { color: var(--hm-muted) !important; }
@@ -156,11 +156,11 @@
 .hp-home .m-sermons-drow + .m-sermons-drow { border-top: 1px solid var(--hm-line); }
 .hp-home .m-sermons-ddate { display: grid; justify-items: center; padding-top: 2px; }
 .hp-home .m-sermons-ddate b { font-size: 1.6em; line-height: 1; color: var(--hm-accent-ink); }
-.hp-home .m-sermons-ddate span { margin-top: 4px; font-size: max(11px, 0.68em); font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--hm-muted); }
-.hp-home .m-sermons-dwhen { margin: 6px 0 10px; font-size: 0.8em; font-weight: 650; color: var(--hm-muted); }
+.hp-home .m-sermons-ddate span { margin-top: 4px; font-size: max(11px, 0.68em); font-weight: var(--hm-title-weight); letter-spacing: 0.08em; text-transform: uppercase; color: var(--hm-muted); }
+.hp-home .m-sermons-dwhen { margin: 6px 0 10px; font-size: 0.8em; font-weight: var(--hm-title-weight); color: var(--hm-muted); }
 .hp-home .m-sermons-dwhen.is-soon { color: var(--hm-accent-ink); }
 .hp-home .m-sermons-attention { margin: 2px 0 0; padding: 10px 14px; border-radius: var(--hm-radius-sm); font-size: 0.8em; color: color-mix(in srgb, var(--hm-soon) 60%, var(--hm-text)); background: color-mix(in srgb, var(--hm-soon) 12%, transparent); }
-.hp-home .m-sermons-attention summary { cursor: pointer; font-weight: 650; }
+.hp-home .m-sermons-attention summary { cursor: pointer; font-weight: var(--hm-title-weight); }
 .hp-home .m-sermons-attention p { margin-top: 6px; }
 .hp-home .m-sermons-attention a { color: inherit !important; }
 
@@ -171,7 +171,7 @@
 .hp-home .m-sermons-table > .m-sermons-trow:last-child { border-bottom: 0; }
 .hp-home .m-sermons-trow .m-sermons-title { overflow-wrap: anywhere; }
 .hp-home .m-sermons-tcell { min-width: 0; font-size: 0.9em; color: var(--hm-muted); overflow-wrap: anywhere; }
-.hp-home .m-sermons-tcell.is-when { color: var(--hm-text); font-weight: 600; font-variant-numeric: tabular-nums; }
+.hp-home .m-sermons-tcell.is-when { color: var(--hm-text); font-weight: var(--hm-row-weight); font-variant-numeric: tabular-nums; }
 .hp-home .m-sermons-tkey { display: none; }
 .hp-home .m-sermons-tbar { display: flex; align-items: center; gap: 8px; }
 .hp-home .m-sermons-tbar .hp-meter { flex: 1; }
@@ -213,7 +213,7 @@
 
 /* The style pill: three styles, a divider, ⚙; one highlight glides to the chosen style. */
 .hp-home .m-up-seg { position: relative; display: inline-flex; align-items: stretch; gap: 2px; min-height: var(--hm-tool); box-sizing: border-box; padding: 4px; border-radius: 999px; background: var(--hm-surface-2); box-shadow: inset 0 0 0 1px var(--hm-line); }
-.hp-home button.m-up-seg-btn { position: relative; z-index: 1; --btn-pad: 5px 13px; padding: var(--btn-pad); border-radius: 999px; font-size: 0.95em; font-weight: 500; white-space: nowrap; color: var(--hm-muted); transition: color 0.15s ease; }
+.hp-home button.m-up-seg-btn { position: relative; z-index: 1; --btn-pad: 5px 13px; padding: var(--btn-pad); border-radius: 999px; font-size: 0.95em; font-weight: var(--hm-row-weight); white-space: nowrap; color: var(--hm-muted); transition: color 0.15s ease; }
 .hp-home button.m-up-seg-btn:hover, .hp-home button.m-up-seg-btn.is-on { color: var(--hm-text); }
 .hp-home .m-up-glide { position: absolute; z-index: 0; top: 4px; bottom: 4px; left: 0; width: var(--w, 0px); transform: translateX(var(--x, 0px)); border-radius: 999px; background: var(--hm-bg); box-shadow: 0 1px 4px rgba(0, 0, 0, 0.14); pointer-events: none; transition: transform 0.25s ease, width 0.25s ease; }
 .hp-home .m-up-glide.is-placing { transition: none; }
@@ -225,10 +225,10 @@
 /* What every style shares */
 .hp-home .m-up-top { display: flex; align-items: center; gap: 14px; }
 .hp-home .m-up-tags { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 8px; min-width: 0; }
-.hp-home .m-up-church { display: inline-flex; align-items: center; gap: 7px; margin-right: 2px; font-size: 0.76em; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.hp-home .m-up-church { display: inline-flex; align-items: center; gap: 7px; margin-right: 2px; font-size: 0.76em; font-weight: var(--hm-title-weight); letter-spacing: 0.14em; text-transform: uppercase; }
 .hp-home .m-up-church.is-pill { padding: 3px 11px 3px 9px; border-radius: 999px; background: rgba(var(--m-on), 0.12); font-size: 0.7em; }
 .hp-home .m-up-pills { display: inline-flex; flex-wrap: wrap; gap: 6px; }
-.hp-home .m-up-pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 999px; font-size: 0.74em; font-weight: 600; white-space: nowrap; background: rgba(var(--m-on), 0.12); }
+.hp-home .m-up-pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 999px; font-size: 0.74em; font-weight: var(--hm-row-weight); white-space: nowrap; background: rgba(var(--m-on), 0.12); }
 .hp-home .m-up-pill.is-morning .hp-ico { color: var(--color-orange, #e9973f); }
 .hp-home .m-up-pill.is-afternoon .hp-ico { color: var(--color-yellow, #e0ac00); }
 .hp-home .m-up-pill.is-evening .hp-ico { color: var(--color-purple, #a882ff); }
@@ -245,19 +245,19 @@
 .hp-home .m-up-bar.is-rule { margin-top: 12px; }
 .hp-home .m-up-bar.is-rule .hp-meter { height: 4px; }
 .hp-home .m-up-stats { display: flex; flex-wrap: wrap; gap: 2px 14px; margin-top: 8px; font-size: 0.74em; color: rgba(var(--m-on), 0.6); }
-.hp-home .m-up-stats b { font-weight: 600; color: rgba(var(--m-on), 0.9); }
+.hp-home .m-up-stats b { font-weight: var(--hm-row-weight); color: rgba(var(--m-on), 0.9); }
 .hp-home .m-up-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; padding-top: 12px; border-top: 1px solid rgba(var(--m-on), 0.14); }
 .hp-home .m-up-foot.no-rule { margin-top: 12px; padding-top: 0; border-top: none; }
-.hp-home .m-up-foot .hp-switch { color: rgb(var(--m-on)); font-weight: 500; }
+.hp-home .m-up-foot .hp-switch { color: rgb(var(--m-on)); font-weight: var(--hm-row-weight); }
 .hp-home .m-up-foot input:not(:checked) + .hp-switch-track { background: rgba(var(--m-on), 0.22); }
 .hp-home button.m-up-open {
 	display: inline-flex; align-items: center; justify-content: center; --btn-pad: 10px 22px; padding: var(--btn-pad); border-radius: 999px;
-	--btn-bg: #fff; background: var(--btn-bg); color: #161616; font-weight: 600; font-size: 0.88em; white-space: nowrap;
+	--btn-bg: #fff; background: var(--btn-bg); color: #161616; font-weight: var(--hm-row-weight); font-size: 0.88em; white-space: nowrap;
 	box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.45); transition: transform 0.15s ease;
 }
 .hp-home button.m-up-open:hover { transform: translateY(-1px); }
 .theme-dark .hp-home button.m-up-open { --btn-bg: hsl(var(--accent-h), calc(var(--accent-s) * 0.7), 20%); color: #fff; }
-.hp-home button.m-up-ink { --btn-bg: hsl(var(--accent-h), 26%, 17%); background: var(--btn-bg); color: #fff; min-height: 0; --btn-pad: 9px 20px; font-size: 0.86em; font-weight: 500; }
+.hp-home button.m-up-ink { --btn-bg: hsl(var(--accent-h), 26%, 17%); background: var(--btn-bg); color: #fff; min-height: 0; --btn-pad: 9px 20px; font-size: 0.86em; font-weight: var(--hm-row-weight); }
 .theme-dark .hp-home button.m-up-ink { --btn-bg: hsl(var(--accent-h), 22%, 20%); }
 
 /* Carousel: one card at a time (fixed height; long titles cut to two lines), neighbours peeking, arrows and dots. */
