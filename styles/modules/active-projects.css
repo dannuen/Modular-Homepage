@@ -15,9 +15,9 @@
 .hp-home .m-proj-line { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; }
 .hp-home .m-proj-tabs { display: inline-flex; max-width: 100%; overflow: hidden; }
 .hp-home .m-proj-tabs .m-proj-tab + .m-proj-tab { border-left: 1px solid var(--hm-line); }
-.hp-home .m-proj-tabs a { display: inline-flex; align-items: center; min-height: 38px; padding: 0 16px; font-size: 0.93em; font-weight: 600; color: var(--hm-text) !important; }
+.hp-home .m-proj-tabs a { display: inline-flex; align-items: center; min-height: 38px; padding: 0 16px; font-size: 0.93em; font-weight: var(--hm-row-weight); color: var(--hm-text) !important; }
 .hp-home .m-proj-tabs a:hover { color: var(--hm-accent-ink) !important; }
-.hp-home .m-proj-more { font-size: 0.86em; font-weight: 600; }
+.hp-home .m-proj-more { font-size: 0.86em; font-weight: var(--hm-row-weight); }
 .hp-home .m-proj-more a { color: var(--hm-muted) !important; }
 
 /* Cards */
@@ -59,13 +59,13 @@
 .hp-home .m-proj-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
 .hp-home .hp-bar > .m-proj-tools.hp-bar-main { align-self: center; margin-top: 0; } /* controls, not a heading: level with the buttons */
 .hp-home .m-proj-filter { display: inline-flex; gap: 2px; padding: 3px; }
-.hp-home button.m-proj-filter-btn { display: inline-flex; align-items: center; justify-content: center; height: 30px; --btn-pad: 0 14px; padding: var(--btn-pad); border-radius: 999px; font-size: 0.8em; font-weight: 600; color: var(--hm-muted); transition: background 0.15s ease, color 0.15s ease; }
+.hp-home button.m-proj-filter-btn { display: inline-flex; align-items: center; justify-content: center; height: 30px; --btn-pad: 0 14px; padding: var(--btn-pad); border-radius: 999px; font-size: 0.8em; font-weight: var(--hm-row-weight); color: var(--hm-muted); transition: background 0.15s ease, color 0.15s ease; }
 .hp-home button.m-proj-filter-btn:hover { color: var(--hm-text); }
 .hp-home button.m-proj-filter-btn[aria-pressed="true"] { --btn-bg: var(--hm-bg); background: var(--btn-bg); color: var(--hm-text); --btn-shadow: 0 1px 2px rgba(0, 0, 0, 0.12); box-shadow: var(--btn-shadow); }
 .hp-home input.m-proj-search { all: unset; box-sizing: border-box; flex: 1 1 180px; min-width: 0; height: 36px; padding: 0 16px; border-radius: 999px; font-size: 0.84em; color: var(--hm-text); background: var(--hm-track); cursor: text; }
 .hp-home input.m-proj-search::placeholder { color: var(--hm-faint); opacity: 1; }
 .hp-home input.m-proj-search:focus { box-shadow: inset 0 0 0 1.5px var(--hm-accent); }
-.hp-home .m-proj-badge { display: inline-grid; place-items: center; min-width: 24px; height: 22px; padding: 0 8px; border-radius: 999px; font-size: 0.74em; font-weight: 750; color: var(--hm-accent-ink); background: var(--hm-soft); }
+.hp-home .m-proj-badge { display: inline-grid; place-items: center; min-width: 24px; height: 22px; padding: 0 8px; border-radius: 999px; font-size: 0.74em; font-weight: var(--hm-title-weight); color: var(--hm-accent-ink); background: var(--hm-soft); }
 .hp-home button.m-proj-more { width: 100%; }
 .hp-home button.m-proj-more[hidden] { display: none; }
 .hp-home .m-proj-none { grid-column: 1 / -1; display: flex; flex-direction: column; gap: 4px; padding: 20px 22px; font-size: 0.9em; color: var(--hm-muted); border-style: dashed; }
