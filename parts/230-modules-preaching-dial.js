@@ -16,6 +16,7 @@ var def7 = /* @__PURE__ */ (() => {
       const lengthOf = (e) => e.time?.length ?? time.minutesOf(byPath.get(e.page.file.path)?.ms.total || 0);
       const busyOf = (e) => e.time.length ?? Math.max(lengthOf(e), 20); // the arc and "Now" use the same length
       const clockOf = (t) => t?.clock || time.timeText(t);
+      const nameOf = (e) => byPath.get(e.page.file.path)?.title || e.page.file.name.replace(data.EMOJI, "");
       const lengthText = (e) => (e.time?.length ? "" : "≈ ") + lengthOf(e) + " min";
       const statusOf = (e, now2) => {
         if (dayN !== 0 || !e.time) return "later";
@@ -56,8 +57,10 @@ var def7 = /* @__PURE__ */ (() => {
         dayEntries.forEach((e, i) => {
           if (!e.time) return;
           const d0 = deg(e.time.minutes), d1 = d0 + span(busyOf(e));
-          const path = svg(face2, "path", { d: arc(R, d0, d1), fill: "none", "stroke-width": W }, "m-dial-svc" + (statuses[i] === "past" ? " is-past" : ""));
-          ui.tip(path, e.page.file.name + "\n" + time.timeText(e.time) + " · " + lengthText(e) + (data.churchesOf(e.page)[0] ? " · " + data.churchesOf(e.page)[0] : ""));
+          // a 12-hour face: on the day, a service in the other half of the day (20:00 seen at 08:00) is faded, so the needle doesn't point into it
+          const otherHalf = dayN === 0 && Math.floor(e.time.minutes / 720) !== Math.floor(now2 / 720);
+          const path = svg(face2, "path", { d: arc(R, d0, d1), fill: "none", "stroke-width": W }, "m-dial-svc" + (statuses[i] === "past" || otherHalf ? " is-past" : ""));
+          ui.tip(path, nameOf(e) + "\n" + time.timeText(e.time) + " · " + lengthText(e) + (data.churchesOf(e.page)[0] ? " · " + data.churchesOf(e.page)[0] : ""));
           const [lx, ly] = polar(R + W / 2 + 16, d0);
           svg(face2, "text", { x: lx, y: ly, "text-anchor": "middle", "dominant-baseline": "central" }, "m-dial-at").textContent = clockOf(e.time);
         });
@@ -96,13 +99,12 @@ var def7 = /* @__PURE__ */ (() => {
         title.append(".");
         const plan = el(side, "div", "m-dial-plan");
         dayEntries.forEach((e, i) => {
-          const c = byPath.get(e.page.file.path);
           const s2 = statuses[i];
           const row = el(plan, "div", "m-dial-svc-row hp-panel" + (s2 === "past" ? " is-past" : ""));
           el(row, "div", "m-dial-svc-time hp-num", clockOf(e.time) || "—");
           ui.avatar(row, data.churchesOf(e.page)[0]);
           const main = el(row, "div", "");
-          el(main, "div", "m-dial-svc-title", c ? c.title : e.page.file.name);
+          el(main, "div", "m-dial-svc-title", nameOf(e));
           el(main, "div", "m-dial-svc-sub", [data.churchesOf(e.page)[0], ui.textOf(e.page.bible), lengthText(e)].filter(Boolean).join(" · "));
           const chip = el(row, "span", "m-dial-chip" + (i === nextIdx ? " is-next" : s2 === "now" ? " is-now" : ""));
           chip.textContent = s2 === "now" ? "Now" : s2 === "past" ? "Earlier" : i === nextIdx ? dayN === 0 ? "Next · " + time.inLabel(e.time.minutes - now2) : "First" : e.time ? "Later" : "Any time";

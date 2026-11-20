@@ -22,6 +22,8 @@ await sermon("sáng", "\\n  - chiều\\n");
 await H.settleAfterAction();
 const width = (sel) => H.$(sel, dial()).getBoundingClientRect().width;
 if (width(".m-dial-big") > width(".m-dial-center")) throw new Error("Afternoon is wider than the dial centre");
+expect("afternoon arc faded in the morning (12-hour face)", H.$$(".m-dial-svc.is-past", dial()).length, 1);
+expect("dial row title without emoji", H.$(".m-dial-svc-title", dial()).textContent, "Ánh Sáng Đến Thế Gian");
 await sermon("chiều", "\\n");
 await H.settleAfterAction();
 expect("dial centre before a sermon with no time", centre(), "Today | — | any time");
