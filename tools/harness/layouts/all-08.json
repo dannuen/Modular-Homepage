@@ -22,7 +22,7 @@
     {
       "module": "calendar",
       "w": 12,
-      "variant": "planner"
+      "variant": "month"
     }
   ]
 }

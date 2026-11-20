@@ -24,6 +24,7 @@ const width = (sel) => H.$(sel, dial()).getBoundingClientRect().width;
 if (width(".m-dial-big") > width(".m-dial-center")) throw new Error("Afternoon is wider than the dial centre");
 expect("afternoon arc faded in the morning (12-hour face)", H.$$(".m-dial-svc.is-past", dial()).length, 1);
 expect("dial row title without emoji", H.$(".m-dial-svc-title", dial()).textContent, "Ánh Sáng Đến Thế Gian");
+expect("calendar day tooltip names the sermon without emoji", H.$$(".m-cal-day", H.slot("calendar")).some((b) => /✦ .*Ánh Sáng Đến Thế Gian/.test(b.title) && !b.title.includes("⭐")), true);
 expect("active sermons table title without emoji", H.$$(".m-sermons-title", H.slot("active-sermons")).map((t) => t.textContent).includes("Ánh Sáng Đến Thế Gian"), true);
 await sermon("chiều", "\\n");
 await H.settleAfterAction();
@@ -93,7 +94,7 @@ expect("Stats books", H.$$(".m-stats-bar > span:first-child", books).map((s) => 
     main: path.resolve(process.argv[2]),
     theme: "aurora",
     now: "2026-12-25T07:30:00+07:00",
-    layout: [{ module: "preaching-dial", w: 12 }, { module: "stats", w: 12 }, { module: "roster", w: 12 }, { module: "active-sermons", w: 12, variant: "table" }],
+    layout: [{ module: "preaching-dial", w: 12 }, { module: "stats", w: 12 }, { module: "roster", w: 12 }, { module: "active-sermons", w: 12, variant: "table" }, { module: "calendar", w: 6 }],
     action,
     out: path.join(require("os").tmpdir(), "hp-dates.png"),
     quiet: true
