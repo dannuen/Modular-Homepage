@@ -117,7 +117,7 @@ var def8 = (() => {
         for (const h of ["Sermon", "Scripture", "Church", "Next date", "Preparation"]) el(head, "div", "hp-label", h);
         for (const c of active) {
           const row = el(rows, "div", "m-sermons-trow");
-          ui.link(el(row, "div", "m-sermons-title"), c.p.file.path, c.p.file.name);
+          ui.link(el(row, "div", "m-sermons-title"), c.p.file.path, c.title);
           for (const [k, v] of [["Scripture", c.p.bible], ["Church", c.p.church]]) {
             const cell = el(row, "div", "m-sermons-tcell");
             el(cell, "span", "m-sermons-tkey", k);
@@ -213,7 +213,7 @@ var def8 = (() => {
           if (c.prep) {
             const prep = el(panel, "div", "");
             el(prep, "div", "hp-label", "Prep window");
-            ui.meter(prep, c.prep.pct, c.n <= 2 ? "is-urgent" : "");
+            ui.meter(prep, c.prep.pct, time.urgency(c.n));
             el(prep, "div", "m-sermons-note", c.prep.pct + "% used · started " + c.prep.start.setLocale("en").toFormat("d LLL") + " · " + (c.n === 0 ? "preaching today" : ui.plural(c.n, "day", "days") + " left"));
           }
           const foot = el(detail, "div", "m-sermons-foot");
@@ -261,7 +261,7 @@ var def8 = (() => {
           ui.link(el(main, "div", "m-sermons-title"), c.p.file.path, c.title);
           el(main, "div", "m-sermons-meta", [c.church, whenOf(c), ui.fmtNum(c.ms.total) + " words"].filter(Boolean).join(" · "));
           if (c.prep) {
-            const m = ui.meter(main, c.prep.pct, c.n <= 2 ? "is-urgent" : "");
+            const m = ui.meter(main, c.prep.pct, time.urgency(c.n));
             m.title = "Preparation " + c.prep.pct + "%";
           }
           switchFor(row, c, row);
@@ -275,20 +275,21 @@ var def8 = (() => {
         list2.setAttribute("role", "region");
         list2.setAttribute("aria-label", "Active sermons list");
         list2.tabIndex = 0;
-        if (!active.length) el(list2, "div", "hp-empty", "No sermons are currently marked as active.");
+        if (!active.length) el(list2, "div", "hp-empty", "No sermons are marked active.");
         for (const c of active) {
           const card = el(list2, "article", "m-sermons-prow");
-          ui.link(el(card, "div", "m-sermons-title"), c.p.file.path, c.p.file.name);
+          ui.link(el(card, "div", "m-sermons-title"), c.p.file.path, c.title);
           const meta = el(card, "div", "m-sermons-pmeta");
-          for (const [label, v] of [["Scripture", c.p.bible], ["Church", c.p.church], ["Date", c.p.date]]) {
+          for (const [label, v] of [["Scripture", c.p.bible], ["Church", c.p.church], ["Next date", c.next ? c.next.date.setLocale("en").toFormat("ccc d LLL") : "—"]]) {
             const d = el(meta, "span", "m-sermons-pdetail");
             el(d, "span", "hp-label", label);
-            if (ui.textOf(v)) ui.render(d, v);
+            if (typeof v === "string") d.append(v);
+            else if (ui.textOf(v)) ui.render(d, v);
             else d.append("—");
           }
           const bar = el(card, "div", "m-sermons-tbar");
           if (c.next && c.prep) {
-            ui.meter(bar, c.prep.pct, c.prep.pct >= 85 ? "is-soon" : "");
+            ui.meter(bar, c.prep.pct, time.urgency(c.n));
             el(bar, "span", "m-sermons-tleft", c.n === 0 ? "Today" : c.n + "d left");
             bar.title = "Time used: " + c.prep.pct + "% · started " + c.prep.start.toISODate() + " → next preaching " + c.next.date.toISODate();
           } else el(bar, "span", "m-sermons-tleft", "No upcoming preaching date");

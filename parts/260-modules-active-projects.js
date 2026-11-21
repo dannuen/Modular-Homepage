@@ -37,7 +37,7 @@ var def10 = /* @__PURE__ */ (() => {
         list2.setAttribute("role", "region");
         list2.setAttribute("aria-label", "Active projects list");
         list2.tabIndex = 0;
-        if (!projects.length) el(list2, "div", "hp-empty", "No projects are currently marked as active.");
+        if (!projects.length) el(list2, "div", "hp-empty", "No project is marked active.");
         for (const p of projects) {
           const row = el(list2, "article", "m-proj-prow");
           ui.link(el(row, "div", "m-proj-title"), p.page.file.path, p.name);

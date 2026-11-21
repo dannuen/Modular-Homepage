@@ -32,7 +32,7 @@
     {
       "module": "stats",
       "w": 12,
-      "variant": "band"
+      "variant": "full"
     }
   ]
 }

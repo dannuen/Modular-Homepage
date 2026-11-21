@@ -1,2 +1,3 @@
 .hp-home .m-recent-row.is-edited { grid-template-columns: minmax(0, 1fr) auto; }
+.hp-home .m-recent-side { font-size: 0.76em; color: var(--hm-faint); white-space: nowrap; font-variant-numeric: tabular-nums; }
 

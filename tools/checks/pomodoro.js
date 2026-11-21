@@ -30,6 +30,15 @@ window.dispatchEvent(new Event("focus"));
 await H.sleep(1200);
 ad.read = read;
 expect("preset after a slow read", H.$(".m-pomo-presets .is-on", H.slot("pomodoro")).textContent + " / " + JSON.parse(await read(file)).presetId, "Quick / quick");
+// The face ticks only while the timer runs, but then it must count down.
+const face = () => H.$(".m-pomo-time", H.slot("pomodoro")).innerHTML;
+H.click(H.$(".m-pomo-ctrls .is-main", H.slot("pomodoro")));
+await H.settleAfterAction();
+const before = face(), now = Date.now;
+Date.now = () => now() + 5000; // the harness clock is frozen: move it on by hand
+await H.sleep(600);
+Date.now = now;
+expect("running face counts down", status() + " " + (face() !== before), "Short break true");
 `;
 (async () => {
   const browser = await launch();

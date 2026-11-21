@@ -228,7 +228,7 @@ function buildVault({ today = "2026-10-14", tz = "+07:00", theme = "aurora", hom
 	}
 	add("Church Roster/Church Roster.roster", "{}", { created: -120, edited: -13 });
 
-	// ---------- Other parts of the vault (Vault at a glance, Recently edited) ----------
+	// ---------- Other parts of the vault (Recently edited) ----------
 	const notes = ["Ân điển", "Đức tin và việc làm", "Sự cầu nguyện", "Ghi chú Rô-ma 8", "Hội Thánh đầu tiên", "Lời hứa của Chúa", "Sự tha thứ", "Môn đồ hóa", "Thờ phượng"];
 	notes.forEach((n, i) => add("Notes/" + n + ".md", yaml({ date_created: stamp(iso(-50 + i)) }) + "# " + n + "\n\nGhi chú #ghichu\n", { created: -50 + i, edited: -(i * 2 + 1) }));
 	for (let i = 0; i < 5; i++) add("Spaces/Books/Sách " + (i + 1) + ".md", "# Sách\n", { created: -90, edited: -10 - i });

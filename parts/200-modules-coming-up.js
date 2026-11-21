@@ -11,7 +11,8 @@ var def4 = /* @__PURE__ */ (() => {
       ui.section(body2, "Coming up");
       const box = el(body2, "div", "m-soon hp-card hp-grow");
       ui.link(ui.bar(box).tools, config.sermonArchive, "Archive →");
-      const up = data.upcoming().slice(0, COUNT);
+      const all = data.upcoming(), cut = all[COUNT - 1]?.date.toMillis() ?? Infinity;
+      const up = all.filter((e) => e.date.toMillis() <= cut); // the last day stays whole
       if (!up.length) {
         el(box, "div", "hp-empty", "No upcoming preaching dates.");
         return;

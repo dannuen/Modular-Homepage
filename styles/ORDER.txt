@@ -20,10 +20,8 @@ modules/active-projects.css
 modules/next-actions.css
 modules/calendar.css
 modules/stats.css
-modules/project-stats.css
 modules/recently-preached.css
 modules/recently-edited.css
-modules/vault-glance.css
 modules/pomodoro.css
 topbar.css
 tasks.css

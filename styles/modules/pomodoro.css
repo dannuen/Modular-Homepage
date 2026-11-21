@@ -85,7 +85,7 @@
 .hp-home .m-pomo-time .m-pomo-d, .hp-home .m-pomo-time .m-pomo-c { fill: var(--pm-ink); }
 .hp-home .m-pomo[data-status="running"] .m-pomo-time .m-pomo-c { animation: m-pomo-colon 1s steps(1) infinite; }
 @keyframes m-pomo-colon { 50% { opacity: 0.2; } }
-.hp-home .m-pomo-status { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--pm-muted); }
+.hp-home .m-pomo-status { font-size: 12px; font-weight: var(--hm-title-weight); letter-spacing: 0.12em; text-transform: uppercase; color: var(--pm-muted); }
 .hp-home .m-pomo[data-mood="happy"] .m-pomo-status { color: var(--pm-ink); }
 .hp-home .m-pomo-bar {
 	--pm-cut: 3px;
@@ -103,7 +103,7 @@
 .hp-home .m-pomo .m-pomo-dot.is-done { opacity: 1; filter: none; }
 .hp-home .m-pomo .m-pomo-dot.is-now { opacity: 0.55; filter: none; }
 .hp-home .m-pomo[data-status="running"] .m-pomo-dot.is-now { animation: m-pomo-colon 1.2s steps(1) infinite; }
-.hp-home .m-pomo-today { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--pm-muted); }
+.hp-home .m-pomo-today { display: flex; align-items: center; gap: 6px; font-size: 11px; font-weight: var(--hm-title-weight); letter-spacing: 0.1em; text-transform: uppercase; color: var(--pm-muted); }
 .hp-home .m-pomo-today b { font-size: 13px; color: var(--pm-ink); letter-spacing: 0; }
 .hp-home .m-pomo-today .m-pomo-dot { width: 14px; height: 14px; }
 
@@ -111,7 +111,7 @@
 .hp-home .m-pomo-ctrls { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
 .hp-home .m-pomo-presets { display: flex; flex-wrap: wrap; gap: 6px; }
 .hp-home .m-pomo-face > .m-pomo-presets { justify-content: center; padding-top: 2px; }
-.hp-home .m-pomo button.m-pomo-chip { min-height: 26px; --btn-pad: 0 9px; font-size: max(11px, 10.5px); letter-spacing: 0.05em; text-transform: none; font-weight: 700; }
+.hp-home .m-pomo button.m-pomo-chip { min-height: 26px; --btn-pad: 0 9px; font-size: 11px; letter-spacing: 0.05em; text-transform: none; font-weight: var(--hm-title-weight); }
 .hp-home .m-pomo button.m-pomo-chip.is-on { --btn-bg: var(--pm-ink); color: var(--pm-paper); --btn-shadow: inset 0 0 0 3px var(--pm-ink); }
 .hp-home .m-pomo :is(.m-pomo-ctrls, .m-pomo-presets, .m-pomo-ask, .m-pomo-recent)[hidden], .hp-home .m-pomo button.m-pomo-btn[hidden] { display: none; }
 
@@ -121,7 +121,7 @@
 	gap: 8px; font-size: 11px; letter-spacing: 0.04em; text-transform: none;
 }
 .hp-home .m-pomo button.m-pomo-session b { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-.hp-home .m-pomo button.m-pomo-session span { flex: none; font-weight: 600; color: var(--pm-muted); }
+.hp-home .m-pomo button.m-pomo-session span { flex: none; font-weight: var(--hm-row-weight); color: var(--pm-muted); }
 .hp-home .m-pomo-ask { display: flex; flex-direction: column; gap: 8px; padding: 12px; background: rgba(255, 255, 255, 0.6); box-shadow: inset 0 0 0 2px var(--pm-soft); }
 .hp-home .m-pomo-ask-row { display: flex; flex-wrap: wrap; gap: 8px; }
 .hp-home .m-pomo-ask-row input.m-pomo-input { flex: 1 1 140px; height: 36px; }
@@ -133,7 +133,7 @@
 .hp-home .m-pomo-set-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .hp-home .m-pomo-set-head b { font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; }
 .hp-home .m-pomo-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 10px; }
-.hp-home .m-pomo-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--pm-muted); }
+.hp-home .m-pomo-label { font-size: 11px; font-weight: var(--hm-title-weight); letter-spacing: 0.08em; text-transform: uppercase; color: var(--pm-muted); }
 .hp-home .m-pomo-ctl { display: flex; flex-wrap: wrap; gap: 6px; }
 .hp-home .m-pomo button.m-pomo-char { flex-direction: column; gap: 4px; min-height: 0; --btn-pad: 8px 8px 9px; font-size: 10px; }
 .hp-home .m-pomo .m-pomo-char-art { width: 38px; height: 38px; }

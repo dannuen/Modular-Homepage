@@ -89,11 +89,6 @@
 .hp-home[data-theme="golden"] button.m-cal-day.is-preach { --btn-bg: transparent; color: var(--gd-gold-ink); box-shadow: inset 0 0 0 1px var(--gd-gold-ink), inset 0 0 0 3px var(--gd-nga), inset 0 0 0 4px var(--gd-frame-in); }
 .hp-home[data-theme="golden"] button.m-cal-day.is-preach .m-cal-note.has-note { background: var(--gd-gold-ink); }
 .hp-home[data-theme="golden"] button.m-cal-day.is-today:not(.is-preach) { box-shadow: inset 0 -2px 0 var(--gd-than); }   /* frames mean preaching; today is underlined */
-.hp-home[data-theme="golden"] .m-cal-ev.is-preach { background: none; box-shadow: inset 0 0 0 1px var(--gd-gold-ink); }
-.hp-home[data-theme="golden"] .m-cal-pday.is-past { opacity: 1; }
-.hp-home[data-theme="golden"] .m-cal-pday.is-today .m-cal-pnum { color: var(--gd-than); background: none; box-shadow: inset 0 -2px 0 var(--gd-than); }
-.hp-home[data-theme="golden"] .m-cal-chip.is-preach { color: var(--gd-gold-ink); background: none; box-shadow: inset 0 0 0 1px var(--gd-gold-ink); }
-.hp-home[data-theme="golden"] :is(.m-cal-chip.is-preach.is-inactive, .m-cal-pday.is-past .m-cal-chip.is-preach) { color: var(--gd-muted); background: none; box-shadow: inset 0 0 0 1px var(--gd-frame-out); }
 .hp-home[data-theme="golden"] .m-cal-legend i.is-preach { background: none; box-shadow: inset 0 0 0 1px var(--gd-gold-ink); }
 .hp-home[data-theme="golden"] .hp-switch-track { background: transparent; box-shadow: inset 0 0 0 1px var(--gd-muted); }
 .hp-home[data-theme="golden"] .hp-switch-track::after { background: var(--gd-muted); box-shadow: none; }

@@ -62,12 +62,10 @@ Every module is one card, with its buttons in the card's top-right corner. Title
 | Tasks | To-dos and events from the daily notes, with the active sermons' dates | List, Month, Week |
 | Active projects | Projects with their next step and shortcuts | Strip, Cards, List, Rings, Browse, Panel |
 | Next actions | Open tasks from active projects, due first | |
-| Calendar | Preaching dates, to-dos and events by day; click a day for its note | Month, Week, Planner |
-| Stats | Your preaching in numbers, with charts | Full, Band, Tiles |
-| Project numbers | Projects in charts: active, meetings per month, notes | |
+| Calendar | Preaching dates, to-dos and events by day; click a day for its note | Month |
+| Stats | Your preaching in numbers, with charts | Full |
 | Recently preached | The last sermons you preached, and where | |
 | Recently edited | The notes you changed last | |
-| Vault at a glance | Note counts for each part of the vault | |
 | Pomodoro | A focus timer as pixel art (tomato, avocado or clock) | |
 
 A module switched off in the settings is left out of every page and of **Arrange → Add module**. When a note changes, only the modules that use it are redrawn.

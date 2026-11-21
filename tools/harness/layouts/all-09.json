@@ -22,7 +22,7 @@
     {
       "module": "stats",
       "w": 6,
-      "variant": "tiles"
+      "variant": "full"
     },
     {
       "module": "next-actions",
