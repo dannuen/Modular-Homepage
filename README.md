@@ -62,6 +62,7 @@ Every module is one card, with its buttons in the card's top-right corner. Title
 | Tasks | To-dos and events from the daily notes, with the active sermons' dates | List, Month, Week |
 | Active projects | Projects with their next step and shortcuts | Strip, Cards, List, Rings, Browse, Panel |
 | Next actions | Open tasks from active projects, due first | |
+| Courses | Your active courses: open tasks (tick or add them), the latest class, and + Class / + course | |
 | Calendar | Preaching dates, to-dos and events by day; click a day for its note | Month |
 | Stats | Your preaching in numbers, with charts | Full |
 | Recently preached | The last sermons you preached, and where | |
@@ -74,6 +75,7 @@ A module switched off in the settings is left out of every page and of **Arrange
 
 - **Sermons** are notes with `type: sermon` in the sermons folder. `is_active: true` marks one as in preparation; its `date` and `time` properties feed Next sermon, Coming up, Tasks and Calendar. Church photos in the attachments folder are named after the church (`<Church name>.png`).
 - **Projects** are folders whose `Home.md` has `document_type: project-dashboard`, with a `Tasks.md` and a `Meetings/` folder.
+- **Courses** are folders in the courses folder whose `Home.md` has `document_type: course-dashboard`; `is_active: true` shows one. Its open tasks come from every note in the folder, and the task box adds a line to its `Tasks.md`. The latest class is the class note (`document_type: class`, in `Classes/`) with the latest `Date: [[yyyy-MM-dd]]` line, or the latest created when that line is missing. + Class makes a note from the New class template in that course's `Classes/` folder.
 - **Daily notes** live in `Daily Notes/yyyy/MM-MMMM/yyyy-MM-dd.md`. The Tasks module reads and writes their `## Tasks` section, and Calendar reads it the same way:
   - a to-do: `- [ ] Write intro #sermon 📅 2026-10-18`
   - an event (no checkbox): `- Elders meeting [time:: 19:00] [duration:: 1h] 📅 2026-10-20`
@@ -92,8 +94,8 @@ Each session is logged under `# Focus` in the day's daily note, which is created
 Open **Settings → Modular Homepage**.
 
 - **You:** your name, how the roster writes it, and words per minute (for "≈ min spoken" and the preaching dial).
-- **Folders and notes:** sermons folder and archive, projects folder and index, daily notes folder and template, attachments, Bible folder, roster folder, the roster churches in order, and the home note.
-- **New notes:** template, folder and name for New sermon, New note and New project.
+- **Folders and notes:** sermons folder and archive, projects folder and index, courses folder and index, daily notes folder and template, attachments, Bible folder, roster folder, the roster churches in order, and the home note.
+- **New notes:** template, folder and name for New sermon, New note, New project, New course and New class (New class always goes in the course's `Classes/` folder).
 - **Top bar:** the links, one per line as `note | label`.
 - **Themes:** the default theme, and whether module titles show.
 - **Layouts:** the default layout, and rename, duplicate, delete or add layouts.

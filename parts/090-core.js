@@ -443,11 +443,11 @@ function makeCore(env) {
   }
   const present = (path) => Boolean(app.vault.getAbstractFileByPath(path));
   const openNote = (target, newTab) => app.workspace.openLinkText(target, env.sourcePath, !!newTab);
-  async function newFrom(kind) {
+  async function newFrom(kind, folder) {
     const t = C.templates[kind];
     if (!t) return;
     try {
-      await createFromTemplate(app, t[0], t[1], t[2] || void 0, true);
+      await createFromTemplate(app, t[0], folder || t[1], t[2] || void 0, true);
     } catch (err) {
       console.error(err);
       notify("Could not create a new " + kind);

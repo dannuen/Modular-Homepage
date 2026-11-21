@@ -18,6 +18,7 @@ modules/preaching-dial.css
 modules/active-sermons.css
 modules/active-projects.css
 modules/next-actions.css
+modules/courses.css
 modules/calendar.css
 modules/stats.css
 modules/recently-preached.css
