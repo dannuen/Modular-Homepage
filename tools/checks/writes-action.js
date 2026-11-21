@@ -206,4 +206,21 @@ H.click(H.$(".hp-tk-add .hp-tk-go", H.slot("tasks")));
 await H.sleep(500);
 await H.settleAfterAction();
 expect("a task added while Templater makes today's note", /- \[ \] Gửi thư/.test(H.text(day)), true);
+
+// Courses: ticking a task marks that line done (with its ✅ date), the task box adds a line to the course's Tasks.md,
+// and + Class makes a class note in that course's Classes folder.
+const course = "Spaces/Courses/BEE-2026-Cô-lô-se", courseTasks = course + "/Tasks.md";
+H.click(H.$('button[aria-label="Done: Làm bài tập chương 1"]', H.slot("courses")));
+await H.settleAfterAction();
+expect("Courses tick", H.text(courseTasks).split("\n").find((l) => l.includes("Làm bài tập chương 1")), "- [x] Làm bài tập chương 1 ✅ 2026-10-14");
+const courseBox = H.$(".m-courses-add", H.slot("courses"));
+courseBox.value = "Đọc chương 2";
+courseBox.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", bubbles: true }));
+await H.sleep(50);
+await H.settleAfterAction();
+expect("Courses new task", H.text(courseTasks).trimEnd().split("\n").at(-1), "- [ ] Đọc chương 2");
+H.click(H.$('button[aria-label="Add a class to BEE-2026-Cô-lô-se"]', H.slot("courses")));
+await H.sleep(50);
+await H.settleAfterAction();
+if (!H.file(course + "/Classes/untitled class.md")) throw new Error("+ Class did not make a note in the course's Classes folder");
 return "ok";

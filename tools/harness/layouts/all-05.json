@@ -30,6 +30,11 @@
       "module": "active-projects",
       "w": 12,
       "variant": "browse"
+    },
+    {
+      "module": "courses",
+      "w": 12,
+      "variant": ""
     }
   ]
 }

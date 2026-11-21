@@ -50,6 +50,8 @@ var HomeSettingTab = class extends import_obsidian9.PluginSettingTab {
     text("Sermon archive", "Opened by “Sermon archive →”.", "sermonArchive");
     text("Projects folder", "Each project's Home.md has document_type: project-dashboard.", "projectsFolder");
     text("Projects index", "Opened by “All projects →”.", "projectsIndex");
+    text("Courses folder", "Each course's Home.md has document_type: course-dashboard.", "coursesFolder");
+    text("Courses index", "Opened by “All courses →”.", "coursesIndex");
     text("Daily notes folder", "Tasks live under ## Tasks in these notes.", "dailyFolder");
     text("Daily note template", "Used when a daily note doesn't exist yet (Templater).", "dailyTemplate");
     text("Attachments folder", "Church photos, named after the church.", "attachments");
@@ -69,7 +71,7 @@ var HomeSettingTab = class extends import_obsidian9.PluginSettingTab {
       changed();
     }));
     new import_obsidian9.Setting(containerEl).setName("New notes").setHeading();
-    for (const [kind, label] of [["sermon", "New sermon"], ["note", "New note"], ["project", "New project"]]) {
+    for (const [kind, label] of [["sermon", "New sermon"], ["note", "New note"], ["project", "New project"], ["course", "New course"], ["class", "New class"]]) {
       const t = C.templates[kind];
       new import_obsidian9.Setting(containerEl).setName(label).setDesc("Template, folder, and the new note's name (empty: Templater's default).").addText((x) => x.setPlaceholder("Template").setValue(t[0]).onChange((v) => {
         t[0] = v.trim();

@@ -139,6 +139,17 @@ function buildVault({ today = "2026-10-14", tz = "+07:00", theme = "aurora", hom
 	project("Dịch Sách Tĩnh Nguyện", { is_active: false, description: "Dịch sách tĩnh nguyện cho Hội Thánh", date_created: stamp(iso(-200)) }, null, { created: -200, edited: -150 });
 	add("Projects/Projects MOC.md", "# Projects\n", { created: -300, edited: -40 });
 
+	// ---------- Courses (Spaces/Courses/<name>/Home.md + Classes + Tasks.md) ----------
+	const course = (folder, active, classes, tasks) => {
+		const base = "Spaces/Courses/" + folder;
+		add(base + "/Home.md", yaml({ document_type: "course-dashboard", is_active: active, course: folder, teacher: "Kevin Brown" }) + "# " + folder + "\n", { created: -90, edited: -4 });
+		for (const [name, n] of classes) add(base + "/Classes/" + name + ".md", yaml({ document_type: "class", course: folder }) + "# " + name + "\n\n> [!info] Date and Time\nDate: [[" + iso(n) + "]]\n", { created: n, edited: n });
+		add(base + "/Tasks.md", yaml({ document_type: "tasks", course: folder }) + "# Tasks\n\n" + tasks.join("\n") + "\n", { created: -90, edited: -3 });
+	};
+	course("BEE-2026-Cô-lô-se", true, [["🐝BEE-CL-01-Mở đầu", -14], ["🐝BEE-CL-02-Đấng Christ là đầu", -7]], ["- [x] Mua sách bài tập", "- [ ] Làm bài tập chương 1", "- [ ] Nộp đề án tháng 11 với [[Workbook]]"]);
+	course("BEE-2026-Ga-la-ti", false, [["🐝BEE-GA-01-Người bảo vệ", -120]], ["- [ ] Ôn tập bài 7"]);
+	add("Spaces/Courses/All Courses.md", "# All courses\n", { created: -300, edited: -40 });
+
 	// ---------- Daily notes: to-dos and events under ## Tasks ----------
 	const daily = (n, lines, notes = ["- Một ghi chú"]) => {
 		const d = iso(n), p = parts(d);
@@ -169,6 +180,8 @@ function buildVault({ today = "2026-10-14", tz = "+07:00", theme = "aurora", hom
 	add("_data_/templates/dailynote_template.md", "## Tasks\n\n## Notes\n", { created: -400, edited: -300 });
 	add("_data_/templates/sermon_template.md", yaml({ type: "sermon", is_active: true, date: [], time: [], church: [], bible: "", verse: "" }) + "# DẪN NHẬP\n\n# I.\n\n# KẾT LUẬN\n", { created: -400, edited: -300 });
 	add("_data_/templates/note_template.md", "# <% tp.file.title %>\n", { created: -400, edited: -300 });
+	add("_data_/templates/course/Course setup.md", yaml({ document_type: "course-dashboard", is_active: true }) + "# Course\n", { created: -400, edited: -300 });
+	add("_data_/templates/course/Course class.md", yaml({ document_type: "class" }) + "# Class\n", { created: -400, edited: -300 });
 	add("_data_/templates/project/Project setup.md", yaml({ document_type: "project-dashboard", is_active: true }) + "# Project\n", { created: -400, edited: -300 });
 
 	// ---------- Countdowns (#countdown lines) ----------

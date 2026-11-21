@@ -6,6 +6,8 @@ var DEFAULT_CONFIG = {
   sermonArchive: "Spaces/Sermons/Sermons MOC.base",
   projectsFolder: "Projects",
   projectsIndex: "Projects/Projects MOC",
+  coursesFolder: "Spaces/Courses",
+  coursesIndex: "Spaces/Courses/All Courses",
   dailyFolder: "Daily Notes",
   dailyTemplate: "_data_/templates/dailynote_template.md",
   attachments: "_data_/attachments",
@@ -27,7 +29,10 @@ var DEFAULT_CONFIG = {
     // [template, folder, file name]
     sermon: ["_data_/templates/sermon_template.md", "Spaces/Sermons"],
     note: ["_data_/templates/note_template.md", "Notes"],
-    project: ["_data_/templates/project/Project setup.md", "Projects", "untitled project"]
+    project: ["_data_/templates/project/Project setup.md", "Projects", "untitled project"],
+    course: ["_data_/templates/course/Course setup.md", "Spaces/Courses", "untitled"],
+    // its folder is each course's Classes folder
+    class: ["_data_/templates/course/Course class.md", "Spaces/Courses", "untitled class"]
   },
   nav: [
     // the top bar's links: [note, label]
@@ -50,6 +55,7 @@ var MODULES = [
   ["tasks", tasks_default],
   ["active-projects", active_projects_default],
   ["next-actions", next_actions_default],
+  ["courses", courses_default],
   ["calendar", calendar_default],
   ["stats", stats_default],
   ["recently-preached", recently_preached_default],
