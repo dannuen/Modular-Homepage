@@ -231,11 +231,8 @@
    cell's ink. */
 .theme-dark .hp-home[data-theme="dune"] :is(.m-cal-marks, .m-cal-legend) i.is-todo { background: #ff6b5b; }
 .hp-home[data-theme="dune"] button.m-cal-day.is-preach .m-cal-marks i { box-shadow: 0 0 0 1.5px var(--hm-on-accent); }
-/* Project numbers: the inactive share is data, so it gets a visible neutral instead of the sunken well. */
-.hp-home[data-theme="dune"] .m-pstats-dot.is-track { background: var(--du-faint); }
-.hp-home[data-theme="dune"] .m-pstats-track { stroke: var(--du-faint); }
 /* Titles at the reference's regular weight (500: Regular on static Segoe UI); times and dates a step above. */
-.hp-home[data-theme="dune"] :is(.m-sermons-title, .m-sermons-btitle, .m-proj-title, .m-soon-title, .m-glance-name, .m-pstats-title, .m-dial-svc-title, .m-recent-title, .m-actions-copy a, .m-roster-names, .m-next-ev-mark) { font-weight: 500; }
+.hp-home[data-theme="dune"] :is(.m-sermons-title, .m-sermons-btitle, .m-proj-title, .m-soon-title, .m-dial-svc-title, .m-recent-title, .m-actions-copy a, .m-roster-names, .m-next-ev-mark) { font-weight: 500; }
 .hp-home[data-theme="dune"] .hp-tk-wrap .hp-tk-text { font-weight: 500; }
 .hp-home[data-theme="dune"] :is(.m-soon-day, .m-soon-time, .m-sermons-open, .m-actions-badge, .hp-tk-wrap .hp-tk-when) { font-weight: 600; }
 /* The task groups' heads (Overdue, Today), in sentence case above: a touch larger, at the labels' weight. */

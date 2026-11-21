@@ -158,8 +158,7 @@ follow "Homepage Function Context.md".
   - A generated Q3 export.
   - A Trường Xuân Q4 note with a different table.
 - **Attachments**: painted photos named after the churches, plus the banner (`Bình minh trên đồi.png`).
-- **Other notes**: notes, books, other sermons, courses, cards and AI notes for "Vault at a glance" and "Recently
-  edited". Templates for the create buttons.
+- **Other notes**: notes, books, other sermons, courses, cards and AI notes for "Recently edited". Templates for the create buttons.
 - **Pomodoro**: the Pomodoro's `pomodoro.json` in the plugin folder, with 2 focus sessions done today.
 
 ## What is mocked (www/obsidian-mock.js)

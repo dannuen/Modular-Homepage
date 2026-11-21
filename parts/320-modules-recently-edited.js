@@ -1,6 +1,6 @@
 // src/modules/recently-edited.ts
 var def16 = /* @__PURE__ */ (() => {
-  const folders = (config) => ["Notes", "Spaces", config.projectsFolder, "Cards", config.dailyFolder];
+  const folders = (config) => [...config.recentFolders, config.projectsFolder, config.dailyFolder];
   const COUNT = 8;
   return {
     name: "Recently edited",
@@ -8,7 +8,7 @@ var def16 = /* @__PURE__ */ (() => {
     width: 6,
     folders,
     variants: [],
-    async render(body2, { ui, vault, config }) {
+    async render(body2, { ui, vault, data, config }) {
       const { el } = ui;
       ui.section(body2, "Recently edited");
       const recent = [...new Map(folders(config).flatMap((f) => vault.pages(f)).map((p) => [p.file.path, p])).values()].sort((a, b) => b.file.mtime.toMillis() - a.file.mtime.toMillis()).slice(0, COUNT);
@@ -20,7 +20,7 @@ var def16 = /* @__PURE__ */ (() => {
       for (const p of recent) {
         const row = el(list2, "div", "m-recent-row is-edited");
         const main = el(row, "div", "m-recent-main");
-        ui.link(el(main, "div", "m-recent-title"), p.file.path, p.file.name === "Home" ? p.file.folder.split("/").pop() : p.file.name);
+        ui.link(el(main, "div", "m-recent-title"), p.file.path, (p.file.name === "Home" ? p.file.folder.split("/").pop() : p.file.name).replace(data.EMOJI, ""));
         el(main, "div", "m-recent-sub", p.file.folder);
         el(row, "time", "m-recent-side", p.file.mtime.setLocale("en").toFormat("d LLL · HH:mm"));
       }

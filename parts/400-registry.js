@@ -14,6 +14,8 @@ var DEFAULT_CONFIG = {
   rosterFolder: "Church Roster",
   // the Church Roster plugin's exports, one note per quarter (Sunday roster)
   rosterChurches: ["Tam Dân", "Trường Xuân"],
+  recentFolders: ["Notes", "Spaces", "Cards"],
+  // Recently edited reads these, plus the projects and daily notes folders
   // roster notes are grouped by these churches, in this order
   rosterFileChurch: "Trường Xuân",
   // the church of the Church Roster workbook (.roster), which names none
@@ -50,10 +52,8 @@ var MODULES = [
   ["next-actions", next_actions_default],
   ["calendar", calendar_default],
   ["stats", stats_default],
-  ["project-stats", project_stats_default],
   ["recently-preached", recently_preached_default],
   ["recently-edited", recently_edited_default],
-  ["vault-glance", vault_glance_default],
   ["pomodoro", pomodoro_default]
 ];
 var THEMES = [

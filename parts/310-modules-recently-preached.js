@@ -22,7 +22,7 @@ var def15 = /* @__PURE__ */ (() => {
         el(date, "b", "hp-num", e.date.toFormat("d"));
         el(date, "span", "", e.date.setLocale("en").toFormat("LLL"));
         const main = el(row, "div", "m-recent-main");
-        ui.link(el(main, "div", "m-recent-title"), e.page.file.path, e.page.file.name);
+        ui.link(el(main, "div", "m-recent-title"), e.page.file.path, e.page.file.name.replace(data.EMOJI, ""));
         el(main, "div", "m-recent-sub", [data.churchesOf(e.page)[0], time.relLabel(time.daysUntil(e.date))].filter(Boolean).join(" · "));
       }
     }

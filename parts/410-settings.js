@@ -60,6 +60,10 @@ var HomeSettingTab = class extends import_obsidian9.PluginSettingTab {
       C.rosterChurches = list(v);
       changed();
     }));
+    new import_obsidian9.Setting(containerEl).setName("Recently edited folders").setDesc("Recently edited lists notes from these folders (separated by commas), plus the projects and daily notes folders.").addText((t) => t.setValue(C.recentFolders.join(", ")).onChange((v) => {
+      C.recentFolders = list(v);
+      changed();
+    }));
     new import_obsidian9.Setting(containerEl).setName("Home note").setDesc("The note your name in the top bar opens.").addText((t) => t.setPlaceholder("Homepage").setValue(plugin.settings.homeNote).onChange((v) => {
       plugin.settings.homeNote = v.trim() || "Homepage";
       changed();

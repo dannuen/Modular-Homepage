@@ -25,17 +25,7 @@
       "variant": "tiles"
     },
     {
-      "module": "project-stats",
-      "w": 12,
-      "variant": ""
-    },
-    {
       "module": "recently-edited",
-      "w": 6,
-      "variant": ""
-    },
-    {
-      "module": "vault-glance",
       "w": 6,
       "variant": ""
     }

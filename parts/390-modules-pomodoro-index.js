@@ -411,7 +411,7 @@ function render(body2, ctx) {
   if (store.ask) openAsk(store.ask, false);
   else ask.hidden = true;
   life.cleanup(timer.subscribe(update));
-  life.interval(tick, 250);
+  life.interval(() => timer.timer.status === "running" && tick(), 250);
   update();
   timer.ready.then(() => {
     if (life.active) {

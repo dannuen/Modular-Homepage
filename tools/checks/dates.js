@@ -25,6 +25,8 @@ if (width(".m-dial-big") > width(".m-dial-center")) throw new Error("Afternoon i
 expect("afternoon arc faded in the morning (12-hour face)", H.$$(".m-dial-svc.is-past", dial()).length, 1);
 expect("dial row title without emoji", H.$(".m-dial-svc-title", dial()).textContent, "Ánh Sáng Đến Thế Gian");
 expect("calendar day tooltip names the sermon without emoji", H.$$(".m-cal-day", H.slot("calendar")).some((b) => /✦ .*Ánh Sáng Đến Thế Gian/.test(b.title) && !b.title.includes("⭐")), true);
+expect("recently preached titles without emoji", H.$$(".m-recent-title", H.slot("recently-preached")).map((t) => t.textContent).filter((t) => t && !/\\p{Extended_Pictographic}/u.test(t)).length, 6);
+expect("recently edited titles without emoji", H.$$(".m-recent-title", H.slot("recently-edited")).map((t) => t.textContent).filter((t) => t && !/\\p{Extended_Pictographic}/u.test(t)).length, 8);
 expect("active sermons table title without emoji", H.$$(".m-sermons-title", H.slot("active-sermons")).map((t) => t.textContent).includes("Ánh Sáng Đến Thế Gian"), true);
 await sermon("chiều", "\\n");
 await H.settleAfterAction();
@@ -94,7 +96,7 @@ expect("Stats books", H.$$(".m-stats-bar > span:first-child", books).map((s) => 
     main: path.resolve(process.argv[2]),
     theme: "aurora",
     now: "2026-12-25T07:30:00+07:00",
-    layout: [{ module: "preaching-dial", w: 12 }, { module: "stats", w: 12 }, { module: "roster", w: 12 }, { module: "active-sermons", w: 12, variant: "table" }, { module: "calendar", w: 6 }],
+    layout: [{ module: "preaching-dial", w: 12 }, { module: "stats", w: 12 }, { module: "roster", w: 12 }, { module: "active-sermons", w: 12, variant: "table" }, { module: "calendar", w: 6 }, { module: "recently-preached", w: 6 }, { module: "recently-edited", w: 6 }],
     action,
     out: path.join(require("os").tmpdir(), "hp-dates.png"),
     quiet: true

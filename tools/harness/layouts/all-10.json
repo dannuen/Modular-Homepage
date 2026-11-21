@@ -25,16 +25,6 @@
       "module": "coming-up",
       "w": 4,
       "variant": ""
-    },
-    {
-      "module": "vault-glance",
-      "w": 12,
-      "variant": ""
-    },
-    {
-      "module": "project-stats",
-      "w": 6,
-      "variant": ""
     }
   ]
 }

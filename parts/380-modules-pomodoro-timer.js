@@ -1,4 +1,5 @@
 // src/modules/pomodoro/timer.ts
+var import_obsidian8 = require("obsidian");
 var LIMITS = { focus: [1, 180], short: [1, 60], long: [1, 120], cycles: [1, 12] };
 var PHASES = {
   focus: { name: "Focus", short: "Focus" },
